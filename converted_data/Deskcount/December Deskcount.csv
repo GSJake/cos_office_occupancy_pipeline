@@ -1,0 +1,55 @@
+OfficeLocation,Address,Deskcount,RSF,Date,Include in Occupancy Calculation
+Albuquerque,"6565 Americas Parkway NE, suite 320",10,2589,2024-12-01,Yes
+Arlington,3101 Wilson Blvd.,37,10166,2024-12-01,Yes
+Atlanta,1545 Peachtree Street,58,24836,2024-12-01,Yes
+Austin,2500 Bees Cave Road ,51,18328,2024-12-01,Yes
+Baltimore,"2650 Quarry Lake Dr, Suite 300, Baltimore, MD 21208",24,3726,2024-12-01,Yes
+Boston,One Federal Street,35,6505,2024-12-01,Yes
+Charleston,465 Meeting Street,367,69149,2024-12-01,Yes
+Charlotte,521 East Morehead St,47,10367,2024-12-01,Yes
+Chicago,311 South Wacker Drive,45,8070,2024-12-01,Yes
+Dallas - In-Town,5207 McKinney Avenue,34,6724,2024-12-01,Yes
+Dallas - Irving,600 Las Colinas Blvd E,260,47904,2024-12-01,Yes
+Escondido,The Slatestone Building 960 Centerbury Place,36,4694,2024-12-01,Yes
+Eugene,"2911 Tennyson Ave., Suite 101",2,533,2024-12-01,Yes
+Fort Lauderdale,788 E Las Olas Blvd,31,9065,2024-12-01,Yes
+Greenwood Village,5445 DTC Parkway ,37,8444,2024-12-01,Yes
+Houston,730 Town and Country Blvd,56,22527,2024-12-01,Yes
+Las Vegas,6623 Las Vegas Blvd,12,3173,2024-12-01,Yes
+Los Angeles,3625 Del Amo Blvd. Torrance CA,8,2506,2024-12-01,Yes
+Lynnwood,19020 33rd Ave W,10,3204,2024-12-01,Yes
+Memphis,999 Shady Grove Road,126,26981,2024-12-01,Yes
+Brentwood,12 Cadillac Drive,12,3410,2024-12-01,Yes
+New York,280 Park Avenue,24,8936,2024-12-01,Yes
+Newport Beach,620 Newport Center Drive,57,14624,2024-12-01,Yes
+Ontario,3602 Inland Empire Blvd,13,1837,2024-12-01,Yes
+Orlando,301 E Pine Street,20,4321,2024-12-01,Yes
+Philadelphia,161 Washington Street,15,3990,2024-12-01,Yes
+Phoenix,2525 East Camelback Road,115,27498,2024-12-01,Yes
+Portland,1125 NW Couch Street,38,7794,2024-12-01,Yes
+Raleigh,4131 Parklake Ave,24,5500,2024-12-01,Yes
+Roseville,1430 Blue Oaks Blvd,15,3426,2024-12-01,Yes
+San Antonio,927 E Sonterra Blvd,20,6027,2024-12-01,Yes
+San Francisco,450 Sansome Street,59,9154,2024-12-01,Yes
+San Jose,2025 Gateway Place,12,2945,2024-12-01,Yes
+Seattle,800 Fifth Avenue,151,25567,2024-12-01,Yes
+Solana Beach,380 Stevens Avenue,14,3809,2024-12-01,Yes
+Spokane,510 W. Riverside,10,2647,2024-12-01,Yes
+Tampa,"The Loft at Midtown, Suite 330, 3615 Bromley Grand Avenue, Tampa, Florida
+33607",30,6152,2024-12-01,Yes
+West Palm Beach,105 S Narcissus Ave,4,1505,2024-12-01,Yes
+Dublin,"63 Merrion Square, 2nd & 3rd Floor, Dublin 2",8,2098,2024-12-01,Yes
+Frankfurt,"Bleidenstrasse 1, 60311 Frankfurt",20,3552,2024-12-01,Yes
+London,"The Gilbert, 40 Finsbury Square, Partial Ground Floor (West) & Level 1",186,23138,2024-12-01,Yes
+Madrid,"Torre Europa, Paseo Castellana 95",61,8369,2024-12-01,Yes
+Melbourne,"80 Collins Street, North Tower",30,3509,2024-12-01,Yes
+Mohali,"CP-67, Site no 252, Sector 67, 4th, 5th and 10th Floor",424,68476,2024-12-01,Yes
+Paris,176 avenue Charles de Gaulle - 92200 Neuilly sur Seine,44,6490,2024-12-01,Yes
+Santiago,"Asturias 77, 7550130 Las Condes, Región Metropolitana",15,2869,2024-12-01,Yes
+Sao Paulo,"Rua Auriflama, 61, Sao Paulo, Brazil",27,1798,2024-12-01,Yes
+Singapore,20 Cecil Street,28,2440,2024-12-01,Yes
+Sydney,"32 Carrington Street Sydney NSW 2000, Australia",50,3014,2024-12-01,Yes
+The Hague,"Anna van Buerenplein 41, 2595 DA Den Haag",46,6415,2024-12-01,Yes
+Tokyo,"L18 Marunouchi Eiraku Building, 1-4-1 Marunouchi Chida-ku, Tokyo Japan",20,3000,2024-12-01,Yes
+Nashville,"827 19th Ave S, Suite 930",18,5356,2024-12-01,Yes
+Shanghai,"No.669 Xinzha Road, One Museum, Jingan District",20,4815,2024-12-01,Yes

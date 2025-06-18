@@ -1,0 +1,632 @@
+office_location,deskcount,date
+Albuquerque,10,2024-03-01
+Arlington,37,2024-03-01
+Atlanta,58,2024-03-01
+Austin,51,2024-03-01
+Baltimore,24,2024-03-01
+Bloomington,12,2024-03-01
+Boston,35,2024-03-01
+Charleston,367,2024-03-01
+Charlotte,47,2024-03-01
+Chicago,45,2024-03-01
+Dallas - In-Town,34,2024-03-01
+Dallas - Irving,260,2024-03-01
+Escondido,36,2024-03-01
+Eugene,2,2024-03-01
+Fort Lauderdale,31,2024-03-01
+Greenwood Village,37,2024-03-01
+Houston,56,2024-03-01
+Las Vegas,12,2024-03-01
+Los Angeles,8,2024-03-01
+Lynnwood,10,2024-03-01
+Memphis,126,2024-03-01
+Brentwood,12,2024-03-01
+New York,24,2024-03-01
+Newport Beach,57,2024-03-01
+Ontario,13,2024-03-01
+Orlando,20,2024-03-01
+Philadelphia,15,2024-03-01
+Phoenix,115,2024-03-01
+Portland,38,2024-03-01
+Raleigh,24,2024-03-01
+Roseville,15,2024-03-01
+San Antonio,20,2024-03-01
+San Francisco,59,2024-03-01
+San Jose,12,2024-03-01
+Seattle,151,2024-03-01
+Solana Beach,14,2024-03-01
+Spokane,10,2024-03-01
+Tampa,30,2024-03-01
+West Palm Beach,1,2024-03-01
+Dublin,8,2024-03-01
+Frankfurt,20,2024-03-01
+London,157,2024-03-01
+Madrid,57,2024-03-01
+Melbourne,30,2024-03-01
+Mohali,309,2024-03-01
+Paris,44,2024-03-01
+Santiago,15,2024-03-01
+Sao Paulo,27,2024-03-01
+Singapore,28,2024-03-01
+Sydney,50,2024-03-01
+The Hague,46,2024-03-01
+Tokyo,20,2024-03-01
+Albuquerque,10,2024-06-01
+Arlington,37,2024-06-01
+Atlanta,58,2024-06-01
+Austin,51,2024-06-01
+Baltimore,24,2024-06-01
+Bloomington,12,2024-06-01
+Boston,35,2024-06-01
+Charleston,367,2024-06-01
+Charlotte,47,2024-06-01
+Chicago,45,2024-06-01
+Dallas - In-Town,34,2024-06-01
+Dallas - Irving,260,2024-06-01
+Escondido,36,2024-06-01
+Eugene,2,2024-06-01
+Fort Lauderdale,31,2024-06-01
+Greenwood Village,37,2024-06-01
+Houston,56,2024-06-01
+Las Vegas,12,2024-06-01
+Los Angeles,8,2024-06-01
+Lynnwood,10,2024-06-01
+Memphis,126,2024-06-01
+Brentwood,12,2024-06-01
+New York,24,2024-06-01
+Newport Beach,57,2024-06-01
+Ontario,13,2024-06-01
+Orlando,20,2024-06-01
+Philadelphia,15,2024-06-01
+Phoenix,115,2024-06-01
+Portland,38,2024-06-01
+Raleigh,24,2024-06-01
+Roseville,15,2024-06-01
+San Antonio,20,2024-06-01
+San Francisco,59,2024-06-01
+San Jose,12,2024-06-01
+Seattle,151,2024-06-01
+Solana Beach,14,2024-06-01
+Spokane,10,2024-06-01
+Tampa,30,2024-06-01
+West Palm Beach,1,2024-06-01
+Dublin,8,2024-06-01
+Frankfurt,20,2024-06-01
+London,186,2024-06-01
+Madrid,57,2024-06-01
+Melbourne,30,2024-06-01
+Mohali,424,2024-06-01
+Paris,44,2024-06-01
+Santiago,15,2024-06-01
+Sao Paulo,27,2024-06-01
+Singapore,28,2024-06-01
+Sydney,50,2024-06-01
+The Hague,46,2024-06-01
+Tokyo,20,2024-06-01
+Albuquerque,10,2024-12-01
+Arlington,37,2024-12-01
+Atlanta,58,2024-12-01
+Austin,51,2024-12-01
+Baltimore,24,2024-12-01
+Boston,35,2024-12-01
+Charleston,367,2024-12-01
+Charlotte,47,2024-12-01
+Chicago,45,2024-12-01
+Dallas - In-Town,34,2024-12-01
+Dallas - Irving,260,2024-12-01
+Escondido,36,2024-12-01
+Eugene,2,2024-12-01
+Fort Lauderdale,31,2024-12-01
+Greenwood Village,37,2024-12-01
+Houston,56,2024-12-01
+Las Vegas,12,2024-12-01
+Los Angeles,8,2024-12-01
+Lynnwood,10,2024-12-01
+Memphis,126,2024-12-01
+Brentwood,12,2024-12-01
+New York,24,2024-12-01
+Newport Beach,57,2024-12-01
+Ontario,13,2024-12-01
+Orlando,20,2024-12-01
+Philadelphia,15,2024-12-01
+Phoenix,115,2024-12-01
+Portland,38,2024-12-01
+Raleigh,24,2024-12-01
+Roseville,15,2024-12-01
+San Antonio,20,2024-12-01
+San Francisco,59,2024-12-01
+San Jose,12,2024-12-01
+Seattle,151,2024-12-01
+Solana Beach,14,2024-12-01
+Spokane,10,2024-12-01
+Tampa,30,2024-12-01
+West Palm Beach,4,2024-12-01
+Dublin,8,2024-12-01
+Frankfurt,20,2024-12-01
+London,186,2024-12-01
+Madrid,61,2024-12-01
+Melbourne,30,2024-12-01
+Mohali,424,2024-12-01
+Paris,44,2024-12-01
+Santiago,15,2024-12-01
+Sao Paulo,27,2024-12-01
+Singapore,28,2024-12-01
+Sydney,50,2024-12-01
+The Hague,46,2024-12-01
+Tokyo,20,2024-12-01
+Nashville,18,2024-12-01
+Shanghai,20,2024-12-01
+Albuquerque,10,2024-05-01
+Arlington,37,2024-05-01
+Atlanta,58,2024-05-01
+Austin,51,2024-05-01
+Baltimore,24,2024-05-01
+Bloomington,12,2024-05-01
+Boston,35,2024-05-01
+Charleston,367,2024-05-01
+Charlotte,47,2024-05-01
+Chicago,45,2024-05-01
+Dallas - In-Town,34,2024-05-01
+Dallas - Irving,260,2024-05-01
+Escondido,36,2024-05-01
+Eugene,2,2024-05-01
+Fort Lauderdale,31,2024-05-01
+Greenwood Village,37,2024-05-01
+Houston,56,2024-05-01
+Las Vegas,12,2024-05-01
+Los Angeles,8,2024-05-01
+Lynnwood,10,2024-05-01
+Memphis,126,2024-05-01
+Brentwood,12,2024-05-01
+New York,24,2024-05-01
+Newport Beach,57,2024-05-01
+Ontario,13,2024-05-01
+Orlando,20,2024-05-01
+Philadelphia,15,2024-05-01
+Phoenix,115,2024-05-01
+Portland,38,2024-05-01
+Raleigh,24,2024-05-01
+Roseville,15,2024-05-01
+San Antonio,20,2024-05-01
+San Francisco,59,2024-05-01
+San Jose,12,2024-05-01
+Seattle,151,2024-05-01
+Solana Beach,14,2024-05-01
+Spokane,10,2024-05-01
+Tampa,30,2024-05-01
+West Palm Beach,1,2024-05-01
+Dublin,8,2024-05-01
+Frankfurt,20,2024-05-01
+London,157,2024-05-01
+Madrid,57,2024-05-01
+Melbourne,30,2024-05-01
+Mohali,424,2024-05-01
+Paris,44,2024-05-01
+Santiago,15,2024-05-01
+Sao Paulo,27,2024-05-01
+Singapore,28,2024-05-01
+Sydney,50,2024-05-01
+The Hague,46,2024-05-01
+Tokyo,20,2024-05-01
+Albuquerque,10,2024-09-01
+Arlington,37,2024-09-01
+Atlanta,58,2024-09-01
+Austin,51,2024-09-01
+Baltimore,24,2024-09-01
+Boston,35,2024-09-01
+Charleston,367,2024-09-01
+Charlotte,47,2024-09-01
+Chicago,45,2024-09-01
+Dallas - In-Town,34,2024-09-01
+Dallas - Irving,260,2024-09-01
+Escondido,36,2024-09-01
+Eugene,2,2024-09-01
+Fort Lauderdale,31,2024-09-01
+Greenwood Village,37,2024-09-01
+Houston,56,2024-09-01
+Las Vegas,12,2024-09-01
+Los Angeles,8,2024-09-01
+Lynnwood,10,2024-09-01
+Memphis,126,2024-09-01
+Brentwood,12,2024-09-01
+New York,24,2024-09-01
+Newport Beach,57,2024-09-01
+Ontario,13,2024-09-01
+Orlando,20,2024-09-01
+Philadelphia,15,2024-09-01
+Phoenix,115,2024-09-01
+Portland,38,2024-09-01
+Raleigh,24,2024-09-01
+Roseville,15,2024-09-01
+San Antonio,20,2024-09-01
+San Francisco,59,2024-09-01
+San Jose,12,2024-09-01
+Seattle,151,2024-09-01
+Solana Beach,14,2024-09-01
+Spokane,10,2024-09-01
+Tampa,30,2024-09-01
+West Palm Beach,4,2024-09-01
+Dublin,8,2024-09-01
+Frankfurt,20,2024-09-01
+London,186,2024-09-01
+Madrid,57,2024-09-01
+Melbourne,30,2024-09-01
+Mohali,424,2024-09-01
+Paris,44,2024-09-01
+Santiago,15,2024-09-01
+Sao Paulo,27,2024-09-01
+Singapore,28,2024-09-01
+Sydney,50,2024-09-01
+The Hague,46,2024-09-01
+Tokyo,20,2024-09-01
+Nashville,18,2024-09-01
+Shanghai,20,2024-09-01
+Albuquerque,10,2024-07-01
+Arlington,37,2024-07-01
+Atlanta,58,2024-07-01
+Austin,51,2024-07-01
+Baltimore,24,2024-07-01
+Bloomington,12,2024-07-01
+Boston,35,2024-07-01
+Charleston,367,2024-07-01
+Charlotte,47,2024-07-01
+Chicago,45,2024-07-01
+Dallas - In-Town,34,2024-07-01
+Dallas - Irving,260,2024-07-01
+Escondido,36,2024-07-01
+Eugene,2,2024-07-01
+Fort Lauderdale,31,2024-07-01
+Greenwood Village,37,2024-07-01
+Houston,56,2024-07-01
+Las Vegas,12,2024-07-01
+Los Angeles,8,2024-07-01
+Lynnwood,10,2024-07-01
+Memphis,126,2024-07-01
+Brentwood,12,2024-07-01
+New York,24,2024-07-01
+Newport Beach,57,2024-07-01
+Ontario,13,2024-07-01
+Orlando,20,2024-07-01
+Philadelphia,15,2024-07-01
+Phoenix,115,2024-07-01
+Portland,38,2024-07-01
+Raleigh,24,2024-07-01
+Roseville,15,2024-07-01
+San Antonio,20,2024-07-01
+San Francisco,59,2024-07-01
+San Jose,12,2024-07-01
+Seattle,151,2024-07-01
+Solana Beach,14,2024-07-01
+Spokane,10,2024-07-01
+Tampa,30,2024-07-01
+West Palm Beach,1,2024-07-01
+Dublin,8,2024-07-01
+Frankfurt,20,2024-07-01
+London,186,2024-07-01
+Madrid,57,2024-07-01
+Melbourne,30,2024-07-01
+Mohali,424,2024-07-01
+Paris,44,2024-07-01
+Santiago,15,2024-07-01
+Sao Paulo,27,2024-07-01
+Singapore,28,2024-07-01
+Sydney,50,2024-07-01
+The Hague,46,2024-07-01
+Tokyo,20,2024-07-01
+Shanghai,20,2024-07-01
+Albuquerque,10,2024-10-01
+Arlington,37,2024-10-01
+Atlanta,58,2024-10-01
+Austin,51,2024-10-01
+Baltimore,24,2024-10-01
+Boston,35,2024-10-01
+Charleston,367,2024-10-01
+Charlotte,47,2024-10-01
+Chicago,45,2024-10-01
+Dallas - In-Town,34,2024-10-01
+Dallas - Irving,260,2024-10-01
+Escondido,36,2024-10-01
+Eugene,2,2024-10-01
+Fort Lauderdale,31,2024-10-01
+Greenwood Village,37,2024-10-01
+Houston,56,2024-10-01
+Las Vegas,12,2024-10-01
+Los Angeles,8,2024-10-01
+Lynnwood,10,2024-10-01
+Memphis,126,2024-10-01
+Brentwood,12,2024-10-01
+New York,24,2024-10-01
+Newport Beach,57,2024-10-01
+Ontario,13,2024-10-01
+Orlando,20,2024-10-01
+Philadelphia,15,2024-10-01
+Phoenix,115,2024-10-01
+Portland,38,2024-10-01
+Raleigh,24,2024-10-01
+Roseville,15,2024-10-01
+San Antonio,20,2024-10-01
+San Francisco,59,2024-10-01
+San Jose,12,2024-10-01
+Seattle,151,2024-10-01
+Solana Beach,14,2024-10-01
+Spokane,10,2024-10-01
+Tampa,30,2024-10-01
+West Palm Beach,4,2024-10-01
+Dublin,8,2024-10-01
+Frankfurt,20,2024-10-01
+London,186,2024-10-01
+Madrid,61,2024-10-01
+Melbourne,30,2024-10-01
+Mohali,424,2024-10-01
+Paris,44,2024-10-01
+Santiago,15,2024-10-01
+Sao Paulo,27,2024-10-01
+Singapore,28,2024-10-01
+Sydney,50,2024-10-01
+The Hague,46,2024-10-01
+Tokyo,20,2024-10-01
+Nashville,18,2024-10-01
+Shanghai,20,2024-10-01
+Albuquerque,10,2024-08-01
+Arlington,37,2024-08-01
+Atlanta,58,2024-08-01
+Austin,51,2024-08-01
+Baltimore,24,2024-08-01
+Boston,35,2024-08-01
+Charleston,367,2024-08-01
+Charlotte,47,2024-08-01
+Chicago,45,2024-08-01
+Dallas - In-Town,34,2024-08-01
+Dallas - Irving,260,2024-08-01
+Escondido,36,2024-08-01
+Eugene,2,2024-08-01
+Fort Lauderdale,31,2024-08-01
+Greenwood Village,37,2024-08-01
+Houston,56,2024-08-01
+Las Vegas,12,2024-08-01
+Los Angeles,8,2024-08-01
+Lynnwood,10,2024-08-01
+Memphis,126,2024-08-01
+Brentwood,12,2024-08-01
+New York,24,2024-08-01
+Newport Beach,57,2024-08-01
+Ontario,13,2024-08-01
+Orlando,20,2024-08-01
+Philadelphia,15,2024-08-01
+Phoenix,115,2024-08-01
+Portland,38,2024-08-01
+Raleigh,24,2024-08-01
+Roseville,15,2024-08-01
+San Antonio,20,2024-08-01
+San Francisco,59,2024-08-01
+San Jose,12,2024-08-01
+Seattle,151,2024-08-01
+Solana Beach,14,2024-08-01
+Spokane,10,2024-08-01
+Tampa,30,2024-08-01
+West Palm Beach,1,2024-08-01
+Dublin,8,2024-08-01
+Frankfurt,20,2024-08-01
+London,186,2024-08-01
+Madrid,57,2024-08-01
+Melbourne,30,2024-08-01
+Mohali,424,2024-08-01
+Paris,44,2024-08-01
+Santiago,15,2024-08-01
+Sao Paulo,27,2024-08-01
+Singapore,28,2024-08-01
+Sydney,50,2024-08-01
+The Hague,46,2024-08-01
+Tokyo,20,2024-08-01
+Nashville,18,2024-08-01
+Shanghai,20,2024-08-01
+Albuquerque,10,2024-01-01
+Arlington,37,2024-01-01
+Atlanta,58,2024-01-01
+Austin,51,2024-01-01
+Baltimore,24,2024-01-01
+Bloomington,12,2024-01-01
+Boston,35,2024-01-01
+Charleston,367,2024-01-01
+Charlotte,47,2024-01-01
+Chicago,45,2024-01-01
+Dallas - In-Town,34,2024-01-01
+Dallas - Irving,260,2024-01-01
+Escondido,36,2024-01-01
+Eugene,2,2024-01-01
+Fort Lauderdale,31,2024-01-01
+Greenwood Village,37,2024-01-01
+Houston,56,2024-01-01
+Las Vegas,12,2024-01-01
+Los Angeles,8,2024-01-01
+Lynnwood,10,2024-01-01
+Memphis,126,2024-01-01
+Brentwood,12,2024-01-01
+New York,24,2024-01-01
+Newport Beach,57,2024-01-01
+Ontario,13,2024-01-01
+Orlando,20,2024-01-01
+Philadelphia,15,2024-01-01
+Phoenix,115,2024-01-01
+Portland,38,2024-01-01
+Raleigh,24,2024-01-01
+Roseville,15,2024-01-01
+San Antonio,20,2024-01-01
+San Francisco,59,2024-01-01
+San Jose,12,2024-01-01
+Seattle,151,2024-01-01
+Solana Beach,14,2024-01-01
+Spokane,10,2024-01-01
+Tampa,30,2024-01-01
+West Palm Beach,1,2024-01-01
+Dublin,8,2024-01-01
+Frankfurt,20,2024-01-01
+London,157,2024-01-01
+Madrid,57,2024-01-01
+Melbourne,30,2024-01-01
+Mohali,309,2024-01-01
+Paris,44,2024-01-01
+Santiago,15,2024-01-01
+Sao Paulo,27,2024-01-01
+Singapore,28,2024-01-01
+Sydney,50,2024-01-01
+The Hague,46,2024-01-01
+Tokyo,20,2024-01-01
+Albuquerque,10,2024-11-01
+Arlington,37,2024-11-01
+Atlanta,58,2024-11-01
+Austin,51,2024-11-01
+Baltimore,24,2024-11-01
+Boston,35,2024-11-01
+Charleston,367,2024-11-01
+Charlotte,47,2024-11-01
+Chicago,45,2024-11-01
+Dallas - In-Town,34,2024-11-01
+Dallas - Irving,260,2024-11-01
+Escondido,36,2024-11-01
+Eugene,2,2024-11-01
+Fort Lauderdale,31,2024-11-01
+Greenwood Village,37,2024-11-01
+Houston,56,2024-11-01
+Las Vegas,12,2024-11-01
+Los Angeles,8,2024-11-01
+Lynnwood,10,2024-11-01
+Memphis,126,2024-11-01
+Brentwood,12,2024-11-01
+New York,24,2024-11-01
+Newport Beach,57,2024-11-01
+Ontario,13,2024-11-01
+Orlando,20,2024-11-01
+Philadelphia,15,2024-11-01
+Phoenix,115,2024-11-01
+Portland,38,2024-11-01
+Raleigh,24,2024-11-01
+Roseville,15,2024-11-01
+San Antonio,20,2024-11-01
+San Francisco,59,2024-11-01
+San Jose,12,2024-11-01
+Seattle,151,2024-11-01
+Solana Beach,14,2024-11-01
+Spokane,10,2024-11-01
+Tampa,30,2024-11-01
+West Palm Beach,4,2024-11-01
+Dublin,8,2024-11-01
+Frankfurt,20,2024-11-01
+London,186,2024-11-01
+Madrid,61,2024-11-01
+Melbourne,30,2024-11-01
+Mohali,424,2024-11-01
+Paris,44,2024-11-01
+Santiago,15,2024-11-01
+Sao Paulo,27,2024-11-01
+Singapore,28,2024-11-01
+Sydney,50,2024-11-01
+The Hague,46,2024-11-01
+Tokyo,20,2024-11-01
+Nashville,18,2024-11-01
+Shanghai,20,2024-11-01
+Albuquerque,10,2024-04-01
+Arlington,37,2024-04-01
+Atlanta,58,2024-04-01
+Austin,51,2024-04-01
+Baltimore,24,2024-04-01
+Bloomington,12,2024-04-01
+Boston,35,2024-04-01
+Charleston,367,2024-04-01
+Charlotte,47,2024-04-01
+Chicago,45,2024-04-01
+Dallas - In-Town,34,2024-04-01
+Dallas - Irving,260,2024-04-01
+Escondido,36,2024-04-01
+Eugene,2,2024-04-01
+Fort Lauderdale,31,2024-04-01
+Greenwood Village,37,2024-04-01
+Houston,56,2024-04-01
+Las Vegas,12,2024-04-01
+Los Angeles,8,2024-04-01
+Lynnwood,10,2024-04-01
+Memphis,126,2024-04-01
+Brentwood,12,2024-04-01
+New York,24,2024-04-01
+Newport Beach,57,2024-04-01
+Ontario,13,2024-04-01
+Orlando,20,2024-04-01
+Philadelphia,15,2024-04-01
+Phoenix,115,2024-04-01
+Portland,38,2024-04-01
+Raleigh,24,2024-04-01
+Roseville,15,2024-04-01
+San Antonio,20,2024-04-01
+San Francisco,59,2024-04-01
+San Jose,12,2024-04-01
+Seattle,151,2024-04-01
+Solana Beach,14,2024-04-01
+Spokane,10,2024-04-01
+Tampa,30,2024-04-01
+West Palm Beach,1,2024-04-01
+Dublin,8,2024-04-01
+Frankfurt,20,2024-04-01
+London,157,2024-04-01
+Madrid,57,2024-04-01
+Melbourne,30,2024-04-01
+Mohali,309,2024-04-01
+Paris,44,2024-04-01
+Santiago,15,2024-04-01
+Sao Paulo,27,2024-04-01
+Singapore,28,2024-04-01
+Sydney,50,2024-04-01
+The Hague,46,2024-04-01
+Tokyo,20,2024-04-01
+Albuquerque,10,2025-02-01
+Arlington,37,2025-02-01
+Atlanta,58,2025-02-01
+Austin,51,2025-02-01
+Baltimore,24,2025-02-01
+Boston,35,2025-02-01
+Charleston,367,2025-02-01
+Charlotte,47,2025-02-01
+Chicago,45,2025-02-01
+Dallas - In-Town,34,2025-02-01
+Dallas - Cypress Waters,247,2025-02-01
+Escondido,36,2025-02-01
+Eugene,2,2025-02-01
+Fort Lauderdale,31,2025-02-01
+Greenwood Village,37,2025-02-01
+Houston,56,2025-02-01
+Las Vegas,12,2025-02-01
+Los Angeles,8,2025-02-01
+Lynnwood,10,2025-02-01
+Memphis,126,2025-02-01
+Brentwood,12,2025-02-01
+New York,24,2025-02-01
+Newport Beach,57,2025-02-01
+Ontario,13,2025-02-01
+Orlando,20,2025-02-01
+Philadelphia,15,2025-02-01
+Phoenix,115,2025-02-01
+Portland,38,2025-02-01
+Raleigh,24,2025-02-01
+Roseville,15,2025-02-01
+San Antonio,20,2025-02-01
+San Francisco,59,2025-02-01
+San Jose,12,2025-02-01
+Seattle,151,2025-02-01
+Solana Beach,14,2025-02-01
+Spokane,10,2025-02-01
+Tampa,30,2025-02-01
+West Palm Beach,4,2025-02-01
+Dublin,8,2025-02-01
+Frankfurt,20,2025-02-01
+London,186,2025-02-01
+Madrid,61,2025-02-01
+Melbourne,30,2025-02-01
+Mohali,534,2025-02-01
+Paris,44,2025-02-01
+Santiago,15,2025-02-01
+Sao Paulo,27,2025-02-01
+Singapore,28,2025-02-01
+Sydney,48,2025-02-01
+The Hague,46,2025-02-01
+Tokyo,20,2025-02-01
+Nashville,18,2025-02-01
+Shanghai,20,2025-02-01
