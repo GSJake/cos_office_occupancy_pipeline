@@ -49,8 +49,8 @@ ROOT = Path(__file__).resolve().parent
 
 
 def _inputs_dir() -> Path:
-    p = os.environ.get('COS_INPUTS_DIR')
-    return Path(p) if p else ROOT / 'Inputs'
+    # Use explicit 'Inputs/' path for phase 1 checks to match Databricks usage
+    return Path('Inputs')
 
 
 def ensure_inputs() -> Tuple[bool, str]:

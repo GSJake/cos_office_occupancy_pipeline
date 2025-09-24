@@ -106,11 +106,8 @@ BASE_DIR = Path(__file__).resolve().parent
 
 
 def _resolve_inputs_dir() -> Path:
-    # Allow override via env var
-    p = os.environ.get('COS_INPUTS_DIR')
-    if p:
-        return Path(p)
-    return BASE_DIR / 'Inputs'
+    # Use project-relative 'Inputs/' explicitly, per user request
+    return Path('Inputs')
 
 
 def _resolve_outputs() -> Tuple[Path, Path]:
