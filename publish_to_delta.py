@@ -64,7 +64,14 @@ def publish_fact_occupancy_aggregated(table: str, mode: str = "overwrite") -> No
         .withColumn("is_hybrid_day", F.col("is_hybrid_day").cast("boolean"))
     )
 
-    (df.write.mode(mode).format("delta").option("overwriteSchema", "true").saveAsTable(table))
+    # Force a clean overwrite to avoid any stale data issues
+    if mode == "overwrite":
+        spark.sql(f"DROP TABLE IF EXISTS {table}")
+    (df.write.mode("overwrite" if mode == "overwrite" else mode)
+        .format("delta").option("overwriteSchema", "true").saveAsTable(table))
+
+    # Refresh table metadata and caches
+    spark.sql(f"REFRESH TABLE {table}")
 
     print(f"Published {df.count():,} rows to {table} (mode={mode})")
 
