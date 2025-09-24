@@ -8,14 +8,23 @@ import pandas as pd
 import os
 from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent
+
+
+def _resolve_paths() -> tuple[Path, Path]:
+    out = os.environ.get('COS_OUTPUT_DIR')
+    base = Path(out) if out else BASE_DIR
+    return base / 'converted_data', base / 'combined_data'
+
+
 def combine_csv_files():
     """Combine all CSV files by data type into master files."""
     
     # Create output directory
-    output_dir = Path("combined_data")
+    converted_dir, output_dir = _resolve_paths()
     output_dir.mkdir(exist_ok=True)
-    
-    converted_dir = Path("converted_data")
+    print(f"  Converted dir: {converted_dir}")
+    print(f"  Output dir: {output_dir}")
     
     # Process each data type directory
     for data_type_dir in converted_dir.iterdir():

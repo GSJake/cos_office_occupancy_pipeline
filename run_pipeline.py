@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+import os
 from pathlib import Path
 from typing import Callable, Dict, List, Tuple
 
@@ -44,8 +45,16 @@ def log(msg: str) -> None:
     print(f"[pipeline] {msg}")
 
 
+ROOT = Path(__file__).resolve().parent
+
+
+def _inputs_dir() -> Path:
+    p = os.environ.get('COS_INPUTS_DIR')
+    return Path(p) if p else ROOT / 'Inputs'
+
+
 def ensure_inputs() -> Tuple[bool, str]:
-    inputs = Path("Inputs")
+    inputs = _inputs_dir()
     if not inputs.exists():
         return False, "Inputs/ directory not found. Place raw Excel files under Inputs/<Type>/YYYY_MM_<type>.xlsx"
     desk = list((inputs / "Deskcount").glob("**/*.xlsx"))

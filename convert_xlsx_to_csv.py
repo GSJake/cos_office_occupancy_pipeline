@@ -102,6 +102,23 @@ def _parse_year_month_from_name(stem: str) -> Optional[Tuple[str, str]]:
         return m.group(1), m.group(2)
     return None
 
+BASE_DIR = Path(__file__).resolve().parent
+
+
+def _resolve_inputs_dir() -> Path:
+    # Allow override via env var
+    p = os.environ.get('COS_INPUTS_DIR')
+    if p:
+        return Path(p)
+    return BASE_DIR / 'Inputs'
+
+
+def _resolve_outputs() -> Tuple[Path, Path]:
+    out = os.environ.get('COS_OUTPUT_DIR')
+    base = Path(out) if out else BASE_DIR
+    return base / 'converted_data', base / 'combined_data'
+
+
 def convert_xlsx_to_csv():
     """Convert all Excel files in Inputs directory to CSV format."""
     
@@ -109,7 +126,7 @@ def convert_xlsx_to_csv():
     _require_openpyxl()
 
     # Create/clean output directories to avoid mixing stale files
-    output_dir = Path("converted_data")
+    output_dir, combined_dir = _resolve_outputs()
     output_dir.mkdir(exist_ok=True)
     # Clean previously converted CSVs
     for sub in ["Deskcount", "Occupancy"]:
@@ -121,7 +138,6 @@ def convert_xlsx_to_csv():
             except Exception:
                 pass
     # Also clear combined CSVs so Stage 2 recomputes
-    combined_dir = Path("combined_data")
     combined_dir.mkdir(exist_ok=True)
     for old in combined_dir.glob("*.csv"):
         try:
@@ -131,7 +147,10 @@ def convert_xlsx_to_csv():
     
     # Create subdirectories for each data type (already ensured above)
     
-    inputs_dir = Path("Inputs")
+    inputs_dir = _resolve_inputs_dir()
+    print(f"  Base dir: {BASE_DIR}")
+    print(f"  Inputs dir: {inputs_dir}")
+    print(f"  Output dir: {output_dir}")
     
     total = 0
     failures: List[str] = []
@@ -154,6 +173,9 @@ def convert_xlsx_to_csv():
             continue
 
         print(f"  Found {len(files)} input files")
+        # Print a preview of file names for debugging
+        for preview in list(sorted(files))[:5]:
+            print(f"    - {preview.name}")
 
         for excel_file in sorted(files):
             try:
