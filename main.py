@@ -6,6 +6,7 @@ Subcommands:
   run       Run the ETL pipeline (stages 1-9)
   validate  Generate validation report from outputs
   all       Run pipeline then validation (default)
+  publish   Publish outputs to Delta tables (aggregated by default)
 
 Examples:
   python main.py                 # same as `all`
@@ -21,6 +22,7 @@ from pathlib import Path
 
 import run_pipeline
 import validation_report
+import publish_to_delta
 
 
 def parse_args(argv):
@@ -47,6 +49,11 @@ def parse_args(argv):
     p_all.add_argument('--skip', dest='skip', type=int, nargs='+', default=[])
     p_all.add_argument('--dry-run', action='store_true')
     p_all.add_argument('--out', default='reports')
+
+    # publish subcommand
+    p_pub = sub.add_parser('publish', help='Publish to Delta (aggregated)')
+    p_pub.add_argument('--table', default='dev.jb_off_occ.fact_occupancy_aggregated')
+    p_pub.add_argument('--mode', default='overwrite', choices=['overwrite','append'])
 
     # In Databricks/IPython, extra args like '-f <json>' are injected.
     # Use parse_known_args to ignore unknowns and default to 'all'.
@@ -82,6 +89,10 @@ def main(argv=None):
     if cmd == 'validate':
         # Call the function directly with provided output dir
         return validation_report.validate(Path(args.out))
+
+    if cmd == 'publish':
+        publish_to_delta.publish_fact_occupancy_aggregated(args.table, args.mode)
+        return 0
 
     if cmd == 'all':
         rc = run_pipeline.main([

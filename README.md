@@ -33,6 +33,9 @@ Run options
 - Pipeline only: `python3 main.py run --from 3 --to 7`
 - Validation only: `python3 main.py validate --out reports`
 - Run underlying runner directly: `python3 run_pipeline.py --only 1 2 3`
+- Publish aggregated fact to Delta (Databricks):
+  - `python3 main.py publish --table dev.jb_off_occ.fact_occupancy_aggregated --mode overwrite`
+  - Requires a Spark session (run inside Databricks). Writes from `facts/FactOccupancyAggregated.csv`.
 
 Repo layout
 - Scripts: standalone Python files per stage (importable by the runner).
