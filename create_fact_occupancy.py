@@ -150,9 +150,9 @@ def create_fact_occupancy():
     # pd.merge_asof is the correct, high-performance tool for finding the
     # last known value for each record.
 
-    # Ensure both dataframes are sorted by date for the merge_asof operation
-    fact_table = fact_table.sort_values('date')
-    deskcount_data = deskcount_data.sort_values('date')
+    # Ensure both dataframes are sorted by by-keys and 'on' for merge_asof
+    fact_table = fact_table.sort_values(['office_location', 'date'])
+    deskcount_data = deskcount_data.sort_values(['office_location', 'date'])
 
     # Use merge_asof to efficiently find the last known deskcount for each date and location
     fact_table = pd.merge_asof(
@@ -162,6 +162,10 @@ def create_fact_occupancy():
         by='office_location',
         direction='backward'  # Finds the last value in deskcount_data on or before the date
     )
+
+    # Debug: report deskcount coverage after merge
+    merged_non_null = fact_table['deskcount'].notna().sum()
+    print(f"Deskcount populated on {merged_non_null:,} of {len(fact_table):,} rows after merge")
     # --- PERFORMANCE OPTIMIZATION END ---
 
     # Keep missing deskcount as NA (no valid capacity for that date/location)
