@@ -44,19 +44,33 @@ def calculate_hybrid_day_flags(fact_table):
 
     # Process each week
     for _, group in weekly_groups:
-        # Determine which months in this week have at least 3 days within the week
-        month_counts = group[['date', 'month']].drop_duplicates()['month'].value_counts()
+        # Work from unique dates to avoid LOB duplication and derive month from the date directly
+        unique_dates = group['date'].drop_duplicates()
+
+        # Eligibility is based on weekdays only (Mon–Fri)
+        weekday_dates = unique_dates[unique_dates.dt.dayofweek < 5]
+
+        # Count how many weekday dates in this ISO week fall into each calendar month
+        month_counts = weekday_dates.dt.month.value_counts()
         eligible_months = set(month_counts[month_counts >= 3].index.tolist())
 
         if not eligible_months:
             # No month contributes >=3 days in this ISO week → skip marking
             continue
 
-        # Limit candidate days to only those within eligible months
-        candidates = group[group['month'].isin(eligible_months)]
+        # Candidate dates are those whose month appears at least 3 times within the ISO week
+        candidate_dates = unique_dates[unique_dates.dt.month.isin(eligible_months)]
 
         # Compute total attendance per candidate day within this location/week
-        daily_attendance = candidates.groupby('date')['attendance_count'].sum().reset_index()
+        daily_attendance = (
+            group[group['date'].isin(candidate_dates)]
+            .groupby('date')['attendance_count']
+            .sum()
+            .reset_index()
+        )
+
+        if daily_attendance.empty:
+            continue
 
         # Select top 3 days by attendance from the candidate pool
         top_3_days = daily_attendance.nlargest(3, 'attendance_count')['date']

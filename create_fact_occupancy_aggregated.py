@@ -42,18 +42,32 @@ def calculate_hybrid_day_flags(fact_table):
 
     # Process each week
     for _, group in weekly_groups:
-        # Determine which months in this ISO week have at least 3 days
-        month_counts = group[['date', 'month']].drop_duplicates()['month'].value_counts()
+        # Use unique dates to avoid duplication and derive month fresh from the date
+        unique_dates = group['date'].drop_duplicates()
+
+        # Eligibility considers weekdays only (Mon–Fri)
+        weekday_dates = unique_dates[unique_dates.dt.dayofweek < 5]
+
+        # Count number of weekday dates in this ISO week by calendar month
+        month_counts = weekday_dates.dt.month.value_counts()
         eligible_months = set(month_counts[month_counts >= 3].index.tolist())
 
         if not eligible_months:
             continue
 
-        # Limit to candidate days within eligible months
-        candidates = group[group['month'].isin(eligible_months)]
+        # Candidate dates are those whose month appears at least 3 times in the ISO week
+        candidate_dates = unique_dates[unique_dates.dt.month.isin(eligible_months)]
 
         # Compute total attendance per candidate day
-        daily_attendance = candidates.groupby('date')['attendance_count'].sum().reset_index()
+        daily_attendance = (
+            group[group['date'].isin(candidate_dates)]
+            .groupby('date')['attendance_count']
+            .sum()
+            .reset_index()
+        )
+
+        if daily_attendance.empty:
+            continue
 
         # Select top 3 days by attendance from the candidate pool
         top_3_days = daily_attendance.nlargest(3, 'attendance_count')['date']
