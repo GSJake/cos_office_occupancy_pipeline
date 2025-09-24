@@ -133,8 +133,12 @@ def convert_xlsx_to_csv():
         nested_files = [p for sub in data_type_dir.iterdir() if sub.is_dir() for p in sub.glob("*.xlsx")]
         files = root_files + nested_files
         if not files:
-            print(f"  No .xlsx files found under {data_type_dir}")
+            msg = f"no .xlsx files found under {data_type_dir}"
+            print(f"  {msg}")
+            failures.append(f"{data_type}: {msg}")
             continue
+
+        print(f"  Found {len(files)} input files")
 
         for excel_file in sorted(files):
             try:

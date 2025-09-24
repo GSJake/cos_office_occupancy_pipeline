@@ -47,7 +47,13 @@ def log(msg: str) -> None:
 def ensure_inputs() -> Tuple[bool, str]:
     inputs = Path("Inputs")
     if not inputs.exists():
-        return False, "Inputs/ directory not found. Place raw Excel files under Inputs/<Type>/<Year>/*.xlsx"
+        return False, "Inputs/ directory not found. Place raw Excel files under Inputs/<Type>/YYYY_MM_<type>.xlsx"
+    desk = list((inputs / "Deskcount").glob("**/*.xlsx"))
+    occ = list((inputs / "Occupancy").glob("**/*.xlsx"))
+    if not desk:
+        return False, "No Deskcount Excel files found under Inputs/Deskcount. Expected files like 2025_01_deskcount.xlsx"
+    if not occ:
+        return False, "No Occupancy Excel files found under Inputs/Occupancy. Expected files like 2025_01_occupancy.xlsx"
     return True, ""
 
 
