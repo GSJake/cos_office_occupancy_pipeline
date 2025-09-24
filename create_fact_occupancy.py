@@ -173,6 +173,8 @@ def create_fact_occupancy():
     print("\nStep 6: Adding hybrid day flags...")
     
     fact_table = calculate_hybrid_day_flags(fact_table)
+    # Add weekend flag for downstream filtering
+    fact_table['is_weekend'] = fact_table['date'].dt.dayofweek >= 5
     
     print("\nStep 7: Final column organization...")
     
@@ -186,6 +188,7 @@ def create_fact_occupancy():
         'line_of_business',
         'year',
         'month',
+        'is_weekend',
         'attendance_count',
         'deskcount',
         'occupancy_rate',

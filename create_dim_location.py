@@ -5,6 +5,7 @@ Extract unique office locations and create location dimension table with RSF dat
 """
 
 import pandas as pd
+import re
 from pathlib import Path
 
 def create_dim_location():
@@ -24,6 +25,16 @@ def create_dim_location():
     
     # Step 6a: Find all unique office_location values from occupancy data
     print(f"\nStep 6a: Finding unique office_location values...")
+    # Normalize locations in occupancy data
+    def _normalize_location(val):
+        if pd.isna(val):
+            return val
+        s = str(val).strip()
+        s = re.sub(r"\s+", " ", s)
+        s = s.rstrip('.,;:')
+        return s
+
+    df_occupancy['office_location'] = df_occupancy['office_location'].map(_normalize_location)
     unique_locations = df_occupancy['office_location'].dropna().unique()
     unique_locations = sorted(unique_locations)  # Sort alphabetically for consistency
     
@@ -43,6 +54,7 @@ def create_dim_location():
     }).reset_index()
     
     rsf_data.rename(columns={'OfficeLocation': 'office_location'}, inplace=True)
+    rsf_data['office_location'] = rsf_data['office_location'].map(_normalize_location)
     
     print(f"Found RSF data for {len(rsf_data)} locations")
     

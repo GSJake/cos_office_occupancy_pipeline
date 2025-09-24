@@ -5,6 +5,7 @@ Clean occupancy data according to specific requirements.
 """
 
 import pandas as pd
+import re
 from pathlib import Path
 from datetime import datetime
 
@@ -39,6 +40,16 @@ def clean_occupancy_data():
         'DayofWeek': 'day_of_week',
         'JobFamily': 'job_family'
     })
+    
+    # Normalize office_location text (trim, collapse whitespace, strip trailing punctuation)
+    def _normalize_location(val):
+        if pd.isna(val):
+            return val
+        s = str(val).strip()
+        s = re.sub(r"\s+", " ", s)
+        s = s.rstrip('.,;:')
+        return s
+    df_clean['office_location'] = df_clean['office_location'].map(_normalize_location)
     
     print(f"After column selection: {df_clean.shape}")
     
