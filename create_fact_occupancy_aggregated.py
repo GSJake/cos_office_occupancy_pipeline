@@ -55,8 +55,8 @@ def calculate_hybrid_day_flags(fact_table):
         if not eligible_months:
             continue
 
-        # Candidate dates are those whose month appears at least 3 times in the ISO week
-        candidate_dates = unique_dates[unique_dates.dt.month.isin(eligible_months)]
+        # Candidate dates are weekdays within eligible months
+        candidate_dates = unique_dates[(unique_dates.dt.dayofweek < 5) & (unique_dates.dt.month.isin(eligible_months))]
 
         # Compute total attendance per candidate day
         daily_attendance = (
@@ -73,7 +73,8 @@ def calculate_hybrid_day_flags(fact_table):
         top_3_days = daily_attendance.nlargest(3, 'attendance_count')['date']
 
         # Update only rows within this group that match the selected top days
-        indices_to_update = group[group['date'].isin(top_3_days)].index
+        # and are weekdays in eligible months (hard guard)
+        indices_to_update = group[(group['date'].isin(top_3_days)) & (group['date'].dt.dayofweek < 5) & (group['date'].dt.month.isin(eligible_months))].index
         fact_table.loc[indices_to_update, 'is_hybrid_day'] = True
 
     # Drop temporary columns
