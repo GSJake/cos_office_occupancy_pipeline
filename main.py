@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+from pathlib import Path
 
 import run_pipeline
 import validation_report
@@ -47,7 +48,10 @@ def parse_args(argv):
     p_all.add_argument('--dry-run', action='store_true')
     p_all.add_argument('--out', default='reports')
 
-    return parser.parse_args(argv)
+    # In Databricks/IPython, extra args like '-f <json>' are injected.
+    # Use parse_known_args to ignore unknowns and default to 'all'.
+    args, _unknown = parser.parse_known_args(argv)
+    return args
 
 
 def main(argv=None):
@@ -68,7 +72,7 @@ def main(argv=None):
         ])
 
     if cmd == 'validate':
-        # validation_report.main() reads argparse itself, so call function directly
+        # Call the function directly with provided output dir
         return validation_report.validate(Path(args.out))
 
     if cmd == 'all':
@@ -83,7 +87,6 @@ def main(argv=None):
             return rc
         # Only validate if not a dry-run
         if not args.dry_run:
-            from pathlib import Path
             return validation_report.validate(Path(args.out))
         return 0
 
@@ -92,4 +95,3 @@ def main(argv=None):
 
 if __name__ == '__main__':
     raise SystemExit(main())
-
