@@ -10,78 +10,93 @@ from pathlib import Path
 
 def calculate_hybrid_day_flags(fact_table):
     """
-    Calculate hybrid day flags for the fact table.
-
-    For each month/location combination:
-    1. Group data by week
-    2. For each week, find the top 3 days by attendance
-    3. Mark only those specific days as hybrid days
-
-    Args:
-        fact_table (pd.DataFrame): Fact table with attendance data
-
-    Returns:
-        pd.DataFrame: Fact table with is_hybrid_day column added
+    Calculate hybrid day flags using vectorized logic aligned with business rules:
+    - ISO week grouping per office
+    - Eligible only if weekday and the month has >=3 weekdays in that ISO week
+    - Mark top-3 attendance dates among eligible per week/location across all LOBs
     """
-    print("Calculating hybrid day flags for each week/location combination...")
+    print("Calculating hybrid day flags for each week/location combination (vectorized)...")
 
-    # Ensure date column is datetime
+    # Ensure datetime
     fact_table['date'] = pd.to_datetime(fact_table['date'])
-    
-    # Add date components for hybrid calculations
+
+    # Date components
     fact_table['year'] = fact_table['date'].dt.year
     fact_table['month'] = fact_table['date'].dt.month
-    # Use ISO week + ISO year to define weeks unambiguously
-    iso_calendar = fact_table['date'].dt.isocalendar()
-    fact_table['week_of_year'] = iso_calendar.week
-    fact_table['week_year'] = iso_calendar.year
+    iso = fact_table['date'].dt.isocalendar()
+    fact_table['week_of_year'] = iso.week
+    fact_table['week_year'] = iso.year
+    fact_table['is_weekday_tmp'] = fact_table['date'].dt.dayofweek < 5
 
-    # Initialize hybrid flag to False
+    # Count weekday dates in each (location, week_year, week_of_year, month)
+    wd = fact_table.loc[fact_table['is_weekday_tmp'], ['office_location', 'date']].copy()
+    iso_wd = wd['date'].dt.isocalendar()
+    wd['week_year'] = iso_wd.year
+    wd['week_of_year'] = iso_wd.week
+    wd['month'] = wd['date'].dt.month
+    weekday_counts = (
+        wd.groupby(['office_location', 'week_year', 'week_of_year', 'month'])['date']
+        .nunique()
+        .reset_index(name='weekday_count_in_month_week')
+    )
+
+    # Merge weekday counts back
+    fact_table = fact_table.merge(
+        weekday_counts,
+        on=['office_location', 'week_year', 'week_of_year', 'month'],
+        how='left'
+    )
+    fact_table['weekday_count_in_month_week'] = fact_table['weekday_count_in_month_week'].fillna(0).astype(int)
+
+    # Eligibility: weekday and month contributes >=3 weekdays in this ISO week
+    fact_table['eligible_for_hybrid'] = fact_table['is_weekday_tmp'] & (fact_table['weekday_count_in_month_week'] >= 3)
+
+    # Daily totals per (location, iso-week, date) across all LOBs for ranking
+    daily_totals = (
+        fact_table.groupby(['office_location', 'week_year', 'week_of_year', 'date'])['attendance_count']
+        .sum()
+        .reset_index(name='daily_total_attendance')
+    )
+
+    # Add eligibility to daily totals
+    daily_totals['month'] = daily_totals['date'].dt.month
+    daily_totals['is_weekday'] = daily_totals['date'].dt.dayofweek < 5
+    daily_totals = daily_totals.merge(
+        weekday_counts,
+        on=['office_location', 'week_year', 'week_of_year', 'month'],
+        how='left'
+    )
+    daily_totals['weekday_count_in_month_week'] = daily_totals['weekday_count_in_month_week'].fillna(0).astype(int)
+    daily_totals['eligible'] = daily_totals['is_weekday'] & (daily_totals['weekday_count_in_month_week'] >= 3)
+
+    # Select top 3 eligible dates per (location, iso-week)
+    daily_totals_eligible = daily_totals[daily_totals['eligible']].copy()
+    daily_totals_eligible.sort_values(
+        ['office_location', 'week_year', 'week_of_year', 'daily_total_attendance'],
+        ascending=[True, True, True, False],
+        inplace=True
+    )
+    top3 = daily_totals_eligible.groupby(['office_location', 'week_year', 'week_of_year']).head(3)
+    top_keys = set(zip(top3['office_location'], top3['week_year'], top3['week_of_year'], top3['date']))
+
+    # Initialize flag False
     fact_table['is_hybrid_day'] = False
 
-    # Group by location, ISO week-year, and ISO week number
-    weekly_groups = fact_table.groupby(['office_location', 'week_year', 'week_of_year'])
-
-    # Process each week
-    for _, group in weekly_groups:
-        # Work from unique dates to avoid LOB duplication and derive month from the date directly
-        unique_dates = group['date'].drop_duplicates()
-
-        # Eligibility is based on weekdays only (Mon–Fri)
-        weekday_dates = unique_dates[unique_dates.dt.dayofweek < 5]
-
-        # Count how many weekday dates in this ISO week fall into each calendar month
-        month_counts = weekday_dates.dt.month.value_counts()
-        eligible_months = set(month_counts[month_counts >= 3].index.tolist())
-
-        if not eligible_months:
-            # No month contributes >=3 days in this ISO week → skip marking
-            continue
-
-        # Candidate dates are weekdays within eligible months only
-        candidate_dates = unique_dates[(unique_dates.dt.dayofweek < 5) & (unique_dates.dt.month.isin(eligible_months))]
-
-        # Compute total attendance per candidate day within this location/week
-        daily_attendance = (
-            group[group['date'].isin(candidate_dates)]
-            .groupby('date')['attendance_count']
-            .sum()
-            .reset_index()
+    # Mark True when (eligible) and in top3
+    sel = [
+        (ol, wy, ww, d) in top_keys and elig
+        for ol, wy, ww, d, elig in zip(
+            fact_table['office_location'],
+            fact_table['week_year'],
+            fact_table['week_of_year'],
+            fact_table['date'],
+            fact_table['eligible_for_hybrid']
         )
-
-        if daily_attendance.empty:
-            continue
-
-        # Select top 3 days by attendance from the candidate pool
-        top_3_days = daily_attendance.nlargest(3, 'attendance_count')['date']
-
-        # Update only rows within this group that match the selected top days
-        # and are weekdays within eligible months (hard guard)
-        indices_to_update = group[(group['date'].isin(top_3_days)) & (group['date'].dt.dayofweek < 5) & (group['date'].dt.month.isin(eligible_months))].index
-        fact_table.loc[indices_to_update, 'is_hybrid_day'] = True
+    ]
+    fact_table.loc[sel, 'is_hybrid_day'] = True
 
     # Drop temporary columns
-    fact_table.drop(columns=['week_of_year', 'week_year'], inplace=True)
+    fact_table.drop(columns=['week_of_year', 'week_year', 'is_weekday_tmp', 'eligible_for_hybrid', 'weekday_count_in_month_week'], inplace=True)
 
     # Print summary statistics
     total_days = len(fact_table)
