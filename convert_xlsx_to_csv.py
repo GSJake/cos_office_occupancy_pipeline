@@ -12,7 +12,7 @@ Guardrails:
 import pandas as pd
 import os
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 def _require_openpyxl():
     try:
@@ -23,6 +23,43 @@ def _require_openpyxl():
             "Databricks tip: use `%pip install -r requirements.txt` in a cell, then re-run."
         )
         raise SystemExit(msg)
+
+
+_MONTH_MAP = {
+    'january': '01', 'jan': '01',
+    'february': '02', 'feb': '02',
+    'march': '03', 'mar': '03',
+    'april': '04', 'apr': '04',
+    'may': '05',
+    'june': '06', 'jun': '06',
+    'july': '07', 'jul': '07',
+    'august': '08', 'aug': '08',
+    'september': '09', 'sep': '09', 'sept': '09',
+    'october': '10', 'oct': '10',
+    'november': '11', 'nov': '11',
+    'december': '12', 'dec': '12',
+}
+
+
+def _infer_deskcount_year_month(year: str, stem: str, df: pd.DataFrame) -> Optional[str]:
+    """Infer YYYY-MM for deskcount snapshot.
+
+    Prefer the 'Date' column in the sheet; fallback to parsing month from filename stem.
+    Returns YYYY-MM or None if not inferable.
+    """
+    # Try from 'Date' column
+    if 'Date' in df.columns:
+        dates = pd.to_datetime(df['Date'], errors='coerce').dropna()
+        if not dates.empty:
+            snap = dates.max()
+            return snap.strftime('%Y-%m')
+
+    # Fallback: parse month from filename
+    s = stem.lower()
+    for key, mm in _MONTH_MAP.items():
+        if key in s:
+            return f"{year}-{mm}"
+    return None
 
 def convert_xlsx_to_csv():
     """Convert all Excel files in Inputs directory to CSV format."""
@@ -64,20 +101,15 @@ def convert_xlsx_to_csv():
                             df = pd.read_excel(excel_file, engine='openpyxl')
                             
                             # Create output filename
-                            # Include the year in the output filename to avoid overwriting
-                            # when filenames do not include year (e.g., "March Deskcount.xlsx").
-                            csv_filename = f"{year}_" + excel_file.stem + ".csv"
-                            
-                            # For Deskcount, if the sheet has a single snapshot 'Date' column,
-                            # prefer naming as YYYY-MM_Deskcount.csv for clarity.
-                            if data_type.lower() == 'deskcount' and 'Date' in df.columns:
-                                try:
-                                    dates = pd.to_datetime(df['Date'], errors='coerce').dropna()
-                                    if not dates.empty:
-                                        snap = dates.max()
-                                        csv_filename = f"{snap.strftime('%Y-%m')}_Deskcount.csv"
-                                except Exception:
-                                    pass
+                            # Include uniqueness in output filename to avoid overwrites across years.
+                            if data_type.lower() == 'deskcount':
+                                ym = _infer_deskcount_year_month(year, excel_file.stem, df)
+                                if ym:
+                                    csv_filename = f"{ym}_Deskcount.csv"
+                                else:
+                                    csv_filename = f"{year}_" + excel_file.stem + ".csv"
+                            else:
+                                csv_filename = f"{year}_" + excel_file.stem + ".csv"
                             csv_path = output_dir / data_type / csv_filename
                             
                             # Save as CSV
