@@ -159,16 +159,14 @@ def create_fact_occupancy():
     )
     # --- PERFORMANCE OPTIMIZATION END ---
 
-    # Fill missing deskcount with 0 (for locations/dates without deskcount data)
-    fact_table['deskcount'] = fact_table['deskcount'].fillna(0).astype(int)
+    # Keep missing deskcount as NA (no valid capacity for that date/location)
+    fact_table['deskcount'] = fact_table['deskcount'].astype('Int64')
     
     print("\nStep 5: Calculating occupancy rate...")
     
-    # Calculate occupancy rate (attendance / deskcount), handling division by zero
-    fact_table['occupancy_rate'] = fact_table.apply(
-        lambda row: row['attendance_count'] / row['deskcount'] if row['deskcount'] > 0 else 0.0,
-        axis=1
-    )
+    # Calculate occupancy rate only where deskcount > 0; leave NA otherwise
+    dc = fact_table['deskcount'].astype('Float64')
+    fact_table['occupancy_rate'] = (fact_table['attendance_count'] / dc).where(dc > 0)
     
     print("\nStep 6: Adding hybrid day flags...")
     
