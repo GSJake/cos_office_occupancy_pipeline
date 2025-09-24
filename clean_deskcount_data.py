@@ -62,8 +62,20 @@ def clean_deskcount_data():
     print(f"\nConverting date column to datetime format...")
     df_clean['date'] = pd.to_datetime(df_clean['date'])
     
-    # Ensure numeric deskcount
-    df_clean['deskcount'] = pd.to_numeric(df_clean['deskcount'], errors='coerce').fillna(0).astype(int)
+    # Ensure numeric deskcount; keep missing as NA (do NOT coerce to zero)
+    df_clean['deskcount'] = pd.to_numeric(df_clean['deskcount'], errors='coerce')
+    
+    # Treat non-positive values (<=0) as missing, so we don't count them as real capacity
+    missing_before = df_clean['deskcount'].isna().sum()
+    df_clean.loc[df_clean['deskcount'] <= 0, 'deskcount'] = pd.NA
+    missing_after_flag = df_clean['deskcount'].isna().sum() - missing_before
+    
+    # Forward-fill deskcount by office and date (carry forward last known monthly snapshot)
+    df_clean = df_clean.sort_values(['office_location', 'date'])
+    df_clean['deskcount'] = df_clean.groupby('office_location')['deskcount'].ffill()
+    
+    # Cast to nullable integer to preserve NA
+    df_clean['deskcount'] = df_clean['deskcount'].astype('Int64')
     
     # Display some sample data
     print(f"\nSample of cleaned data:")
