@@ -100,6 +100,11 @@ def create_fact_occupancy():
     deskcount_data['date'] = pd.to_datetime(deskcount_data['date'])
     dim_date['date'] = pd.to_datetime(dim_date['date'])
     
+    # Limit scope to dates with valid deskcount snapshots (no forward-fill)
+    latest_desk_date = deskcount_data['date'].max()
+    occupancy_data = occupancy_data[occupancy_data['logon_date'] <= latest_desk_date]
+    dim_date = dim_date[dim_date['date'] <= latest_desk_date]
+
     # Create date_key in occupancy data for joining
     occupancy_data['date_key'] = occupancy_data['logon_date'].dt.strftime('%Y%m%d').astype(int)
     

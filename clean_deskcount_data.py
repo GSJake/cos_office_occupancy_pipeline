@@ -64,16 +64,8 @@ def clean_deskcount_data():
     
     # Ensure numeric deskcount; keep missing as NA (do NOT coerce to zero)
     df_clean['deskcount'] = pd.to_numeric(df_clean['deskcount'], errors='coerce')
-    
-    # Treat non-positive values (<=0) as missing, so we don't count them as real capacity
-    missing_before = df_clean['deskcount'].isna().sum()
+    # Treat non-positive values (<=0) as missing; do not forward-fill
     df_clean.loc[df_clean['deskcount'] <= 0, 'deskcount'] = pd.NA
-    missing_after_flag = df_clean['deskcount'].isna().sum() - missing_before
-    
-    # Forward-fill deskcount by office and date (carry forward last known monthly snapshot)
-    df_clean = df_clean.sort_values(['office_location', 'date'])
-    df_clean['deskcount'] = df_clean.groupby('office_location')['deskcount'].ffill()
-    
     # Cast to nullable integer to preserve NA
     df_clean['deskcount'] = df_clean['deskcount'].astype('Int64')
     
