@@ -30,12 +30,15 @@ def parse_args(argv):
     sub = parser.add_subparsers(dest='cmd')
 
     # run subcommand (proxy args to run_pipeline)
-    p_run = sub.add_parser('run', help='Run ETL pipeline (stages 1-9)')
+    p_run = sub.add_parser('run', help='Run ETL pipeline (stages 1-9) and publish')
     p_run.add_argument('--from', dest='from_stage', type=int, default=1)
     p_run.add_argument('--to', dest='to_stage', type=int, default=9)
     p_run.add_argument('--only', dest='only', type=int, nargs='+')
     p_run.add_argument('--skip', dest='skip', type=int, nargs='+', default=[])
     p_run.add_argument('--dry-run', action='store_true')
+    p_run.add_argument('--table', default='dev.jb_off_occ.fact_occupancy_aggregated')
+    p_run.add_argument('--mode', default='overwrite', choices=['overwrite','append'])
+    p_run.add_argument('--no-publish', action='store_true', help='Do not publish to Delta at the end')
 
     # validate subcommand
     p_val = sub.add_parser('validate', help='Generate validation report')
@@ -81,13 +84,22 @@ def main(argv=None):
     cmd = args.cmd or 'all'
 
     if cmd == 'run':
-        return run_pipeline.main([
+        rc = run_pipeline.main([
             '--from', str(args.from_stage),
             '--to', str(args.to_stage),
             *([] if not args.only else ['--only', *map(str, args.only)]),
             *([] if not args.skip else ['--skip', *map(str, args.skip)]),
             *(['--dry-run'] if args.dry_run else []),
         ])
+        if rc != 0:
+            return rc
+        # Publish if not a dry-run and user didn't opt out
+        if not args.dry_run and not args.no_publish:
+            try:
+                publish_to_delta.publish_fact_occupancy_aggregated(args.table, args.mode)
+            except Exception as e:
+                print(f"[publish] Skipped or failed: {e}")
+        return 0
 
     if cmd == 'validate':
         # Call the function directly with provided output dir

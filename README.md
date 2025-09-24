@@ -30,7 +30,7 @@ Quick start
 
 Run options
 - Full: `python3 main.py all --out reports` (runs pipeline, validation, then publishes to Delta)
-- Pipeline only: `python3 main.py run --from 3 --to 7`
+- Pipeline only: `python3 main.py run --from 3 --to 7` (publishes by default; disable with `--no-publish`)
 - Validation only: `python3 main.py validate --out reports`
 - Run underlying runner directly: `python3 run_pipeline.py --only 1 2 3`
 - Publish aggregated fact to Delta (Databricks):
