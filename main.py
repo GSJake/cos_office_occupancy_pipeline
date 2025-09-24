@@ -57,6 +57,14 @@ def parse_args(argv):
 def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
+    # Databricks/IPython may inject args (e.g., -f <json>) when running a file.
+    # If no known subcommand is present, default to running the full pipeline (+ validation).
+    known_cmds = {'run', 'validate', 'all'}
+    if not any(tok in known_cmds for tok in argv):
+        rc = run_pipeline.main([])
+        if rc != 0:
+            return rc
+        return validation_report.validate(Path('reports'))
     args = parse_args(argv)
 
     # Default to 'all' if no subcommand
