@@ -32,28 +32,29 @@ def calculate_hybrid_day_flags(fact_table):
     fact_table['week_year'] = iso.year
     fact_table['is_weekday_tmp'] = fact_table['date'].dt.dayofweek < 5
 
-    # Count weekday dates in each (location, week_year, week_of_year, month)
-    wd = fact_table.loc[fact_table['is_weekday_tmp'], ['office_location', 'date']].copy()
-    iso_wd = wd['date'].dt.isocalendar()
-    wd['week_year'] = iso_wd.year
-    wd['week_of_year'] = iso_wd.week
-    wd['month'] = wd['date'].dt.month
+    # Precompute weekday counts per (ISO week, month) using unique dates only (no office dependency)
+    date_df = fact_table[['date']].drop_duplicates().copy()
+    iso_dates = date_df['date'].dt.isocalendar()
+    date_df['week_year'] = iso_dates.year
+    date_df['week_of_year'] = iso_dates.week
+    date_df['month'] = date_df['date'].dt.month
+    date_df['dow'] = date_df['date'].dt.dayofweek  # 0=Mon..6=Sun
+
     weekday_counts = (
-        wd.groupby(['office_location', 'week_year', 'week_of_year', 'month'])['date']
+        date_df[date_df['dow'] < 5]
+        .groupby(['week_year', 'week_of_year', 'month'])['date']
         .nunique()
         .reset_index(name='weekday_count_in_month_week')
     )
 
-    # Merge weekday counts back
-    fact_table = fact_table.merge(
+    # Derive per-date eligibility (weekday and month contributes >=3 weekdays in that ISO week)
+    date_elig = date_df.merge(
         weekday_counts,
-        on=['office_location', 'week_year', 'week_of_year', 'month'],
+        on=['week_year', 'week_of_year', 'month'],
         how='left'
     )
-    fact_table['weekday_count_in_month_week'] = fact_table['weekday_count_in_month_week'].fillna(0).astype(int)
-
-    # Eligibility: weekday and month contributes >=3 weekdays in this ISO week
-    fact_table['eligible_for_hybrid'] = fact_table['is_weekday_tmp'] & (fact_table['weekday_count_in_month_week'] >= 3)
+    date_elig['weekday_count_in_month_week'] = date_elig['weekday_count_in_month_week'].fillna(0).astype(int)
+    date_elig['eligible_date'] = (date_elig['dow'] < 5) & (date_elig['weekday_count_in_month_week'] >= 3)
 
     # Daily totals per (location, iso-week, date) for ranking
     daily_totals = (
@@ -62,16 +63,11 @@ def calculate_hybrid_day_flags(fact_table):
         .reset_index(name='daily_total_attendance')
     )
 
-    # Add eligibility to daily totals
-    daily_totals['month'] = daily_totals['date'].dt.month
-    daily_totals['is_weekday'] = daily_totals['date'].dt.dayofweek < 5
+    # Add per-date eligibility to daily totals
     daily_totals = daily_totals.merge(
-        weekday_counts,
-        on=['office_location', 'week_year', 'week_of_year', 'month'],
-        how='left'
+        date_elig[['date', 'eligible_date']], on='date', how='left'
     )
-    daily_totals['weekday_count_in_month_week'] = daily_totals['weekday_count_in_month_week'].fillna(0).astype(int)
-    daily_totals['eligible'] = daily_totals['is_weekday'] & (daily_totals['weekday_count_in_month_week'] >= 3)
+    daily_totals['eligible'] = daily_totals['eligible_date'].fillna(False)
 
     # Select top 3 eligible dates per (location, iso-week)
     daily_totals_eligible = daily_totals[daily_totals['eligible']].copy()
@@ -86,21 +82,20 @@ def calculate_hybrid_day_flags(fact_table):
     # Initialize flag False
     fact_table['is_hybrid_day'] = False
 
-    # Mark True when (eligible) and in top3
+    # Mark True when date is in top3 set
     sel = [
-        (ol, wy, ww, d) in top_keys and elig
-        for ol, wy, ww, d, elig in zip(
+        (ol, wy, ww, d) in top_keys
+        for ol, wy, ww, d in zip(
             fact_table['office_location'],
             fact_table['week_year'],
             fact_table['week_of_year'],
             fact_table['date'],
-            fact_table['eligible_for_hybrid']
         )
     ]
     fact_table.loc[sel, 'is_hybrid_day'] = True
 
     # Drop temporary columns
-    fact_table.drop(columns=['week_of_year', 'week_year', 'is_weekday_tmp', 'eligible_for_hybrid', 'weekday_count_in_month_week'], inplace=True)
+    fact_table.drop(columns=['week_of_year', 'week_year', 'is_weekday_tmp'], inplace=True)
 
     # Print summary statistics
     total_days = len(fact_table)
