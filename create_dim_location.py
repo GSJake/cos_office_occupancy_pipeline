@@ -15,7 +15,7 @@ def create_dim_location():
     
     # Load cleaned occupancy data for unique locations
     print("Loading cleaned occupancy data...")
-    df_occupancy = pd.read_csv('cleaned_data/Occupancy_cleaned.csv')
+    df_occupancy = pd.read_csv('cleaned_data/Occupancy_cleaned.csv', low_memory=False)
     print(f"Loaded occupancy data with {len(df_occupancy)} rows")
     
     # Load original deskcount data for RSF information

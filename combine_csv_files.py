@@ -27,7 +27,11 @@ def combine_csv_files():
             all_dataframes = []
             
             # Process each CSV file in the data type directory
-            for csv_file in data_type_dir.glob("*.csv"):
+            files = list(data_type_dir.glob("*.csv"))
+            if not files:
+                print(f"  No CSV files found for {data_type} in {data_type_dir}")
+                raise SystemExit(1)
+            for csv_file in sorted(files):
                 try:
                     print(f"  Reading {csv_file.name}...")
                     df = pd.read_csv(csv_file)

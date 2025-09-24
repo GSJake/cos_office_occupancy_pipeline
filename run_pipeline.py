@@ -51,10 +51,17 @@ def ensure_inputs() -> Tuple[bool, str]:
     return True, ""
 
 
+def _has_csvs(path: Path) -> bool:
+    return path.exists() and any(path.glob("*.csv"))
+
+
 def stage_checks() -> Dict[int, Callable[[], Tuple[bool, str]]]:
     return {
         1: lambda: ensure_inputs(),
-        2: lambda: (Path("converted_data").exists(), "converted_data/ missing. Run stage 1 or confirm inputs exist."),
+        2: lambda: (
+            _has_csvs(Path("converted_data/Deskcount")) and _has_csvs(Path("converted_data/Occupancy")),
+            "converted_data subfolders missing or empty. Run stage 1 successfully first.",
+        ),
         3: lambda: (Path("combined_data/Occupancy.csv").exists(), "combined_data/Occupancy.csv missing. Run stages 1-2."),
         4: lambda: (Path("combined_data/Deskcount.csv").exists(), "combined_data/Deskcount.csv missing. Run stages 1-2."),
         5: lambda: (True, ""),  # synthetic
@@ -143,4 +150,3 @@ def main(argv: List[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
-
