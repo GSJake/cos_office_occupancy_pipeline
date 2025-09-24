@@ -2,8 +2,14 @@ COS Office Occupancy Pipeline
 
 Project to process office occupancy and deskcount data into clean dimensions and fact tables for analysis and reporting.
 
+Inputs
+- New convention (recommended):
+  - Deskcount: place files under `Inputs/Deskcount/` named like `YYYY_MM_deskcount.xlsx` (e.g., `2025_01_deskcount.xlsx`).
+  - Occupancy: place files under `Inputs/Occupancy/` named like `YYYY_MM_occupancy.xlsx`.
+- Legacy support: Files under `Inputs/<Type>/<Year>/*.xlsx` still work; the converter infers year-month from filenames or sheet dates.
+
 Pipeline stages
-- 1 Convert: Read Excel files from `Inputs/<Type>/<Year>/*.xlsx` and write CSVs under `converted_data/`.
+- 1 Convert: Read Excel files from `Inputs/<Type>/` (and legacy `Inputs/<Type>/<Year>/`) and write CSVs under `converted_data/`.
 - 2 Combine: Merge per-type CSVs into `combined_data/Occupancy.csv` and `combined_data/Deskcount.csv`.
 - 3 Clean Occupancy: Normalize and de‑duplicate occupancy into `cleaned_data/Occupancy_cleaned.csv`.
 - 4 Clean Deskcount: Select and normalize deskcount into `cleaned_data/Deskcount_cleaned.csv`.
@@ -39,3 +45,4 @@ Validation report
 Notes
 - Requirements are minimal: `pandas`, `openpyxl`.
 - Outputs are overwritten on re‑runs; keep originals in `Inputs/`.
+ - In Databricks, install deps with: `%pip install -r requirements.txt`.
