@@ -29,31 +29,41 @@ def calculate_hybrid_day_flags(fact_table):
     # Add date components for hybrid calculations
     fact_table['year'] = fact_table['date'].dt.year
     fact_table['month'] = fact_table['date'].dt.month
-    # Use isocalendar().week for a more standard week definition
-    fact_table['week_of_year'] = fact_table['date'].dt.isocalendar().week
+    # Use ISO week-year and week number to define weeks unambiguously
+    iso_calendar = fact_table['date'].dt.isocalendar()
+    fact_table['week_of_year'] = iso_calendar.week
+    fact_table['week_year'] = iso_calendar.year
 
     # Initialize hybrid flag to False
     fact_table['is_hybrid_day'] = False
 
-    # Group by location, year, and week
-    weekly_groups = fact_table.groupby(['office_location', 'year', 'week_of_year'])
+    # Group by location and ISO week (year + week number)
+    weekly_groups = fact_table.groupby(['office_location', 'week_year', 'week_of_year'])
 
     # Process each week
     for _, group in weekly_groups:
-        # Get total attendance for each day in this week/location group
-        daily_attendance = group.groupby('date')['attendance_count'].sum().reset_index()
-        
-        # Sort by attendance and get top 3 days
-        top_3_days = daily_attendance.nlargest(3, 'attendance_count')['date']
-        
-        # Get the original indices from the 'group' that correspond to the top days
-        indices_to_update = group[group['date'].isin(top_3_days)].index
+        # Determine which months in this ISO week have at least 3 days
+        month_counts = group[['date', 'month']].drop_duplicates()['month'].value_counts()
+        eligible_months = set(month_counts[month_counts >= 3].index.tolist())
 
-        # Update the main fact_table using these specific indices
+        if not eligible_months:
+            continue
+
+        # Limit to candidate days within eligible months
+        candidates = group[group['month'].isin(eligible_months)]
+
+        # Compute total attendance per candidate day
+        daily_attendance = candidates.groupby('date')['attendance_count'].sum().reset_index()
+
+        # Select top 3 days by attendance from the candidate pool
+        top_3_days = daily_attendance.nlargest(3, 'attendance_count')['date']
+
+        # Update only rows within this group that match the selected top days
+        indices_to_update = group[group['date'].isin(top_3_days)].index
         fact_table.loc[indices_to_update, 'is_hybrid_day'] = True
 
     # Drop temporary columns
-    fact_table.drop(columns=['week_of_year'], inplace=True)
+    fact_table.drop(columns=['week_of_year', 'week_year'], inplace=True)
 
     # Print summary statistics
     total_days = len(fact_table)
