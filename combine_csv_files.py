@@ -26,12 +26,21 @@ def combine_csv_files():
             # List to store all dataframes
             all_dataframes = []
             
-            # Process each CSV file in the data type directory
-            files = list(data_type_dir.glob("*.csv"))
+            # Prefer new-style filenames first (YYYY-MM_<Type>.csv). Fallback to any CSVs if none.
+            if data_type.lower() == 'deskcount':
+                files = sorted(data_type_dir.glob("[0-9][0-9][0-9][0-9]-[0-9][0-9]_Deskcount.csv"))
+            elif data_type.lower() == 'occupancy':
+                files = sorted(data_type_dir.glob("[0-9][0-9][0-9][0-9]-[0-9][0-9]_Occupancy.csv"))
+            else:
+                files = []
+            # Fallback to any CSVs present (legacy names)
+            if not files:
+                files = sorted(data_type_dir.glob("*.csv"))
             if not files:
                 print(f"  No CSV files found for {data_type} in {data_type_dir}")
                 raise SystemExit(1)
-            for csv_file in sorted(files):
+            print(f"  Found {len(files)} file(s) to combine")
+            for csv_file in files:
                 try:
                     print(f"  Reading {csv_file.name}...")
                     df = pd.read_csv(csv_file)
