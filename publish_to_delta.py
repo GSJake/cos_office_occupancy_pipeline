@@ -23,6 +23,14 @@ def _abs_file_uri(p: Path) -> str:
     return f"file:{ap}"
 
 
+def _get_base_dir() -> Path:
+    try:
+        return Path(__file__).resolve().parent
+    except NameError:
+        # Databricks/IPython Run File
+        return Path.cwd()
+
+
 def publish_fact_occupancy_aggregated(table: str, mode: str = "overwrite") -> None:
     from pyspark.sql import SparkSession, functions as F
 
@@ -32,7 +40,7 @@ def publish_fact_occupancy_aggregated(table: str, mode: str = "overwrite") -> No
     db = table.rsplit(".", 1)[0]
     spark.sql(f"CREATE DATABASE IF NOT EXISTS {db}")
 
-    base = Path(__file__).resolve().parent
+    base = _get_base_dir()
     csv_path = base / "facts" / "FactOccupancyAggregated.csv"
     if not csv_path.exists():
         raise FileNotFoundError(f"CSV not found: {csv_path}. Run the pipeline first (stages 1-9).")
@@ -65,7 +73,9 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Publish CSV outputs to Delta tables")
     p.add_argument("--table", default="dev.jb_off_occ.fact_occupancy_aggregated", help="Target table name")
     p.add_argument("--mode", default="overwrite", choices=["overwrite", "append"], help="Write mode")
-    return p.parse_args()
+    # Tolerate IPython/Databricks injected args like '-f <json>'
+    args, _ = p.parse_known_args()
+    return args
 
 
 def main() -> int:
@@ -76,4 +86,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

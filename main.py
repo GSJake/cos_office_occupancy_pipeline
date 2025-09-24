@@ -42,13 +42,16 @@ def parse_args(argv):
     p_val.add_argument('--out', default='reports')
 
     # all subcommand (default)
-    p_all = sub.add_parser('all', help='Run pipeline then validation')
+    p_all = sub.add_parser('all', help='Run pipeline then validation (and publish)')
     p_all.add_argument('--from', dest='from_stage', type=int, default=1)
     p_all.add_argument('--to', dest='to_stage', type=int, default=9)
     p_all.add_argument('--only', dest='only', type=int, nargs='+')
     p_all.add_argument('--skip', dest='skip', type=int, nargs='+', default=[])
     p_all.add_argument('--dry-run', action='store_true')
     p_all.add_argument('--out', default='reports')
+    p_all.add_argument('--table', default='dev.jb_off_occ.fact_occupancy_aggregated')
+    p_all.add_argument('--mode', default='overwrite', choices=['overwrite','append'])
+    p_all.add_argument('--no-publish', action='store_true', help='Do not publish to Delta at the end')
 
     # publish subcommand
     p_pub = sub.add_parser('publish', help='Publish to Delta (aggregated)')
@@ -107,6 +110,12 @@ def main(argv=None):
         # Only validate if not a dry-run
         if not args.dry_run:
             return validation_report.validate(Path(args.out))
+        # After validation, publish unless disabled
+        if not getattr(args, 'no_publish', False):
+            try:
+                publish_to_delta.publish_fact_occupancy_aggregated(args.table, args.mode)
+            except Exception as e:
+                print(f"[publish] Skipped or failed: {e}")
         return 0
 
     raise SystemExit(f"Unknown command: {cmd}")
