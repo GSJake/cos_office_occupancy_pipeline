@@ -8,7 +8,14 @@ import pandas as pd
 import os
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent
+def _get_base_dir() -> Path:
+    try:
+        return Path(__file__).resolve().parent
+    except NameError:
+        # Running in environments like Databricks/IPython where __file__ is undefined
+        return Path.cwd()
+
+BASE_DIR = _get_base_dir()
 
 
 def _resolve_paths() -> tuple[Path, Path]:
