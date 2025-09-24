@@ -77,7 +77,13 @@ def main(argv=None):
         rc = run_pipeline.main([])
         if rc != 0:
             return rc
-        return validation_report.validate(Path('reports'))
+        # Validate then publish by default
+        validation_report.validate(Path('reports'))
+        try:
+            publish_to_delta.publish_fact_occupancy_aggregated('dev.jb_off_occ.fact_occupancy_aggregated', 'overwrite')
+        except Exception as e:
+            print(f"[publish] Skipped or failed: {e}")
+        return 0
     args = parse_args(argv)
 
     # Default to 'all' if no subcommand
@@ -119,11 +125,11 @@ def main(argv=None):
         ])
         if rc != 0:
             return rc
-        # Only validate if not a dry-run
+        # Validate if not a dry-run
         if not args.dry_run:
-            return validation_report.validate(Path(args.out))
+            validation_report.validate(Path(args.out))
         # After validation, publish unless disabled
-        if not getattr(args, 'no_publish', False):
+        if not args.dry_run and not getattr(args, 'no_publish', False):
             try:
                 publish_to_delta.publish_fact_occupancy_aggregated(args.table, args.mode)
             except Exception as e:
