@@ -12,6 +12,7 @@ Pipeline stages
 - 1 Convert: Read Excel files from `Inputs/<Type>/` (and legacy `Inputs/<Type>/<Year>/`) and write CSVs under `converted_data/`.
   - Deskcount CSVs are written as `YYYY-MM_Deskcount.csv`; Occupancy as `YYYY-MM_Occupancy.csv`.
   - Combine prefers the new `YYYY-MM_*.csv` files; if both old and new exist, only new are used. Clean `converted_data/` if you want a fresh run.
+  - Converter now clears previous files in `converted_data/*` and `combined_data/*.csv` at start to avoid stale outputs.
 - 2 Combine: Merge per-type CSVs into `combined_data/Occupancy.csv` and `combined_data/Deskcount.csv`.
 - 3 Clean Occupancy: Normalize and de‑duplicate occupancy into `cleaned_data/Occupancy_cleaned.csv`.
 - 4 Clean Deskcount: Select and normalize deskcount into `cleaned_data/Deskcount_cleaned.csv`.

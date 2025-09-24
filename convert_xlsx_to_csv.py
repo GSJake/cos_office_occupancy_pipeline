@@ -108,13 +108,28 @@ def convert_xlsx_to_csv():
     # Ensure dependency is present
     _require_openpyxl()
 
-    # Create output directory
+    # Create/clean output directories to avoid mixing stale files
     output_dir = Path("converted_data")
     output_dir.mkdir(exist_ok=True)
+    # Clean previously converted CSVs
+    for sub in ["Deskcount", "Occupancy"]:
+        subdir = output_dir / sub
+        subdir.mkdir(exist_ok=True)
+        for old in subdir.glob("*.csv"):
+            try:
+                old.unlink()
+            except Exception:
+                pass
+    # Also clear combined CSVs so Stage 2 recomputes
+    combined_dir = Path("combined_data")
+    combined_dir.mkdir(exist_ok=True)
+    for old in combined_dir.glob("*.csv"):
+        try:
+            old.unlink()
+        except Exception:
+            pass
     
-    # Create subdirectories for each data type
-    for data_type in ["Occupancy", "Deskcount"]:
-        (output_dir / data_type).mkdir(exist_ok=True)
+    # Create subdirectories for each data type (already ensured above)
     
     inputs_dir = Path("Inputs")
     
