@@ -177,31 +177,20 @@ def create_fact_occupancy():
     
     print(f"Fact table now has {len(fact_table)} rows with complete coverage")
     
-    print("\nStep 4: Adding deskcount data using efficient merge...")
+    print("\nStep 4: Adding deskcount data via forward-fill per location...")
 
-    # --- PERFORMANCE OPTIMIZATION START ---
-    # The original nested loops were very slow. 
-    # pd.merge_asof is the correct, high-performance tool for finding the
-    # last known value for each record.
-
-    # Ensure both DataFrames are sorted by 'by' then 'on' for merge_asof
-    # Pandas requires sorting within each group when using 'by='
-    fact_table = fact_table.sort_values(['office_location', 'date']).reset_index(drop=True)
-    deskcount_data = deskcount_data.sort_values(['office_location', 'date']).reset_index(drop=True)
-
-    # Use merge_asof to efficiently find the last known deskcount for each date and location
-    fact_table = pd.merge_asof(
-        fact_table,
+    # Merge exact dates, then forward-fill last known deskcount within each office across time
+    fact_table = fact_table.merge(
         deskcount_data[['date', 'office_location', 'deskcount']],
-        on='date',
-        by='office_location',
-        direction='backward'  # Finds the last value in deskcount_data on or before the date
+        on=['date', 'office_location'],
+        how='left'
     )
+    fact_table.sort_values(['office_location', 'date'], inplace=True)
+    fact_table['deskcount'] = fact_table.groupby('office_location')['deskcount'].ffill()
 
-    # Debug: report deskcount coverage after merge
+    # Debug: report deskcount coverage after fill
     merged_non_null = fact_table['deskcount'].notna().sum()
-    print(f"Deskcount populated on {merged_non_null:,} of {len(fact_table):,} rows after merge")
-    # --- PERFORMANCE OPTIMIZATION END ---
+    print(f"Deskcount populated on {merged_non_null:,} of {len(fact_table):,} rows after forward-fill")
 
     # Keep missing deskcount as NA (no valid capacity for that date/location)
     fact_table['deskcount'] = fact_table['deskcount'].astype('Int64')
