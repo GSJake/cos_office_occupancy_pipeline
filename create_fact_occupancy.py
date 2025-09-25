@@ -24,13 +24,13 @@ def calculate_hybrid_day_flags(fact_table):
     # Date components
     fact_table['year'] = fact_table['date'].dt.year
     fact_table['month'] = fact_table['date'].dt.month
-    # Use ISO week start (Monday) for grouping
-    fact_table['week_start'] = fact_table['date'].dt.to_period('W-MON').dt.start_time
+    # Use week periods ending on Sunday so start_time is Monday of the week
+    fact_table['week_start'] = fact_table['date'].dt.to_period('W-SUN').dt.start_time
     fact_table['is_weekday_tmp'] = fact_table['date'].dt.dayofweek < 5
 
     # Precompute weekday counts per (ISO week, month) using unique dates only (no office dependency)
     date_df = fact_table[['date']].drop_duplicates().copy()
-    date_df['week_start'] = date_df['date'].dt.to_period('W-MON').dt.start_time
+    date_df['week_start'] = date_df['date'].dt.to_period('W-SUN').dt.start_time
     date_df['month'] = date_df['date'].dt.month
     date_df['dow'] = date_df['date'].dt.dayofweek  # 0=Mon..6=Sun
 
@@ -98,7 +98,7 @@ def calculate_hybrid_day_flags(fact_table):
     # Optional debug for London W27 2025
     if os.getenv('HYBRID_DEBUG_W27', '').lower() in ('1','true','yes'):
         target = pd.Timestamp('2025-06-30')
-        ws = target.to_period('W-MON').start_time
+        ws = target.to_period('W-SUN').start_time
         dbg = date_elig[date_elig['week_start'] == ws][['date','month','dow','weekday_count_in_month_week','eligible_date']].sort_values('date')
         print("[debug] date eligibility for week starting", ws.date())
         print(dbg.to_string(index=False))
