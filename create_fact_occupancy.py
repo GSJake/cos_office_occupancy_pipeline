@@ -188,20 +188,24 @@ def create_fact_occupancy():
     
     print(f"Fact table now has {len(fact_table)} rows with complete coverage")
     
-    print("\nStep 4: Adding deskcount data via forward-fill per location...")
+    print("\nStep 4: Adding deskcount data using efficient merge...")
 
-    # Merge exact dates, then forward-fill last known deskcount within each office across time
-    fact_table = fact_table.merge(
+    # Ensure both dataframes are sorted by by-keys and 'on' column for merge_asof
+    fact_table = fact_table.sort_values(['office_location', 'date'])
+    deskcount_data = deskcount_data.sort_values(['office_location', 'date'])
+
+    # Use merge_asof to efficiently find the last known deskcount for each date and location
+    fact_table = pd.merge_asof(
+        fact_table,
         deskcount_data[['date', 'office_location', 'deskcount']],
-        on=['date', 'office_location'],
-        how='left'
+        on='date',
+        by='office_location',
+        direction='backward'
     )
-    fact_table.sort_values(['office_location', 'date'], inplace=True)
-    fact_table['deskcount'] = fact_table.groupby('office_location')['deskcount'].ffill()
 
-    # Debug: report deskcount coverage after fill
+    # Debug: report deskcount coverage after merge
     merged_non_null = fact_table['deskcount'].notna().sum()
-    print(f"Deskcount populated on {merged_non_null:,} of {len(fact_table):,} rows after forward-fill")
+    print(f"Deskcount populated on {merged_non_null:,} of {len(fact_table):,} rows after merge")
 
     # Keep missing deskcount as NA (no valid capacity for that date/location)
     fact_table['deskcount'] = fact_table['deskcount'].astype('Int64')
