@@ -91,6 +91,11 @@ def calculate_hybrid_day_flags(fact_table):
     ]
     fact_table.loc[sel, 'is_hybrid_day'] = True
 
+    # Hard eligibility guard: never flag a day if its date-level eligibility is False
+    fact_table = fact_table.merge(date_elig[['date', 'eligible_date']], on='date', how='left')
+    fact_table['is_hybrid_day'] = fact_table['is_hybrid_day'] & fact_table['eligible_date'].fillna(False)
+    fact_table.drop(columns=['eligible_date'], inplace=True)
+
     # Drop temporary columns
     fact_table.drop(columns=['week_start', 'is_weekday_tmp'], inplace=True)
 
@@ -101,6 +106,11 @@ def calculate_hybrid_day_flags(fact_table):
         dbg = date_elig[date_elig['week_start'] == ws][['date','month','dow','weekday_count_in_month_week','eligible_date']].sort_values('date')
         print("[debug] date eligibility for week starting", ws.date())
         print(dbg.to_string(index=False))
+        # Show any violations (should be none)
+        viol = fact_table[(fact_table['week_start'] == ws) & fact_table['is_hybrid_day']]
+        if not viol.empty:
+            print("[debug] flagged hybrid rows for that week (post-guard):")
+            print(viol[['date','office_location','attendance_count','is_hybrid_day']].sort_values(['office_location','date']).to_string(index=False))
 
     # Print summary statistics
     total_days = len(fact_table)
