@@ -29,12 +29,12 @@ def calculate_hybrid_day_flags(fact_table):
     fact_table['year'] = fact_table['date'].dt.year
     fact_table['month'] = fact_table['date'].dt.month
     # Use explicit ISO week start (Monday) for grouping to avoid formatter differences
-    fact_table['week_start'] = fact_table['date'].dt.to_period('W-MON').start_time
+    fact_table['week_start'] = fact_table['date'].dt.to_period('W-MON').dt.start_time
     fact_table['is_weekday_tmp'] = fact_table['date'].dt.dayofweek < 5
 
     # Precompute weekday counts per (ISO week, month) using unique dates only (no office dependency)
     date_df = fact_table[['date']].drop_duplicates().copy()
-    date_df['week_start'] = date_df['date'].dt.to_period('W-MON').start_time
+    date_df['week_start'] = date_df['date'].dt.to_period('W-MON').dt.start_time
     date_df['month'] = date_df['date'].dt.month
     date_df['dow'] = date_df['date'].dt.dayofweek  # 0=Mon..6=Sun
 
