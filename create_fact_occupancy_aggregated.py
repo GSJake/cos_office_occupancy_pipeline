@@ -6,6 +6,7 @@ Aggregates attendance across all lines of business, includes 0s for days with no
 calculates occupancy rates, and flags hybrid days.
 """
 
+import os
 import pandas as pd
 from pathlib import Path
 
@@ -27,22 +28,19 @@ def calculate_hybrid_day_flags(fact_table):
     # Date components
     fact_table['year'] = fact_table['date'].dt.year
     fact_table['month'] = fact_table['date'].dt.month
-    iso = fact_table['date'].dt.isocalendar()
-    fact_table['week_of_year'] = iso.week
-    fact_table['week_year'] = iso.year
+    # Use explicit ISO week start (Monday) for grouping to avoid formatter differences
+    fact_table['week_start'] = fact_table['date'].dt.to_period('W-MON').start_time
     fact_table['is_weekday_tmp'] = fact_table['date'].dt.dayofweek < 5
 
     # Precompute weekday counts per (ISO week, month) using unique dates only (no office dependency)
     date_df = fact_table[['date']].drop_duplicates().copy()
-    iso_dates = date_df['date'].dt.isocalendar()
-    date_df['week_year'] = iso_dates.year
-    date_df['week_of_year'] = iso_dates.week
+    date_df['week_start'] = date_df['date'].dt.to_period('W-MON').start_time
     date_df['month'] = date_df['date'].dt.month
     date_df['dow'] = date_df['date'].dt.dayofweek  # 0=Mon..6=Sun
 
     weekday_counts = (
         date_df[date_df['dow'] < 5]
-        .groupby(['week_year', 'week_of_year', 'month'])['date']
+        .groupby(['week_start', 'month'])['date']
         .nunique()
         .reset_index(name='weekday_count_in_month_week')
     )
@@ -50,7 +48,7 @@ def calculate_hybrid_day_flags(fact_table):
     # Derive per-date eligibility (weekday and month contributes >=3 weekdays in that ISO week)
     date_elig = date_df.merge(
         weekday_counts,
-        on=['week_year', 'week_of_year', 'month'],
+        on=['week_start', 'month'],
         how='left'
     )
     date_elig['weekday_count_in_month_week'] = date_elig['weekday_count_in_month_week'].fillna(0).astype(int)
@@ -58,7 +56,7 @@ def calculate_hybrid_day_flags(fact_table):
 
     # Daily totals per (location, iso-week, date) for ranking
     daily_totals = (
-        fact_table.groupby(['office_location', 'week_year', 'week_of_year', 'date'])['attendance_count']
+        fact_table.groupby(['office_location', 'week_start', 'date'])['attendance_count']
         .sum()
         .reset_index(name='daily_total_attendance')
     )
@@ -72,30 +70,37 @@ def calculate_hybrid_day_flags(fact_table):
     # Select top 3 eligible dates per (location, iso-week)
     daily_totals_eligible = daily_totals[daily_totals['eligible']].copy()
     daily_totals_eligible.sort_values(
-        ['office_location', 'week_year', 'week_of_year', 'daily_total_attendance'],
+        ['office_location', 'week_start', 'daily_total_attendance'],
         ascending=[True, True, True, False],
         inplace=True
     )
-    top3 = daily_totals_eligible.groupby(['office_location', 'week_year', 'week_of_year']).head(3)
-    top_keys = set(zip(top3['office_location'], top3['week_year'], top3['week_of_year'], top3['date']))
+    top3 = daily_totals_eligible.groupby(['office_location', 'week_start']).head(3)
+    top_keys = set(zip(top3['office_location'], top3['week_start'], top3['date']))
 
     # Initialize flag False
     fact_table['is_hybrid_day'] = False
 
     # Mark True when date is in top3 set
     sel = [
-        (ol, wy, ww, d) in top_keys
-        for ol, wy, ww, d in zip(
+        (ol, ws, d) in top_keys
+        for ol, ws, d in zip(
             fact_table['office_location'],
-            fact_table['week_year'],
-            fact_table['week_of_year'],
+            fact_table['week_start'],
             fact_table['date'],
         )
     ]
     fact_table.loc[sel, 'is_hybrid_day'] = True
 
     # Drop temporary columns
-    fact_table.drop(columns=['week_of_year', 'week_year', 'is_weekday_tmp'], inplace=True)
+    fact_table.drop(columns=['week_start', 'is_weekday_tmp'], inplace=True)
+
+    # Optional debug for London W27 2025
+    if os.getenv('HYBRID_DEBUG_W27', '').lower() in ('1','true','yes'):
+        target = pd.Timestamp('2025-06-30')
+        ws = target.to_period('W-MON').start_time
+        dbg = date_elig[date_elig['week_start'] == ws][['date','month','dow','weekday_count_in_month_week','eligible_date']].sort_values('date')
+        print("[debug] date eligibility for week starting", ws.date())
+        print(dbg.to_string(index=False))
 
     # Print summary statistics
     total_days = len(fact_table)
@@ -174,10 +179,10 @@ def create_fact_occupancy_aggregated():
     
     print("\nStep 4: Adding deskcount data using efficient merge...")
 
-    # Ensure both DataFrames are globally sorted by 'on' first, then 'by' for merge_asof
-    # Pandas requires the 'on' key to be globally monotonic, not just within groups
-    fact_table = fact_table.sort_values(['date', 'office_location'])
-    deskcount_data = deskcount_data.sort_values(['date', 'office_location'])
+    # Ensure both DataFrames are sorted by 'by' then 'on' for merge_asof
+    # Pandas requires sorting within each group when using 'by='
+    fact_table = fact_table.sort_values(['office_location', 'date']).reset_index(drop=True)
+    deskcount_data = deskcount_data.sort_values(['office_location', 'date']).reset_index(drop=True)
 
     # Use merge_asof to efficiently find the last known deskcount for each date and location
     fact_table = pd.merge_asof(
