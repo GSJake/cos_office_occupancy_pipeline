@@ -67,9 +67,10 @@ def calculate_hybrid_day_flags(fact_table):
     )
     daily_totals['eligible'] = daily_totals['eligible_date'].fillna(False)
 
-    # Select top 3 eligible dates per (location, iso-week)
+    # Select top 3 eligible dates per (location, iso-week). Allow zero-attendance weekdays
+    # so long as they meet the month/week rule.
     daily_totals_eligible = daily_totals[
-        daily_totals['eligible'] & (daily_totals['daily_total_attendance'] > 0)
+        daily_totals['eligible']
     ].copy()
     daily_totals_eligible.sort_values(
         ['office_location', 'week_start', 'daily_total_attendance'],
