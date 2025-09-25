@@ -149,10 +149,17 @@ def create_fact_occupancy_aggregated():
     deskcount_data['date'] = pd.to_datetime(deskcount_data['date'])
     dim_date['date'] = pd.to_datetime(dim_date['date'])
     
-    # Limit scope to dates with valid deskcount snapshots (no forward-fill)
+    # Limit scope to the occupancy data window (capped to end of latest deskcount month)
+    first_occ_date = occupancy_data['logon_date'].min()
+    last_occ_date = occupancy_data['logon_date'].max()
     latest_desk_date = deskcount_data['date'].max()
-    occupancy_data = occupancy_data[occupancy_data['logon_date'] <= latest_desk_date]
-    dim_date = dim_date[dim_date['date'] <= latest_desk_date]
+    if pd.notna(latest_desk_date):
+        coverage_end = min(last_occ_date, (latest_desk_date + pd.offsets.MonthEnd(0)))
+    else:
+        coverage_end = last_occ_date
+
+    occupancy_data = occupancy_data[occupancy_data['logon_date'] <= coverage_end]
+    dim_date = dim_date[(dim_date['date'] >= first_occ_date) & (dim_date['date'] <= coverage_end)]
 
     # Create date_key in occupancy data for joining
     occupancy_data['date_key'] = occupancy_data['logon_date'].dt.strftime('%Y%m%d').astype(int)
@@ -192,8 +199,8 @@ def create_fact_occupancy_aggregated():
     print("\nStep 4: Adding deskcount data using efficient merge...")
 
     # Ensure both dataframes are sorted by by-keys and 'on' column for merge_asof
-    fact_table = fact_table.sort_values(['office_location', 'date'])
-    deskcount_data = deskcount_data.sort_values(['office_location', 'date'])
+    fact_table = fact_table.sort_values(['date', 'office_location'], kind='mergesort').reset_index(drop=True)
+    deskcount_data = deskcount_data.sort_values(['date', 'office_location'], kind='mergesort').reset_index(drop=True)
 
     # Use merge_asof to efficiently find the last known deskcount for each date and location
     fact_table = pd.merge_asof(
