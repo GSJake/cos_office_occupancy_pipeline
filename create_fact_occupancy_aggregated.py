@@ -71,7 +71,7 @@ def calculate_hybrid_day_flags(fact_table):
     daily_totals_eligible = daily_totals[daily_totals['eligible']].copy()
     daily_totals_eligible.sort_values(
         ['office_location', 'week_start', 'daily_total_attendance'],
-        ascending=[True, True, True, False],
+        ascending=[True, True, False],
         inplace=True
     )
     top3 = daily_totals_eligible.groupby(['office_location', 'week_start']).head(3)
