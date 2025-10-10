@@ -15,23 +15,37 @@ def clean_deskcount_data():
     print(f"Original data shape: {df.shape}")
     print(f"Original columns: {df.columns.tolist()}")
     
-    # Step 4a: Keep only the specified columns: office_location, deskcount, date
+    # Step 4a: Filter to only locations marked for inclusion in occupancy calculation
+    print(f"\nStep 4a: Filtering locations based on 'Include in Occupancy Calculation' flag...")
+    print(f"Before filtering: {len(df)} rows")
+
+    # Keep only locations where Include in Occupancy Calculation = "Yes"
+    df_filtered = df[df['Include in Occupancy Calculation'] == 'Yes'].copy()
+
+    print(f"After filtering: {len(df_filtered)} rows")
+    excluded_count = len(df) - len(df_filtered)
+    if excluded_count > 0:
+        print(f"Excluded {excluded_count} rows with 'Include in Occupancy Calculation' = No")
+        excluded_locations = df[df['Include in Occupancy Calculation'] != 'Yes']['OfficeLocation'].unique()
+        print(f"Excluded location(s): {', '.join(excluded_locations)}")
+
+    # Step 4b: Keep only the specified columns: office_location, deskcount, date
     required_columns = [
         'OfficeLocation',     # office_location
-        'Deskcount',          # deskcount  
+        'Deskcount',          # deskcount
         'Date'                # date
     ]
-    
-    print(f"\nStep 4a: Keeping only required columns...")
-    df_clean = df[required_columns].copy()
-    
+
+    print(f"\nStep 4b: Keeping only required columns...")
+    df_clean = df_filtered[required_columns].copy()
+
     # Rename columns to match the target names
     df_clean = df_clean.rename(columns={
         'OfficeLocation': 'office_location',
         'Deskcount': 'deskcount',
         'Date': 'date'
     })
-    
+
     print(f"After column selection: {df_clean.shape}")
     print(f"Final columns: {df_clean.columns.tolist()}")
     

@@ -103,16 +103,50 @@ def create_fact_occupancy():
     # Create date_key in occupancy data for joining
     occupancy_data['date_key'] = occupancy_data['logon_date'].dt.strftime('%Y%m%d').astype(int)
     
-    print("\nStep 1: Creating complete date × location × line_of_business matrix...")
-    
-    # Create complete cartesian product with dimension keys included
-    date_loc_lob = dim_date[['date_key', 'date']].merge(
-        dim_location[['location_key', 'office_location']], how='cross'
-    ).merge(
-        dim_lob[['lob_key', 'line_of_business']], how='cross'
+    print("\nStep 1: Creating date × location × line_of_business matrix...")
+    print("Note: Only including locations that have deskcount data for each time period")
+
+    # Get the date range for each location based on deskcount data availability
+    # A location is only "active" from its first deskcount entry to its last deskcount entry
+    location_date_ranges = deskcount_data.groupby('office_location')['date'].agg(['min', 'max']).reset_index()
+    location_date_ranges.columns = ['office_location', 'first_deskcount_date', 'last_deskcount_date']
+
+    print(f"\nLocation coverage summary:")
+    print(f"Total locations with deskcount data: {len(location_date_ranges)}")
+
+    # Show locations with coverage ending before 2025
+    early_end_locations = location_date_ranges[location_date_ranges['last_deskcount_date'] < '2025-01-01']
+    if len(early_end_locations) > 0:
+        print(f"\nLocations with deskcount ending before 2025:")
+        for _, row in early_end_locations.iterrows():
+            print(f"  {row['office_location']}: {row['first_deskcount_date'].date()} to {row['last_deskcount_date'].date()}")
+
+    # Create date × location combinations, but only for valid date ranges
+    date_loc_valid = dim_date[['date_key', 'date']].merge(
+        location_date_ranges,
+        how='cross'
     )
-    
-    print(f"Created complete matrix with {len(date_loc_lob)} combinations")
+
+    # Filter to only include dates within each location's active range
+    date_loc_valid = date_loc_valid[
+        (date_loc_valid['date'] >= date_loc_valid['first_deskcount_date']) &
+        (date_loc_valid['date'] <= date_loc_valid['last_deskcount_date'])
+    ][['date_key', 'date', 'office_location']]
+
+    # Add location_key by merging with dim_location
+    date_loc_valid = date_loc_valid.merge(
+        dim_location[['location_key', 'office_location']],
+        on='office_location',
+        how='left'
+    )
+
+    # Cross join with line_of_business dimension
+    date_loc_lob = date_loc_valid.merge(
+        dim_lob[['lob_key', 'line_of_business']],
+        how='cross'
+    )
+
+    print(f"Created matrix with {len(date_loc_lob):,} combinations (only active locations)")
     
     print("\nStep 2: Counting actual attendance by date/location/line_of_business...")
     
