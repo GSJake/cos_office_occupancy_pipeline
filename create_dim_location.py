@@ -91,7 +91,7 @@ def create_dim_location():
             spark_session = SparkSession.builder.getOrCreate()
 
         spark_df = spark_session.createDataFrame(dim_location)
-        spark_df.write.mode("overwrite").saveAsTable("dev.jb_off_occ.dim_location")
+        spark_df.write.mode("overwrite").option("overwriteSchema", "true").saveAsTable("dev.jb_off_occ.dim_location")
         print("DimLocation table written to dev.jb_off_occ.dim_location")
     except Exception as e:
         print(f"Warning: Could not write to Databricks table: {e}")

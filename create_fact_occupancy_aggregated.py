@@ -245,7 +245,7 @@ def create_fact_occupancy_aggregated():
             spark_session = SparkSession.builder.getOrCreate()
 
         spark_df = spark_session.createDataFrame(fact_table)
-        spark_df.write.mode("overwrite").saveAsTable("dev.jb_off_occ.fact_occupancy_aggregated")
+        spark_df.write.mode("overwrite").option("overwriteSchema", "true").saveAsTable("dev.jb_off_occ.fact_occupancy_aggregated")
         print("FactOccupancyAggregated table written to dev.jb_off_occ.fact_occupancy_aggregated")
     except Exception as e:
         print(f"Warning: Could not write to Databricks table: {e}")
