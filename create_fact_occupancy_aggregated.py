@@ -9,16 +9,6 @@ calculates occupancy rates, and flags hybrid days.
 import pandas as pd
 from pathlib import Path
 
-def get_spark_session():
-    """Get or create Spark session."""
-    try:
-        from pyspark.sql import SparkSession
-        spark = SparkSession.builder.getOrCreate()
-        return spark
-    except Exception as e:
-        print(f"Warning: Could not get Spark session: {e}")
-        return None
-
 def calculate_hybrid_day_flags(fact_table):
     """
     Calculate hybrid day flags for the fact table.
@@ -245,13 +235,21 @@ def create_fact_occupancy_aggregated():
 
     # Write to Databricks table
     print("\nWriting to Databricks table...")
-    spark = get_spark_session()
-    if spark:
-        spark_df = spark.createDataFrame(fact_table)
+    try:
+        # Try to use global spark session (available in Databricks notebooks)
+        try:
+            spark_session = spark
+        except NameError:
+            # If not available, create one (for scripts)
+            from pyspark.sql import SparkSession
+            spark_session = SparkSession.builder.getOrCreate()
+
+        spark_df = spark_session.createDataFrame(fact_table)
         spark_df.write.mode("overwrite").saveAsTable("dev.jb_off_occ.fact_occupancy_aggregated")
         print("FactOccupancyAggregated table written to dev.jb_off_occ.fact_occupancy_aggregated")
-    else:
-        print("Warning: Spark session not available. Skipping Databricks table write.")
+    except Exception as e:
+        print(f"Warning: Could not write to Databricks table: {e}")
+        print("Local CSV file is still available.")
 
     return fact_table
 
