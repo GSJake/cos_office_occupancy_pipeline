@@ -194,8 +194,11 @@ def main():
     end_step = 9
 
     # Parse command-line arguments if provided
-    if len(sys.argv) > 1:
-        if sys.argv[1] in ['-h', '--help']:
+    # Filter out Databricks-specific arguments (anything starting with --)
+    user_args = [arg for arg in sys.argv[1:] if not arg.startswith('--') or arg in ['--help']]
+
+    if len(user_args) > 0:
+        if user_args[0] in ['-h', '--help']:
             print("""
 Office Occupancy Data Pipeline
 ==============================
@@ -227,20 +230,24 @@ Examples:
             return
 
         try:
-            start_step = int(sys.argv[1])
-            if len(sys.argv) > 2:
-                end_step = int(sys.argv[2])
-        except ValueError:
-            print("Error: Arguments must be integers between 1 and 9")
-            return
+            start_step = int(user_args[0])
+            if len(user_args) > 1:
+                end_step = int(user_args[1])
+        except (ValueError, IndexError) as e:
+            print(f"Error: Arguments must be integers between 1 and 9")
+            print(f"Received arguments: {sys.argv[1:]}")
+            print(f"Using default: running entire pipeline (steps 1-9)")
+            # Continue with defaults instead of returning
+            start_step = 1
+            end_step = 9
 
     # Validate step numbers
     if not (1 <= start_step <= 9) or not (1 <= end_step <= 9):
-        print("Error: Step numbers must be between 1 and 9")
+        print(f"Error: Step numbers must be between 1 and 9 (received: start={start_step}, end={end_step})")
         return
 
     if start_step > end_step:
-        print("Error: Start step must be less than or equal to end step")
+        print(f"Error: Start step must be less than or equal to end step (received: start={start_step}, end={end_step})")
         return
 
     # Run the pipeline
