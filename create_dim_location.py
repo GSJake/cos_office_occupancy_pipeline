@@ -7,6 +7,16 @@ Extract unique office locations and create location dimension table with RSF and
 import pandas as pd
 from pathlib import Path
 
+def get_spark_session():
+    """Get or create Spark session."""
+    try:
+        from pyspark.sql import SparkSession
+        spark = SparkSession.builder.getOrCreate()
+        return spark
+    except Exception as e:
+        print(f"Warning: Could not get Spark session: {e}")
+        return None
+
 def create_dim_location():
     """Create location dimension table from occupancy and deskcount data."""
     
@@ -81,9 +91,13 @@ def create_dim_location():
 
     # Write to Databricks table
     print("\nWriting to Databricks table...")
-    spark_df = spark.createDataFrame(dim_location)
-    spark_df.write.mode("overwrite").saveAsTable("dev.jb_off_occ.dim_location")
-    print("DimLocation table written to dev.jb_off_occ.dim_location")
+    spark = get_spark_session()
+    if spark:
+        spark_df = spark.createDataFrame(dim_location)
+        spark_df.write.mode("overwrite").saveAsTable("dev.jb_off_occ.dim_location")
+        print("DimLocation table written to dev.jb_off_occ.dim_location")
+    else:
+        print("Warning: Spark session not available. Skipping Databricks table write.")
     
     print(f"\nFinal table shape: {dim_location.shape}")
     
