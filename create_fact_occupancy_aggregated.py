@@ -225,15 +225,20 @@ def create_fact_occupancy_aggregated():
     print(f"Days with zero attendance: {len(fact_table[fact_table['attendance_count'] == 0])}")
     print(f"Days with attendance: {len(fact_table[fact_table['attendance_count'] > 0])}")
     
-    # Save the fact table
+    # Save the fact table to local CSV
     output_dir = Path("facts")
     output_dir.mkdir(exist_ok=True)
-    
+
     output_file = output_dir / "FactOccupancyAggregated.csv"
     fact_table.to_csv(output_file, index=False)
-    
-    print(f"\nFactOccupancyAggregated table saved to: {output_file}")
-    
+    print(f"\nLocal CSV saved to: {output_file}")
+
+    # Write to Databricks table
+    print("\nWriting to Databricks table...")
+    spark_df = spark.createDataFrame(fact_table)
+    spark_df.write.mode("overwrite").saveAsTable("dev.jb_off_occ.fact_occupancy_aggregated")
+    print("FactOccupancyAggregated table written to dev.jb_off_occ.fact_occupancy_aggregated")
+
     return fact_table
 
 if __name__ == "__main__":
