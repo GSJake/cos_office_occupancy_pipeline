@@ -213,13 +213,33 @@ def create_fact_occupancy_aggregated():
         print(f"⚠️  Locations missing from DimLocation: {sorted(missing_locs)}")
         print(f"⚠️  Re-run pipeline from stage 6 (create_dim_location) to fix this issue")
     
-    print("\nStep 4: Adding deskcount data using efficient merge...")
+    print("\nStep 4: Filtering to only include office/month combos with deskcount data...")
 
-    # Ensure both dataframes are sorted by by-keys and 'on' column for merge_asof
+    # Create lookup of valid (office_location, year, month) combinations from deskcount
+    # This ensures we only include months where the office was actually operational
+    deskcount_data['year'] = deskcount_data['date'].dt.year
+    deskcount_data['month'] = deskcount_data['date'].dt.month
+    valid_office_months = deskcount_data[['office_location', 'year', 'month']].drop_duplicates()
+
+    print(f"Valid office/month combinations: {len(valid_office_months):,}")
+
+    # Filter fact_table to only include rows with valid office/month combos
+    fact_table = fact_table.merge(
+        valid_office_months,
+        on=['office_location', 'year', 'month'],
+        how='inner'  # Only keep rows that have deskcount for this office/month
+    )
+
+    print(f"After filtering by deskcount availability: {len(fact_table):,} rows")
+
+    # Now add the actual deskcount values using merge_asof
+    print("\nStep 5: Adding deskcount values using efficient merge...")
+
+    # Ensure both dataframes are sorted for merge_asof
     fact_table = fact_table.sort_values(['date', 'office_location'], kind='mergesort').reset_index(drop=True)
     deskcount_data = deskcount_data.sort_values(['date', 'office_location'], kind='mergesort').reset_index(drop=True)
 
-    # Use merge_asof to efficiently find the last known deskcount for each date and location
+    # Use merge_asof to find the deskcount value for each date
     fact_table = pd.merge_asof(
         fact_table,
         deskcount_data[['date', 'office_location', 'deskcount']],
@@ -236,20 +256,20 @@ def create_fact_occupancy_aggregated():
     # Use pandas nullable integer to preserve NA
     fact_table['deskcount'] = fact_table['deskcount'].astype('Int64')
     
-    print("\nStep 5: Calculating occupancy rate...")
-    
+    print("\nStep 6: Calculating occupancy rate...")
+
     # Calculate occupancy rate only where deskcount > 0; leave NA otherwise
     dc = fact_table['deskcount'].astype('Float64')
     fact_table['occupancy_rate'] = (fact_table['attendance_count'] / dc).where(dc > 0)
-    
-    print("\nStep 6: Adding hybrid day flags...")
-    
+
+    print("\nStep 7: Adding hybrid day flags...")
+
     fact_table = calculate_hybrid_day_flags(fact_table)
-    
+
     # Add weekend flag for downstream filtering
     fact_table['is_weekend'] = fact_table['date'].dt.dayofweek >= 5
-    
-    print("\nStep 7: Final column organization...")
+
+    print("\nStep 8: Final column organization...")
     
     # Reorder columns for better readability
     final_columns = [
