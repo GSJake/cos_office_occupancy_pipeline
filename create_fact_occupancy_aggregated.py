@@ -293,10 +293,27 @@ def create_fact_occupancy_aggregated():
     # Save the fact table
     output_dir = Path("facts")
     output_dir.mkdir(exist_ok=True)
-    
+
+    # Convert nullable Int64 types to regular int/float for clean CSV export
+    # This prevents Int64 from being written as "1.0" instead of "1"
+    export_df = fact_table.copy()
+
+    # Convert Int64 nullable integers to regular types for CSV
+    # location_key: keep as float if has nulls, otherwise int
+    if export_df['location_key'].isna().any():
+        export_df['location_key'] = export_df['location_key'].astype('Float64')
+    else:
+        export_df['location_key'] = export_df['location_key'].astype(int)
+
+    # deskcount: keep as float if has nulls, otherwise int
+    if export_df['deskcount'].isna().any():
+        export_df['deskcount'] = export_df['deskcount'].astype('Float64')
+    else:
+        export_df['deskcount'] = export_df['deskcount'].astype(int)
+
     output_file = output_dir / "FactOccupancyAggregated.csv"
-    fact_table.to_csv(output_file, index=False)
-    
+    export_df.to_csv(output_file, index=False)
+
     print(f"\nFactOccupancyAggregated table saved to: {output_file}")
     
     return fact_table
