@@ -193,8 +193,20 @@ def create_fact_occupancy():
     
     # Fill missing attendance with 0
     fact_table['attendance_count'] = fact_table['attendance_count'].fillna(0).astype(int)
-    
+
+    # Ensure location_key and lob_key are integers (not floats)
+    fact_table['location_key'] = fact_table['location_key'].astype('Int64')
+    fact_table['lob_key'] = fact_table['lob_key'].astype('Int64')
+
     print(f"Fact table now has {len(fact_table)} rows with complete coverage")
+
+    # Validate referential integrity
+    missing_location_keys = fact_table['location_key'].isna().sum()
+    if missing_location_keys > 0:
+        print(f"⚠️  WARNING: {missing_location_keys} rows have missing location_key")
+        missing_locs = fact_table[fact_table['location_key'].isna()]['office_location'].unique()
+        print(f"⚠️  Locations missing from DimLocation: {sorted(missing_locs)}")
+        print(f"⚠️  Re-run pipeline from stage 6 (create_dim_location) to fix this issue")
     
     print("\nStep 4: Adding deskcount data using efficient merge...")
 

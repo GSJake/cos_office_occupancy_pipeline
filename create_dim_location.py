@@ -11,21 +11,26 @@ from databricks.sdk.runtime import *
 
 def create_dim_location():
     """Create location dimension table from cleaned occupancy data and RSF from deskcount data."""
-    
+
     print("Creating DimLocation table...")
-    
+
     # Load cleaned occupancy data for unique locations
     print("Loading cleaned occupancy data...")
     df_occupancy = pd.read_csv('cleaned_data/Occupancy_cleaned.csv', low_memory=False)
     print(f"Loaded occupancy data with {len(df_occupancy)} rows")
-    
+
+    # Load cleaned deskcount data for locations that may only appear in deskcount
+    print("Loading cleaned deskcount data for additional locations...")
+    df_deskcount_cleaned = pd.read_csv('cleaned_data/Deskcount_cleaned.csv')
+    print(f"Loaded cleaned deskcount data with {len(df_deskcount_cleaned)} rows")
+
     # Load original deskcount data for RSF information
     print("Loading original deskcount data for RSF...")
     df_deskcount_original = pd.read_csv('combined_data/Deskcount.csv')
     print(f"Loaded original deskcount data with {len(df_deskcount_original)} rows")
-    
-    # Step 6a: Find all unique office_location values from occupancy data
-    print(f"\nStep 6a: Finding unique office_location values...")
+
+    # Step 6a: Find all unique office_location values from BOTH occupancy and deskcount data
+    print(f"\nStep 6a: Finding unique office_location values from both occupancy and deskcount...")
     # Normalize locations in occupancy data
     def _normalize_location(val):
         if pd.isna(val):
@@ -36,10 +41,17 @@ def create_dim_location():
         return s
 
     df_occupancy['office_location'] = df_occupancy['office_location'].map(_normalize_location)
-    unique_locations = df_occupancy['office_location'].dropna().unique()
-    unique_locations = sorted(unique_locations)  # Sort alphabetically for consistency
+    df_deskcount_cleaned['office_location'] = df_deskcount_cleaned['office_location'].map(_normalize_location)
+
+    # Combine unique locations from both sources
+    occupancy_locations = set(df_occupancy['office_location'].dropna().unique())
+    deskcount_locations = set(df_deskcount_cleaned['office_location'].dropna().unique())
+    unique_locations = sorted(occupancy_locations | deskcount_locations)  # Union of both sets, sorted alphabetically
     
     print(f"Found {len(unique_locations)} unique office locations:")
+    print(f"  - From occupancy data: {len(occupancy_locations)}")
+    print(f"  - From deskcount data: {len(deskcount_locations)}")
+    print(f"  - Deskcount-only locations: {sorted(deskcount_locations - occupancy_locations)}")
     for i, location in enumerate(unique_locations[:10]):  # Show first 10
         print(f"  {i+1}. {location}")
     if len(unique_locations) > 10:
