@@ -195,7 +195,9 @@ def create_fact_occupancy_aggregated():
     # Fill missing attendance with 0
     fact_table['attendance_count'] = fact_table['attendance_count'].fillna(0).astype(int)
 
-    # Ensure location_key is integer (not float)
+    # Ensure date_key and location_key are proper integers (not floats)
+    # Use Int64 for location_key to handle NaN values properly
+    fact_table['date_key'] = fact_table['date_key'].astype(int)
     fact_table['location_key'] = fact_table['location_key'].astype('Int64')
 
     print(f"Fact table now has {len(fact_table)} rows with complete coverage")

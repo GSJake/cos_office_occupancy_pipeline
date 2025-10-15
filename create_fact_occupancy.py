@@ -194,9 +194,11 @@ def create_fact_occupancy():
     # Fill missing attendance with 0
     fact_table['attendance_count'] = fact_table['attendance_count'].fillna(0).astype(int)
 
-    # Ensure location_key and lob_key are integers (not floats)
+    # Ensure date_key, location_key and lob_key are proper integers (not floats)
+    # Use Int64 for keys that might have NaN values
+    fact_table['date_key'] = fact_table['date_key'].astype(int)
     fact_table['location_key'] = fact_table['location_key'].astype('Int64')
-    fact_table['lob_key'] = fact_table['lob_key'].astype('Int64')
+    fact_table['lob_key'] = fact_table['lob_key'].astype(int)
 
     print(f"Fact table now has {len(fact_table)} rows with complete coverage")
 
