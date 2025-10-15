@@ -171,11 +171,12 @@ def publish_fact_occupancy_aggregated(table: str, mode: str = "overwrite") -> No
         raise FileNotFoundError(f"CSV not found: {csv_path}. Run the pipeline first (stages 1-9).")
 
     # Read CSV as strings to normalize/parse ourselves
-    string_schema = T.StructType([T.StructField(c, T.StringType(), True) for c in CANONICAL_COLUMNS])
+    # Use inferSchema to read actual CSV columns by name (not position)
+    # This handles cases where CSV may be missing columns like is_weekend
     raw = (
         spark.read
              .option("header", True)
-             .schema(string_schema)
+             .option("inferSchema", False)  # Keep all as strings for custom parsing
              .csv(_abs_file_uri(csv_path))
     )
 
