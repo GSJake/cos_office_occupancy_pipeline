@@ -1,0 +1,58 @@
+office_location,rows,mean_occupancy_rate,merge_issues,over_capacity_days
+Mohali,2440,0.1826,0,325
+Houston,2200,0.1665,0,75
+West Palm Beach,1704,0.1131,0,63
+Greenwood Village,2440,0.0704,0,38
+San Antonio,2440,0.069,0,29
+Brentwood,2440,0.0346,0,20
+Dublin,1956,0.0846,0,17
+San Jose,2440,0.0481,0,16
+Albuquerque,2440,0.0585,0,8
+Charlotte,2440,0.0705,0,7
+Austin,2440,0.0966,0,6
+Raleigh,2440,0.0387,0,5
+Atlanta,2440,0.0646,0,5
+Roseville,2440,0.0319,0,4
+Las Vegas,2440,0.0351,0,4
+Escondido,2440,0.036,0,3
+Frankfurt,2440,0.0517,0,3
+Orlando,2440,0.052,0,2
+Philadelphia,1956,0.0868,0,2
+Spokane,1224,0.0205,0,1
+Nashville,1464,0.0535,0,1
+Dallas - Parkland,4,0.0,0,0
+Eugene,2440,0.0,0,0
+Ontario,1828,0.0096,0,0
+Santiago,1224,0.0115,0,0
+Seattle,1948,0.0167,0,0
+Bloomington,732,0.0211,0,0
+San Francisco,2440,0.0227,0,0
+Seoul,4,0.0278,0,0
+Lynnwood,2440,0.0296,0,0
+Baltimore,2440,0.0297,0,0
+Singapore,2440,0.0315,0,0
+Memphis,2440,0.0324,0,0
+Tampa,2440,0.0353,0,0
+Solana Beach,2440,0.0359,0,0
+Chicago,2440,0.0388,0,0
+Portland,2440,0.0402,0,0
+Dallas - Cypress Waters,852,0.0412,0,0
+Dallas - Irving,1344,0.0441,0,0
+Los Angeles,1956,0.0449,0,0
+Phoenix,2440,0.0469,0,0
+Melbourne,2440,0.0478,0,0
+Boston,2440,0.0482,0,0
+The Hague,2440,0.0496,0,0
+Madrid,2440,0.0555,0,0
+Paris,2440,0.057,0,0
+Newport Beach,2440,0.0581,0,0
+Shanghai,1712,0.0603,0,0
+Tokyo,2440,0.0629,0,0
+Sydney,2440,0.0635,0,0
+Fort Lauderdale,2440,0.0658,0,0
+Dallas - Southlake,740,0.0665,0,0
+Charleston,2440,0.0752,0,0
+Dallas - In-Town,2072,0.0787,0,0
+Arlington,2440,0.0845,0,0
+London,2440,0.0855,0,0
+New York,2440,0.0909,0,0

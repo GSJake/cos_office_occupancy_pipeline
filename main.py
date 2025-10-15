@@ -19,11 +19,56 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
+from typing import Optional
+import builtins
 
-import run_pipeline
-import validation_report
-import publish_to_delta
+# -----------------------------------------------------------------------------
+# Databricks runtime utilities (dbutils) are optional when running locally.
+# This import does NOT define a SparkSession by itself.
+# -----------------------------------------------------------------------------
+try:
+    from databricks.sdk.runtime import *  # noqa: F401,F403
+except Exception:
+    # Running outside of Databricks; ignore.
+    pass
 
+# -----------------------------------------------------------------------------
+# Spark bootstrap
+# -----------------------------------------------------------------------------
+try:
+    from pyspark.sql import SparkSession
+except Exception:
+    SparkSession = None  # type: ignore[assignment]
+
+
+def ensure_spark() -> Optional["SparkSession"]:
+    """Ensure there's a usable SparkSession and expose it as global name `spark`.
+
+    This mimics Databricks notebook behavior so step modules that reference
+    a bare `spark` symbol continue to work when run as a Python job/file.
+    """
+    if SparkSession is None:  # pyspark not installed / not available
+        print("[spark] pyspark not available; continuing without Spark.")
+        return None
+
+    spark = SparkSession.getActiveSession()
+    if spark is None:
+        print("[spark] Creating SparkSession...")
+        spark = (
+            SparkSession.builder
+            .appName("cos_office_occupancy")
+            .enableHiveSupport()  # safe for UC/HMS, required for saveAsTable
+            .getOrCreate()
+        )
+    # Make unqualified name `spark` available to all imported modules
+    builtins.spark = spark  # type: ignore[attr-defined]
+    print("[spark] SparkSession is ready.")
+    return spark
+
+
+# -----------------------------------------------------------------------------
+# CLI parsing
+# -----------------------------------------------------------------------------
 
 def parse_args(argv):
     parser = argparse.ArgumentParser(description="Central runner for COS Office Occupancy")
@@ -37,7 +82,7 @@ def parse_args(argv):
     p_run.add_argument('--skip', dest='skip', type=int, nargs='+', default=[])
     p_run.add_argument('--dry-run', action='store_true')
     p_run.add_argument('--table', default='dev.jb_off_occ.fact_occupancy_aggregated')
-    p_run.add_argument('--mode', default='overwrite', choices=['overwrite','append'])
+    p_run.add_argument('--mode', default='overwrite', choices=['overwrite', 'append'])
     p_run.add_argument('--no-publish', action='store_true', help='Do not publish to Delta at the end')
 
     # validate subcommand
@@ -53,13 +98,13 @@ def parse_args(argv):
     p_all.add_argument('--dry-run', action='store_true')
     p_all.add_argument('--out', default='reports')
     p_all.add_argument('--table', default='dev.jb_off_occ.fact_occupancy_aggregated')
-    p_all.add_argument('--mode', default='overwrite', choices=['overwrite','append'])
+    p_all.add_argument('--mode', default='overwrite', choices=['overwrite', 'append'])
     p_all.add_argument('--no-publish', action='store_true', help='Do not publish to Delta at the end')
 
     # publish subcommand
     p_pub = sub.add_parser('publish', help='Publish to Delta (aggregated)')
     p_pub.add_argument('--table', default='dev.jb_off_occ.fact_occupancy_aggregated')
-    p_pub.add_argument('--mode', default='overwrite', choices=['overwrite','append'])
+    p_pub.add_argument('--mode', default='overwrite', choices=['overwrite', 'append'])
 
     # In Databricks/IPython, extra args like '-f <json>' are injected.
     # Use parse_known_args to ignore unknowns and default to 'all'.
@@ -67,12 +112,26 @@ def parse_args(argv):
     return args
 
 
+# -----------------------------------------------------------------------------
+# Main
+# -----------------------------------------------------------------------------
+
 def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
+
+    # Make `spark` available BEFORE importing step modules that may rely on it at import time
+    ensure_spark()
+
+    # Defer these imports until after ensure_spark() so module import-time code
+    # can access the global `spark` if they expect notebook-style globals.
+    import run_pipeline  # noqa: WPS433
+    import validation_report  # noqa: WPS433
+    import publish_to_delta  # noqa: WPS433
+
     # Databricks/IPython may inject args (e.g., -f <json>) when running a file.
-    # If no known subcommand is present, default to running the full pipeline (+ validation).
-    known_cmds = {'run', 'validate', 'all'}
+    # If no known subcommand is present, default to running the full pipeline (+ validation + publish).
+    known_cmds = {'run', 'validate', 'all', 'publish'}
     if not any(tok in known_cmds for tok in argv):
         rc = run_pipeline.main([])
         if rc != 0:
@@ -84,6 +143,7 @@ def main(argv=None):
         except Exception as e:
             print(f"[publish] Skipped or failed: {e}")
         return 0
+
     args = parse_args(argv)
 
     # Default to 'all' if no subcommand

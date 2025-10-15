@@ -7,6 +7,7 @@ Extract unique office locations and create location dimension table with RSF dat
 import pandas as pd
 import re
 from pathlib import Path
+from databricks.sdk.runtime import *
 
 def create_dim_location():
     """Create location dimension table from cleaned occupancy data and RSF from deskcount data."""

@@ -1,0 +1,635 @@
+date,office_location,line_of_business,attendance_count,deskcount,occupancy_rate
+2024-06-06,Albuquerque,Property Management,11,10,1.1
+2024-07-17,Albuquerque,Property Management,11,10,1.1
+2024-08-27,Albuquerque,Property Management,11,10,1.1
+2025-01-13,Albuquerque,Property Management,11,10,1.1
+2025-08-05,Albuquerque,Property Management,11,10,1.1
+2025-08-19,Albuquerque,Property Management,11,10,1.1
+2025-08-20,Albuquerque,Property Management,12,10,1.2
+2025-08-28,Albuquerque,Property Management,12,10,1.2
+2024-06-12,Atlanta,Property Management,65,58,1.1206896551724137
+2024-07-18,Atlanta,Property Management,59,58,1.0172413793103448
+2025-06-05,Atlanta,Property Management,59,58,1.0172413793103448
+2025-07-17,Atlanta,Property Management,78,58,1.3448275862068966
+2025-08-07,Atlanta,Property Management,65,58,1.1206896551724137
+2024-07-25,Austin,Property Management,53,51,1.03921568627451
+2024-08-23,Austin,Property Management,57,51,1.1176470588235294
+2024-09-11,Austin,Property Management,52,51,1.0196078431372548
+2025-02-17,Austin,Property Management,55,51,1.0784313725490196
+2025-08-08,Austin,Property Management,61,51,1.196078431372549
+2025-08-14,Austin,Property Management,55,51,1.0784313725490196
+2024-04-08,Brentwood,Property Management,13,12,1.0833333333333333
+2024-05-06,Brentwood,Property Management,13,12,1.0833333333333333
+2024-06-03,Brentwood,Property Management,13,12,1.0833333333333333
+2024-08-12,Brentwood,Property Management,13,12,1.0833333333333333
+2024-08-26,Brentwood,Property Management,14,12,1.1666666666666667
+2024-09-09,Brentwood,Property Management,13,12,1.0833333333333333
+2024-10-21,Brentwood,Property Management,15,12,1.25
+2024-10-31,Brentwood,Property Management,13,12,1.0833333333333333
+2024-11-18,Brentwood,Property Management,13,12,1.0833333333333333
+2024-12-09,Brentwood,Property Management,21,12,1.75
+2025-06-02,Brentwood,Property Management,16,12,1.3333333333333333
+2025-06-16,Brentwood,Property Management,13,12,1.0833333333333333
+2025-06-18,Brentwood,Property Management,27,12,2.25
+2025-06-30,Brentwood,Property Management,15,12,1.25
+2025-07-14,Brentwood,Property Management,16,12,1.3333333333333333
+2025-07-21,Brentwood,Property Management,30,12,2.5
+2025-07-22,Brentwood,Property Management,22,12,1.8333333333333333
+2025-07-28,Brentwood,Property Management,16,12,1.3333333333333333
+2025-08-11,Brentwood,Property Management,14,12,1.1666666666666667
+2025-08-28,Brentwood,Property Management,13,12,1.0833333333333333
+2024-06-25,Charlotte,Property Management,63,47,1.3404255319148937
+2024-07-30,Charlotte,Property Management,60,47,1.2765957446808511
+2024-07-31,Charlotte,Property Management,64,47,1.3617021276595744
+2024-08-01,Charlotte,Property Management,56,47,1.1914893617021276
+2024-08-06,Charlotte,Property Management,56,47,1.1914893617021276
+2024-08-27,Charlotte,Property Management,56,47,1.1914893617021276
+2025-06-11,Charlotte,Property Management,84,47,1.7872340425531914
+2024-05-08,Dublin,Investment Management,10,8,1.25
+2024-06-12,Dublin,Investment Management,10,8,1.25
+2024-07-10,Dublin,Investment Management,11,8,1.375
+2024-07-18,Dublin,Investment Management,10,8,1.25
+2024-07-19,Dublin,Investment Management,12,8,1.5
+2024-07-22,Dublin,Investment Management,12,8,1.5
+2024-08-07,Dublin,Investment Management,9,8,1.125
+2024-08-19,Dublin,Investment Management,9,8,1.125
+2025-04-02,Dublin,Investment Management,9,8,1.125
+2025-06-16,Dublin,Investment Management,9,8,1.125
+2025-07-17,Dublin,Investment Management,10,8,1.25
+2025-07-21,Dublin,Investment Management,9,8,1.125
+2025-07-23,Dublin,Investment Management,9,8,1.125
+2025-08-06,Dublin,Investment Management,9,8,1.125
+2025-08-20,Dublin,Investment Management,10,8,1.25
+2025-08-21,Dublin,Investment Management,10,8,1.25
+2025-08-22,Dublin,Investment Management,10,8,1.25
+2025-07-10,Escondido,Property Management,45,18,2.5
+2025-07-24,Escondido,Property Management,22,18,1.2222222222222223
+2025-08-07,Escondido,Property Management,29,18,1.6111111111111112
+2025-03-26,Frankfurt,Investment Management,22,20,1.1
+2025-06-04,Frankfurt,Investment Management,21,20,1.05
+2025-06-05,Frankfurt,Investment Management,21,20,1.05
+2024-01-08,Greenwood Village,Property Management,44,37,1.1891891891891893
+2024-01-22,Greenwood Village,Property Management,55,37,1.4864864864864864
+2024-01-29,Greenwood Village,Property Management,49,37,1.3243243243243243
+2024-03-04,Greenwood Village,Property Management,50,37,1.351351351351351
+2024-03-11,Greenwood Village,Property Management,52,37,1.4054054054054057
+2024-03-18,Greenwood Village,Property Management,46,37,1.2432432432432432
+2024-03-25,Greenwood Village,Property Management,39,37,1.054054054054054
+2024-04-01,Greenwood Village,Property Management,51,37,1.3783783783783785
+2024-04-15,Greenwood Village,Property Management,52,37,1.4054054054054057
+2024-04-22,Greenwood Village,Property Management,51,37,1.3783783783783785
+2024-07-15,Greenwood Village,Property Management,54,37,1.4594594594594594
+2024-07-22,Greenwood Village,Property Management,56,37,1.5135135135135136
+2024-07-29,Greenwood Village,Property Management,38,37,1.027027027027027
+2024-08-05,Greenwood Village,Property Management,45,37,1.2162162162162162
+2024-08-12,Greenwood Village,Property Management,49,37,1.3243243243243243
+2024-08-19,Greenwood Village,Property Management,42,37,1.135135135135135
+2024-08-26,Greenwood Village,Property Management,48,37,1.2972972972972974
+2025-04-07,Greenwood Village,Property Management,48,37,1.2972972972972974
+2025-04-14,Greenwood Village,Property Management,59,37,1.5945945945945943
+2025-04-21,Greenwood Village,Property Management,44,37,1.1891891891891893
+2025-05-05,Greenwood Village,Property Management,47,37,1.2702702702702702
+2025-05-12,Greenwood Village,Property Management,47,37,1.2702702702702702
+2025-05-19,Greenwood Village,Property Management,40,37,1.0810810810810811
+2025-05-29,Greenwood Village,Property Management,39,37,1.054054054054054
+2025-06-02,Greenwood Village,Property Management,49,37,1.3243243243243243
+2025-06-09,Greenwood Village,Property Management,48,37,1.2972972972972974
+2025-06-16,Greenwood Village,Property Management,59,37,1.5945945945945943
+2025-06-23,Greenwood Village,Property Management,55,37,1.4864864864864864
+2025-06-30,Greenwood Village,Property Management,44,37,1.1891891891891893
+2025-07-07,Greenwood Village,Property Management,39,37,1.054054054054054
+2025-07-14,Greenwood Village,Property Management,50,37,1.351351351351351
+2025-07-21,Greenwood Village,Property Management,55,37,1.4864864864864864
+2025-07-28,Greenwood Village,Property Management,45,37,1.2162162162162162
+2025-08-06,Greenwood Village,Property Management,38,37,1.027027027027027
+2025-08-11,Greenwood Village,Property Management,52,37,1.4054054054054057
+2025-08-15,Greenwood Village,Property Management,39,37,1.054054054054054
+2025-08-18,Greenwood Village,Property Management,52,37,1.4054054054054057
+2025-08-25,Greenwood Village,Property Management,66,37,1.7837837837837838
+2024-03-18,Houston,Property Management,63,56,1.125
+2024-03-25,Houston,Property Management,57,56,1.0178571428571428
+2024-04-03,Houston,Property Management,63,56,1.125
+2024-04-09,Houston,Property Management,63,56,1.125
+2024-04-11,Houston,Property Management,62,56,1.1071428571428572
+2024-04-19,Houston,Property Management,59,56,1.0535714285714286
+2024-04-22,Houston,Property Management,59,56,1.0535714285714286
+2024-06-03,Houston,Property Management,68,56,1.2142857142857142
+2024-06-24,Houston,Property Management,64,56,1.1428571428571428
+2024-07-01,Houston,Property Management,90,56,1.6071428571428572
+2024-07-22,Houston,Property Management,57,56,1.0178571428571428
+2024-07-23,Houston,Property Management,75,56,1.3392857142857142
+2024-07-24,Houston,Property Management,68,56,1.2142857142857142
+2024-07-29,Houston,Property Management,75,56,1.3392857142857142
+2024-08-05,Houston,Property Management,67,56,1.1964285714285714
+2024-08-12,Houston,Property Management,59,56,1.0535714285714286
+2024-08-14,Houston,Property Management,58,56,1.0357142857142858
+2024-08-19,Houston,Property Management,89,56,1.5892857142857142
+2024-08-20,Houston,Property Management,64,56,1.1428571428571428
+2024-08-23,Houston,Property Management,64,56,1.1428571428571428
+2024-08-26,Houston,Property Management,66,56,1.1785714285714286
+2024-08-27,Houston,Property Management,76,56,1.3571428571428572
+2024-08-28,Houston,Property Management,74,56,1.3214285714285714
+2024-09-06,Houston,Property Management,60,56,1.0714285714285714
+2024-09-09,Houston,Property Management,75,56,1.3392857142857142
+2024-09-10,Houston,Property Management,77,56,1.375
+2024-09-11,Houston,Property Management,90,56,1.6071428571428572
+2024-09-16,Houston,Property Management,70,56,1.25
+2024-09-23,Houston,Property Management,64,56,1.1428571428571428
+2024-09-24,Houston,Property Management,64,56,1.1428571428571428
+2024-09-25,Houston,Property Management,59,56,1.0535714285714286
+2024-09-30,Houston,Property Management,71,56,1.2678571428571428
+2024-10-09,Houston,Property Management,63,56,1.125
+2024-10-14,Houston,Property Management,64,56,1.1428571428571428
+2024-10-21,Houston,Property Management,79,56,1.4107142857142858
+2024-10-22,Houston,Property Management,74,56,1.3214285714285714
+2024-10-23,Houston,Property Management,67,56,1.1964285714285714
+2024-10-28,Houston,Property Management,58,56,1.0357142857142858
+2024-11-04,Houston,Property Management,73,56,1.3035714285714286
+2024-11-11,Houston,Property Management,60,56,1.0714285714285714
+2024-11-12,Houston,Property Management,59,56,1.0535714285714286
+2024-11-20,Houston,Property Management,62,56,1.1071428571428572
+2024-12-02,Houston,Property Management,63,56,1.125
+2024-12-04,Houston,Property Management,60,56,1.0714285714285714
+2024-12-09,Houston,Property Management,59,56,1.0535714285714286
+2025-01-06,Houston,Property Management,63,56,1.125
+2025-01-13,Houston,Property Management,62,56,1.1071428571428572
+2025-01-16,Houston,Property Management,68,56,1.2142857142857142
+2025-02-03,Houston,Property Management,58,56,1.0357142857142858
+2025-02-10,Houston,Property Management,60,56,1.0714285714285714
+2025-04-02,Houston,Property Management,84,56,1.5
+2025-04-07,Houston,Property Management,58,56,1.0357142857142858
+2025-04-14,Houston,Property Management,58,56,1.0357142857142858
+2025-04-28,Houston,Property Management,60,56,1.0714285714285714
+2025-05-05,Houston,Property Management,57,56,1.0178571428571428
+2025-05-12,Houston,Property Management,57,56,1.0178571428571428
+2025-05-20,Houston,Property Management,78,56,1.3928571428571428
+2025-05-21,Houston,Property Management,84,56,1.5
+2025-06-11,Houston,Property Management,62,56,1.1071428571428572
+2025-06-16,Houston,Property Management,62,56,1.1071428571428572
+2025-06-17,Houston,Property Management,58,56,1.0357142857142858
+2025-06-19,Houston,Property Management,77,56,1.375
+2025-06-23,Houston,Property Management,57,56,1.0178571428571428
+2025-06-30,Houston,Property Management,57,56,1.0178571428571428
+2025-07-08,Houston,Property Management,72,56,1.2857142857142858
+2025-07-09,Houston,Property Management,62,56,1.1071428571428572
+2025-07-14,Houston,Property Management,59,56,1.0535714285714286
+2025-07-15,Houston,Property Management,76,56,1.3571428571428572
+2025-07-28,Houston,Property Management,57,56,1.0178571428571428
+2025-07-30,Houston,Property Management,67,56,1.1964285714285714
+2025-08-14,Houston,Property Management,63,56,1.125
+2025-08-18,Houston,Property Management,61,56,1.0892857142857142
+2025-08-19,Houston,Property Management,60,56,1.0714285714285714
+2025-08-25,Houston,Property Management,61,56,1.0892857142857142
+2025-08-27,Houston,Property Management,67,56,1.1964285714285714
+2024-07-17,Las Vegas,Property Management,13,12,1.0833333333333333
+2024-08-13,Las Vegas,Property Management,15,12,1.25
+2025-06-23,Las Vegas,Property Management,16,12,1.3333333333333333
+2025-07-09,Las Vegas,Property Management,16,12,1.3333333333333333
+2024-01-02,Mohali,Corporate,368,309,1.190938511326861
+2024-01-03,Mohali,Corporate,391,309,1.2653721682847896
+2024-01-04,Mohali,Corporate,388,309,1.255663430420712
+2024-01-05,Mohali,Corporate,376,309,1.2168284789644013
+2024-01-08,Mohali,Corporate,400,309,1.2944983818770226
+2024-01-09,Mohali,Corporate,406,309,1.313915857605178
+2024-01-10,Mohali,Corporate,405,309,1.3106796116504855
+2024-01-11,Mohali,Corporate,394,309,1.2750809061488673
+2024-01-12,Mohali,Corporate,369,309,1.194174757281553
+2024-01-15,Mohali,Corporate,361,309,1.168284789644013
+2024-01-16,Mohali,Corporate,392,309,1.2686084142394822
+2024-01-17,Mohali,Corporate,404,309,1.307443365695793
+2024-01-18,Mohali,Corporate,399,309,1.2912621359223302
+2024-01-19,Mohali,Corporate,382,309,1.2362459546925566
+2024-01-22,Mohali,Corporate,403,309,1.3042071197411005
+2024-01-23,Mohali,Corporate,397,309,1.284789644012945
+2024-01-24,Mohali,Corporate,392,309,1.2686084142394822
+2024-01-25,Mohali,Corporate,360,309,1.1650485436893203
+2024-01-29,Mohali,Corporate,403,309,1.3042071197411005
+2024-01-30,Mohali,Corporate,402,309,1.300970873786408
+2024-01-31,Mohali,Corporate,398,309,1.2880258899676376
+2024-03-01,Mohali,Corporate,380,309,1.2297734627831716
+2024-03-04,Mohali,Corporate,414,309,1.3398058252427183
+2024-03-05,Mohali,Corporate,423,309,1.3689320388349515
+2024-03-06,Mohali,Corporate,408,309,1.3203883495145632
+2024-03-07,Mohali,Corporate,412,309,1.3333333333333333
+2024-03-08,Mohali,Corporate,372,309,1.203883495145631
+2024-03-11,Mohali,Corporate,405,309,1.3106796116504855
+2024-03-12,Mohali,Corporate,431,309,1.394822006472492
+2024-03-13,Mohali,Corporate,430,309,1.3915857605177993
+2024-03-14,Mohali,Corporate,429,309,1.3883495145631068
+2024-03-15,Mohali,Corporate,405,309,1.3106796116504855
+2024-03-18,Mohali,Corporate,427,309,1.3818770226537216
+2024-03-19,Mohali,Corporate,441,309,1.4271844660194175
+2024-03-20,Mohali,Corporate,430,309,1.3915857605177993
+2024-03-21,Mohali,Corporate,421,309,1.3624595469255665
+2024-03-22,Mohali,Corporate,401,309,1.2977346278317152
+2024-03-26,Mohali,Corporate,403,309,1.3042071197411005
+2024-03-27,Mohali,Corporate,418,309,1.3527508090614886
+2024-03-28,Mohali,Corporate,414,309,1.3398058252427183
+2024-03-29,Mohali,Corporate,377,309,1.220064724919094
+2024-04-01,Mohali,Corporate,438,309,1.4174757281553398
+2024-04-02,Mohali,Corporate,449,309,1.453074433656958
+2024-04-03,Mohali,Corporate,460,309,1.488673139158576
+2024-04-04,Mohali,Corporate,449,309,1.453074433656958
+2024-04-05,Mohali,Corporate,431,309,1.394822006472492
+2024-04-08,Mohali,Corporate,442,309,1.43042071197411
+2024-04-09,Mohali,Corporate,450,309,1.4563106796116505
+2024-04-10,Mohali,Corporate,449,309,1.453074433656958
+2024-04-12,Mohali,Corporate,380,309,1.2297734627831716
+2024-04-15,Mohali,Corporate,445,309,1.4401294498381878
+2024-04-16,Mohali,Corporate,465,309,1.5048543689320388
+2024-04-18,Mohali,Corporate,445,309,1.4401294498381878
+2024-04-19,Mohali,Corporate,429,309,1.3883495145631068
+2024-04-22,Mohali,Corporate,442,309,1.43042071197411
+2024-04-23,Mohali,Corporate,455,309,1.4724919093851132
+2024-04-24,Mohali,Corporate,467,309,1.511326860841424
+2024-04-25,Mohali,Corporate,453,309,1.4660194174757282
+2024-04-26,Mohali,Corporate,423,309,1.3689320388349515
+2024-04-29,Mohali,Corporate,452,309,1.4627831715210355
+2024-04-30,Mohali,Corporate,462,309,1.4951456310679612
+2024-05-01,Mohali,Corporate,452,424,1.0660377358490567
+2024-05-02,Mohali,Corporate,463,424,1.0919811320754718
+2024-05-06,Mohali,Corporate,439,424,1.035377358490566
+2024-05-07,Mohali,Corporate,456,424,1.0754716981132075
+2024-05-08,Mohali,Corporate,462,424,1.089622641509434
+2024-05-09,Mohali,Corporate,444,424,1.0471698113207548
+2024-05-13,Mohali,Corporate,456,424,1.0754716981132075
+2024-05-14,Mohali,Corporate,479,424,1.1297169811320755
+2024-05-15,Mohali,Corporate,493,424,1.1627358490566038
+2024-05-16,Mohali,Corporate,486,424,1.1462264150943395
+2024-05-17,Mohali,Corporate,448,424,1.0566037735849056
+2024-05-20,Mohali,Corporate,475,424,1.1202830188679245
+2024-05-21,Mohali,Corporate,487,424,1.1485849056603774
+2024-05-22,Mohali,Corporate,493,424,1.1627358490566038
+2024-05-23,Mohali,Corporate,482,424,1.1367924528301887
+2024-05-24,Mohali,Corporate,451,424,1.0636792452830188
+2024-05-28,Mohali,Corporate,501,424,1.1816037735849056
+2024-05-29,Mohali,Corporate,493,424,1.1627358490566038
+2024-05-30,Mohali,Corporate,493,424,1.1627358490566038
+2024-05-31,Mohali,Corporate,456,424,1.0754716981132075
+2024-06-03,Mohali,Corporate,464,424,1.0943396226415094
+2024-06-04,Mohali,Corporate,487,424,1.1485849056603774
+2024-06-05,Mohali,Corporate,494,424,1.1650943396226414
+2024-06-06,Mohali,Corporate,476,424,1.1226415094339623
+2024-06-07,Mohali,Corporate,444,424,1.0471698113207548
+2024-06-10,Mohali,Corporate,456,424,1.0754716981132075
+2024-06-11,Mohali,Corporate,475,424,1.1202830188679245
+2024-06-12,Mohali,Corporate,489,424,1.153301886792453
+2024-06-13,Mohali,Corporate,477,424,1.125
+2024-06-14,Mohali,Corporate,440,424,1.0377358490566038
+2024-06-17,Mohali,Corporate,453,424,1.0683962264150944
+2024-06-18,Mohali,Corporate,474,424,1.1179245283018868
+2024-06-19,Mohali,Corporate,497,424,1.1721698113207548
+2024-06-20,Mohali,Corporate,478,424,1.1273584905660377
+2024-06-21,Mohali,Corporate,457,424,1.0778301886792452
+2024-06-24,Mohali,Corporate,478,424,1.1273584905660377
+2024-06-25,Mohali,Corporate,503,424,1.1863207547169812
+2024-06-26,Mohali,Corporate,504,424,1.1886792452830188
+2024-06-27,Mohali,Corporate,501,424,1.1816037735849056
+2024-07-01,Mohali,Corporate,502,424,1.1839622641509433
+2024-07-02,Mohali,Corporate,517,424,1.2193396226415094
+2024-07-03,Mohali,Corporate,509,424,1.2004716981132075
+2024-07-08,Mohali,Corporate,460,424,1.0849056603773586
+2024-07-09,Mohali,Corporate,499,424,1.17688679245283
+2024-07-10,Mohali,Corporate,508,424,1.19811320754717
+2024-07-11,Mohali,Corporate,494,424,1.1650943396226414
+2024-07-12,Mohali,Corporate,461,424,1.0872641509433962
+2024-07-15,Mohali,Corporate,477,424,1.125
+2024-07-16,Mohali,Corporate,512,424,1.2075471698113207
+2024-07-17,Mohali,Corporate,517,424,1.2193396226415094
+2024-07-18,Mohali,Corporate,512,424,1.2075471698113207
+2024-07-19,Mohali,Corporate,479,424,1.1297169811320755
+2024-07-22,Mohali,Corporate,502,424,1.1839622641509433
+2024-07-23,Mohali,Corporate,519,424,1.224056603773585
+2024-07-24,Mohali,Corporate,527,424,1.2429245283018868
+2024-07-25,Mohali,Corporate,481,424,1.134433962264151
+2024-07-26,Mohali,Corporate,453,424,1.0683962264150944
+2024-07-29,Mohali,Corporate,508,424,1.19811320754717
+2024-07-30,Mohali,Corporate,531,424,1.2523584905660377
+2024-07-31,Mohali,Corporate,496,424,1.169811320754717
+2024-08-01,Mohali,Corporate,488,424,1.150943396226415
+2024-08-02,Mohali,Corporate,488,424,1.150943396226415
+2024-08-05,Mohali,Corporate,505,424,1.1910377358490567
+2024-08-06,Mohali,Corporate,519,424,1.224056603773585
+2024-08-07,Mohali,Corporate,514,424,1.2122641509433962
+2024-08-08,Mohali,Corporate,519,424,1.224056603773585
+2024-08-09,Mohali,Corporate,512,424,1.2075471698113207
+2024-08-12,Mohali,Corporate,498,424,1.1745283018867925
+2024-08-13,Mohali,Corporate,520,424,1.2264150943396226
+2024-08-14,Mohali,Corporate,516,424,1.2169811320754718
+2024-08-20,Mohali,Corporate,493,424,1.1627358490566038
+2024-08-21,Mohali,Corporate,519,424,1.224056603773585
+2024-08-22,Mohali,Corporate,514,424,1.2122641509433962
+2024-08-23,Mohali,Corporate,471,424,1.1108490566037736
+2024-08-26,Mohali,Corporate,494,424,1.1650943396226414
+2024-08-27,Mohali,Corporate,515,424,1.214622641509434
+2024-08-28,Mohali,Corporate,522,424,1.231132075471698
+2024-08-29,Mohali,Corporate,518,424,1.221698113207547
+2024-09-02,Mohali,Corporate,489,424,1.153301886792453
+2024-09-03,Mohali,Corporate,515,424,1.214622641509434
+2024-09-04,Mohali,Corporate,523,424,1.2334905660377358
+2024-09-05,Mohali,Corporate,515,424,1.214622641509434
+2024-09-06,Mohali,Corporate,435,424,1.025943396226415
+2024-09-09,Mohali,Corporate,509,424,1.2004716981132075
+2024-09-10,Mohali,Corporate,536,424,1.2641509433962264
+2024-09-11,Mohali,Corporate,530,424,1.25
+2024-09-12,Mohali,Corporate,523,424,1.2334905660377358
+2024-09-13,Mohali,Corporate,462,424,1.089622641509434
+2024-09-16,Mohali,Corporate,491,424,1.1580188679245282
+2024-09-17,Mohali,Corporate,518,424,1.221698113207547
+2024-09-18,Mohali,Corporate,543,424,1.2806603773584906
+2024-09-19,Mohali,Corporate,518,424,1.221698113207547
+2024-09-20,Mohali,Corporate,478,424,1.1273584905660377
+2024-09-23,Mohali,Corporate,513,424,1.2099056603773586
+2024-09-24,Mohali,Corporate,547,424,1.2900943396226414
+2024-09-25,Mohali,Corporate,517,424,1.2193396226415094
+2024-09-26,Mohali,Corporate,505,424,1.1910377358490567
+2024-09-27,Mohali,Corporate,475,424,1.1202830188679245
+2024-09-30,Mohali,Corporate,491,424,1.1580188679245282
+2024-10-01,Mohali,Corporate,518,424,1.221698113207547
+2024-10-03,Mohali,Corporate,495,424,1.1674528301886793
+2024-10-04,Mohali,Corporate,451,424,1.0636792452830188
+2024-10-07,Mohali,Corporate,489,424,1.153301886792453
+2024-10-08,Mohali,Corporate,534,424,1.259433962264151
+2024-10-09,Mohali,Corporate,542,424,1.278301886792453
+2024-10-10,Mohali,Corporate,525,424,1.2382075471698113
+2024-10-11,Mohali,Corporate,453,424,1.0683962264150944
+2024-10-14,Mohali,Corporate,514,424,1.2122641509433962
+2024-10-15,Mohali,Corporate,530,424,1.25
+2024-10-16,Mohali,Corporate,548,424,1.2924528301886793
+2024-10-17,Mohali,Corporate,527,424,1.2429245283018868
+2024-10-18,Mohali,Corporate,487,424,1.1485849056603774
+2024-10-21,Mohali,Corporate,512,424,1.2075471698113207
+2024-10-22,Mohali,Corporate,551,424,1.2995283018867925
+2024-10-23,Mohali,Corporate,551,424,1.2995283018867925
+2024-10-24,Mohali,Corporate,509,424,1.2004716981132075
+2024-10-25,Mohali,Corporate,471,424,1.1108490566037736
+2024-10-28,Mohali,Corporate,504,424,1.1886792452830188
+2024-10-29,Mohali,Corporate,515,424,1.214622641509434
+2024-10-30,Mohali,Corporate,439,424,1.035377358490566
+2024-11-04,Mohali,Corporate,475,424,1.1202830188679245
+2024-11-05,Mohali,Corporate,501,424,1.1816037735849056
+2024-11-06,Mohali,Corporate,506,424,1.1933962264150944
+2024-11-07,Mohali,Corporate,515,424,1.214622641509434
+2024-11-08,Mohali,Corporate,471,424,1.1108490566037736
+2024-11-11,Mohali,Corporate,518,424,1.221698113207547
+2024-11-12,Mohali,Corporate,534,424,1.259433962264151
+2024-11-13,Mohali,Corporate,535,424,1.2617924528301887
+2024-11-14,Mohali,Corporate,497,424,1.1721698113207548
+2024-11-18,Mohali,Corporate,498,424,1.1745283018867925
+2024-11-19,Mohali,Corporate,539,424,1.2712264150943395
+2024-11-20,Mohali,Corporate,544,424,1.2830188679245282
+2024-11-21,Mohali,Corporate,524,424,1.2358490566037736
+2024-11-22,Mohali,Corporate,470,424,1.1084905660377358
+2024-11-26,Mohali,Corporate,428,424,1.009433962264151
+2024-12-03,Mohali,Corporate,439,424,1.035377358490566
+2024-12-04,Mohali,Corporate,428,424,1.009433962264151
+2025-01-06,Mohali,Corporate,430,424,1.0141509433962264
+2025-01-07,Mohali,Corporate,454,424,1.070754716981132
+2025-01-08,Mohali,Corporate,456,424,1.0754716981132075
+2025-01-09,Mohali,Corporate,446,424,1.05188679245283
+2025-01-14,Mohali,Corporate,437,424,1.0306603773584906
+2025-01-15,Mohali,Corporate,451,424,1.0636792452830188
+2025-01-16,Mohali,Corporate,436,424,1.028301886792453
+2025-01-21,Mohali,Corporate,435,424,1.025943396226415
+2025-01-22,Mohali,Corporate,440,424,1.0377358490566038
+2025-01-23,Mohali,Corporate,434,424,1.0235849056603774
+2025-01-28,Mohali,Corporate,432,424,1.018867924528302
+2025-01-29,Mohali,Corporate,425,424,1.0023584905660377
+2025-02-04,Mohali,Corporate,579,561,1.032085561497326
+2025-02-05,Mohali,Corporate,577,561,1.0285204991087344
+2025-02-11,Mohali,Corporate,578,561,1.0303030303030305
+2025-02-12,Mohali,Corporate,586,561,1.0445632798573976
+2025-02-13,Mohali,Corporate,573,561,1.0213903743315509
+2025-02-18,Mohali,Corporate,570,561,1.0160427807486632
+2025-02-19,Mohali,Corporate,580,561,1.0338680926916222
+2025-02-20,Mohali,Corporate,566,561,1.0089126559714796
+2025-02-24,Mohali,Corporate,573,561,1.0213903743315509
+2025-02-25,Mohali,Corporate,584,561,1.0409982174688055
+2025-02-26,Mohali,Corporate,579,561,1.032085561497326
+2025-02-27,Mohali,Corporate,577,561,1.0285204991087344
+2025-03-03,Mohali,Corporate,587,561,1.0463458110516934
+2025-03-04,Mohali,Corporate,613,561,1.0926916221033869
+2025-03-05,Mohali,Corporate,617,561,1.0998217468805704
+2025-03-06,Mohali,Corporate,601,561,1.071301247771836
+2025-03-10,Mohali,Corporate,618,561,1.1016042780748665
+2025-03-11,Mohali,Corporate,629,561,1.121212121212121
+2025-03-12,Mohali,Corporate,627,561,1.1176470588235294
+2025-03-17,Mohali,Corporate,566,561,1.0089126559714796
+2025-03-18,Mohali,Corporate,601,561,1.071301247771836
+2025-03-19,Mohali,Corporate,614,561,1.0944741532976827
+2025-03-20,Mohali,Corporate,604,561,1.0766488413547235
+2025-03-24,Mohali,Corporate,582,561,1.0374331550802138
+2025-03-25,Mohali,Corporate,604,561,1.0766488413547235
+2025-03-26,Mohali,Corporate,619,561,1.103386809269162
+2025-03-27,Mohali,Corporate,605,561,1.0784313725490196
+2025-04-01,Mohali,Corporate,577,561,1.0285204991087344
+2025-04-02,Mohali,Corporate,612,561,1.0909090909090908
+2025-04-03,Mohali,Corporate,607,561,1.0819964349376114
+2025-04-07,Mohali,Corporate,592,561,1.0552584670231728
+2025-04-08,Mohali,Corporate,606,561,1.0802139037433156
+2025-04-09,Mohali,Corporate,619,561,1.103386809269162
+2025-04-10,Mohali,Corporate,597,561,1.0641711229946524
+2025-04-14,Mohali,Corporate,569,561,1.014260249554367
+2025-04-15,Mohali,Corporate,614,561,1.0944741532976827
+2025-04-16,Mohali,Corporate,603,561,1.074866310160428
+2025-04-22,Mohali,Corporate,595,561,1.0606060606060606
+2025-04-23,Mohali,Corporate,608,561,1.0837789661319073
+2025-04-24,Mohali,Corporate,590,561,1.0516934046345812
+2025-04-28,Mohali,Corporate,614,561,1.0944741532976827
+2025-04-29,Mohali,Corporate,613,561,1.0926916221033869
+2025-04-30,Mohali,Corporate,601,561,1.071301247771836
+2025-05-01,Mohali,Corporate,599,561,1.067736185383244
+2025-05-05,Mohali,Corporate,568,561,1.0124777183600713
+2025-05-06,Mohali,Corporate,596,561,1.0623885918003566
+2025-05-07,Mohali,Corporate,599,561,1.067736185383244
+2025-05-08,Mohali,Corporate,601,561,1.071301247771836
+2025-05-19,Mohali,Corporate,585,561,1.0427807486631016
+2025-05-20,Mohali,Corporate,627,561,1.1176470588235294
+2025-05-21,Mohali,Corporate,621,561,1.106951871657754
+2025-05-22,Mohali,Corporate,626,561,1.1158645276292336
+2025-05-23,Mohali,Corporate,591,561,1.053475935828877
+2025-05-26,Mohali,Corporate,580,561,1.0338680926916222
+2025-05-27,Mohali,Corporate,633,561,1.1283422459893049
+2025-05-28,Mohali,Corporate,627,561,1.1176470588235294
+2025-05-29,Mohali,Corporate,616,561,1.0980392156862746
+2025-06-02,Mohali,Corporate,570,561,1.0160427807486632
+2025-06-03,Mohali,Corporate,602,561,1.0730837789661318
+2025-06-04,Mohali,Corporate,611,561,1.089126559714795
+2025-06-05,Mohali,Corporate,605,561,1.0784313725490196
+2025-06-09,Mohali,Corporate,590,561,1.0516934046345812
+2025-06-10,Mohali,Corporate,614,561,1.0944741532976827
+2025-06-11,Mohali,Corporate,631,561,1.124777183600713
+2025-06-12,Mohali,Corporate,612,561,1.0909090909090908
+2025-06-16,Mohali,Corporate,620,561,1.1051693404634582
+2025-06-17,Mohali,Corporate,636,561,1.1336898395721926
+2025-06-18,Mohali,Corporate,646,561,1.1515151515151516
+2025-06-19,Mohali,Corporate,619,561,1.103386809269162
+2025-06-20,Mohali,Corporate,574,561,1.0231729055258467
+2025-06-23,Mohali,Corporate,608,561,1.0837789661319073
+2025-06-24,Mohali,Corporate,627,561,1.1176470588235294
+2025-06-25,Mohali,Corporate,645,561,1.1497326203208555
+2025-06-26,Mohali,Corporate,643,561,1.146167557932264
+2025-06-27,Mohali,Corporate,573,561,1.0213903743315509
+2025-06-30,Mohali,Corporate,615,561,1.0962566844919786
+2025-07-01,Mohali,Corporate,642,561,1.1443850267379678
+2025-07-02,Mohali,Corporate,632,561,1.1265597147950088
+2025-07-03,Mohali,Corporate,580,561,1.0338680926916222
+2025-07-08,Mohali,Corporate,619,561,1.103386809269162
+2025-07-09,Mohali,Corporate,648,561,1.1550802139037433
+2025-07-10,Mohali,Corporate,616,561,1.0980392156862746
+2025-07-11,Mohali,Corporate,582,561,1.0374331550802138
+2025-07-14,Mohali,Corporate,602,561,1.0730837789661318
+2025-07-15,Mohali,Corporate,654,561,1.1657754010695187
+2025-07-16,Mohali,Corporate,644,561,1.1479500891265595
+2025-07-17,Mohali,Corporate,632,561,1.1265597147950088
+2025-07-18,Mohali,Corporate,575,561,1.0249554367201426
+2025-07-21,Mohali,Corporate,580,561,1.0338680926916222
+2025-07-22,Mohali,Corporate,629,561,1.121212121212121
+2025-07-23,Mohali,Corporate,631,561,1.124777183600713
+2025-07-24,Mohali,Corporate,642,561,1.1443850267379678
+2025-07-25,Mohali,Corporate,595,561,1.0606060606060606
+2025-07-28,Mohali,Corporate,634,561,1.1301247771836007
+2025-07-29,Mohali,Corporate,648,561,1.1550802139037433
+2025-07-30,Mohali,Corporate,650,561,1.1586452762923352
+2025-07-31,Mohali,Corporate,640,561,1.1408199643493762
+2025-08-01,Mohali,Corporate,575,561,1.0249554367201426
+2025-08-04,Mohali,Corporate,622,561,1.1087344028520498
+2025-08-05,Mohali,Corporate,649,561,1.156862745098039
+2025-08-06,Mohali,Corporate,642,561,1.1443850267379678
+2025-08-07,Mohali,Corporate,607,561,1.0819964349376114
+2025-08-11,Mohali,Corporate,597,561,1.0641711229946524
+2025-08-12,Mohali,Corporate,637,561,1.1354723707664884
+2025-08-13,Mohali,Corporate,652,561,1.1622103386809268
+2025-08-14,Mohali,Corporate,575,561,1.0249554367201426
+2025-08-18,Mohali,Corporate,610,561,1.0873440285204992
+2025-08-19,Mohali,Corporate,657,561,1.1711229946524064
+2025-08-20,Mohali,Corporate,654,561,1.1657754010695187
+2025-08-21,Mohali,Corporate,671,561,1.196078431372549
+2025-08-22,Mohali,Corporate,615,561,1.0962566844919786
+2025-08-25,Mohali,Corporate,628,561,1.1194295900178253
+2025-08-26,Mohali,Corporate,660,561,1.1764705882352942
+2025-08-27,Mohali,Corporate,662,561,1.1800356506238858
+2025-08-28,Mohali,Corporate,656,561,1.1693404634581106
+2024-12-17,Nashville,Development and Construction,22,18,1.2222222222222223
+2024-01-26,Orlando,Property Management,22,20,1.1
+2024-11-18,Orlando,Property Management,21,20,1.05
+2024-10-23,Philadelphia,Property Management,16,15,1.0666666666666669
+2025-04-23,Philadelphia,Property Management,23,15,1.5333333333333334
+2024-01-22,Raleigh,Property Management,27,24,1.125
+2024-07-15,Raleigh,Property Management,28,24,1.1666666666666667
+2025-01-13,Raleigh,Property Management,31,24,1.2916666666666667
+2025-07-24,Raleigh,Property Management,30,24,1.25
+2025-08-11,Raleigh,Property Management,31,24,1.2916666666666667
+2024-07-15,Roseville,Property Management,16,15,1.0666666666666669
+2024-10-04,Roseville,Property Management,26,15,1.7333333333333334
+2024-11-01,Roseville,Property Management,16,15,1.0666666666666669
+2025-08-06,Roseville,Property Management,18,15,1.2
+2024-03-14,San Antonio,Property Management,25,20,1.25
+2024-03-28,San Antonio,Property Management,23,20,1.15
+2024-05-22,San Antonio,Property Management,24,20,1.2
+2024-06-18,San Antonio,Property Management,25,20,1.25
+2024-07-10,San Antonio,Property Management,25,20,1.25
+2024-07-17,San Antonio,Property Management,25,20,1.25
+2024-07-24,San Antonio,Property Management,32,20,1.6
+2024-07-25,San Antonio,Property Management,22,20,1.1
+2024-08-14,San Antonio,Property Management,22,20,1.1
+2024-08-15,San Antonio,Property Management,28,20,1.4
+2024-08-21,San Antonio,Property Management,27,20,1.35
+2024-08-22,San Antonio,Property Management,35,20,1.75
+2024-08-23,San Antonio,Property Management,24,20,1.2
+2024-08-27,San Antonio,Property Management,24,20,1.2
+2024-09-10,San Antonio,Property Management,24,20,1.2
+2024-09-17,San Antonio,Property Management,28,20,1.4
+2025-01-07,San Antonio,Property Management,26,20,1.3
+2025-02-10,San Antonio,Property Management,25,20,1.25
+2025-03-27,San Antonio,Property Management,21,20,1.05
+2025-04-10,San Antonio,Property Management,29,20,1.45
+2025-04-16,San Antonio,Property Management,21,20,1.05
+2025-04-24,San Antonio,Property Management,21,20,1.05
+2025-06-03,San Antonio,Property Management,21,20,1.05
+2025-06-24,San Antonio,Property Management,39,20,1.95
+2025-07-10,San Antonio,Property Management,46,20,2.3
+2025-07-22,San Antonio,Property Management,31,20,1.55
+2025-07-23,San Antonio,Property Management,22,20,1.1
+2025-07-29,San Antonio,Property Management,33,20,1.65
+2025-07-30,San Antonio,Property Management,27,20,1.35
+2024-01-17,San Jose,Property Management,25,12,2.083333333333333
+2024-01-25,San Jose,Property Management,14,12,1.1666666666666667
+2024-03-26,San Jose,Property Management,13,12,1.0833333333333333
+2024-05-15,San Jose,Property Management,15,12,1.25
+2024-07-23,San Jose,Property Management,29,12,2.4166666666666665
+2024-07-24,San Jose,Property Management,14,12,1.1666666666666667
+2024-07-25,San Jose,Property Management,14,12,1.1666666666666667
+2024-08-02,San Jose,Property Management,17,12,1.4166666666666667
+2024-09-06,San Jose,Property Management,17,12,1.4166666666666667
+2024-09-18,San Jose,Property Management,16,12,1.3333333333333333
+2024-10-09,San Jose,Property Management,21,12,1.75
+2024-11-01,San Jose,Property Management,17,12,1.4166666666666667
+2025-06-17,San Jose,Property Management,13,12,1.0833333333333333
+2025-07-14,San Jose,Property Management,13,12,1.0833333333333333
+2025-07-17,San Jose,Property Management,16,12,1.3333333333333333
+2025-08-22,San Jose,Property Management,58,12,4.833333333333333
+2024-08-27,Spokane,Property Management,11,10,1.1
+2024-01-03,West Palm Beach,Property Management,2,1,2.0
+2024-01-04,West Palm Beach,Property Management,2,1,2.0
+2024-01-08,West Palm Beach,Property Management,2,1,2.0
+2024-01-09,West Palm Beach,Property Management,2,1,2.0
+2024-01-25,West Palm Beach,Property Management,2,1,2.0
+2024-03-04,West Palm Beach,Property Management,3,1,3.0
+2024-03-11,West Palm Beach,Property Management,2,1,2.0
+2024-03-13,West Palm Beach,Property Management,2,1,2.0
+2024-03-25,West Palm Beach,Property Management,2,1,2.0
+2024-04-01,West Palm Beach,Property Management,2,1,2.0
+2024-04-08,West Palm Beach,Property Management,2,1,2.0
+2024-04-09,West Palm Beach,Property Management,2,1,2.0
+2024-04-10,West Palm Beach,Property Management,2,1,2.0
+2024-04-11,West Palm Beach,Property Management,2,1,2.0
+2024-04-15,West Palm Beach,Property Management,3,1,3.0
+2024-04-16,West Palm Beach,Property Management,2,1,2.0
+2024-04-17,West Palm Beach,Property Management,2,1,2.0
+2024-05-07,West Palm Beach,Property Management,2,1,2.0
+2024-05-08,West Palm Beach,Property Management,2,1,2.0
+2024-05-09,West Palm Beach,Property Management,2,1,2.0
+2024-05-13,West Palm Beach,Property Management,2,1,2.0
+2024-05-14,West Palm Beach,Property Management,2,1,2.0
+2024-05-15,West Palm Beach,Property Management,2,1,2.0
+2024-05-16,West Palm Beach,Property Management,2,1,2.0
+2024-05-20,West Palm Beach,Property Management,3,1,3.0
+2024-05-21,West Palm Beach,Property Management,2,1,2.0
+2024-05-22,West Palm Beach,Property Management,2,1,2.0
+2024-05-23,West Palm Beach,Property Management,2,1,2.0
+2024-05-29,West Palm Beach,Property Management,2,1,2.0
+2024-05-30,West Palm Beach,Property Management,2,1,2.0
+2024-06-04,West Palm Beach,Property Management,2,1,2.0
+2024-06-05,West Palm Beach,Property Management,2,1,2.0
+2024-06-06,West Palm Beach,Property Management,2,1,2.0
+2024-06-10,West Palm Beach,Property Management,2,1,2.0
+2024-06-11,West Palm Beach,Property Management,2,1,2.0
+2024-06-17,West Palm Beach,Property Management,2,1,2.0
+2024-06-18,West Palm Beach,Property Management,2,1,2.0
+2024-06-19,West Palm Beach,Property Management,2,1,2.0
+2024-06-20,West Palm Beach,Property Management,2,1,2.0
+2024-06-24,West Palm Beach,Property Management,2,1,2.0
+2024-06-25,West Palm Beach,Property Management,2,1,2.0
+2024-07-01,West Palm Beach,Property Management,2,1,2.0
+2024-07-02,West Palm Beach,Property Management,2,1,2.0
+2024-07-09,West Palm Beach,Property Management,2,1,2.0
+2024-07-10,West Palm Beach,Property Management,2,1,2.0
+2024-07-11,West Palm Beach,Property Management,2,1,2.0
+2024-07-22,West Palm Beach,Property Management,2,1,2.0
+2024-07-29,West Palm Beach,Property Management,2,1,2.0
+2024-07-30,West Palm Beach,Property Management,2,1,2.0
+2024-07-31,West Palm Beach,Property Management,2,1,2.0
+2024-08-01,West Palm Beach,Property Management,2,1,2.0
+2024-08-05,West Palm Beach,Property Management,2,1,2.0
+2024-08-06,West Palm Beach,Property Management,2,1,2.0
+2024-08-07,West Palm Beach,Property Management,2,1,2.0
+2024-08-08,West Palm Beach,Property Management,2,1,2.0
+2024-08-13,West Palm Beach,Property Management,2,1,2.0
+2024-08-14,West Palm Beach,Property Management,2,1,2.0
+2024-08-19,West Palm Beach,Property Management,2,1,2.0
+2024-08-21,West Palm Beach,Property Management,2,1,2.0
+2024-08-26,West Palm Beach,Property Management,2,1,2.0
+2024-08-27,West Palm Beach,Property Management,2,1,2.0
+2024-08-28,West Palm Beach,Property Management,2,1,2.0
+2024-08-29,West Palm Beach,Property Management,2,1,2.0

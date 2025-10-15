@@ -1,0 +1,9 @@
+== Summary ==
+Fact rows: 120,080; Agg rows: 30,020
+Fact date range: 2024-01-01 to 2025-09-01
+Agg date range: 2024-01-01 to 2025-09-01
+Locations: 57 (dim: 58)
+LOBs: 4 (in fact)
+Rows with attendance>0 and deskcount==0: 0 (0.0%)
+Rows with occupancy_rate > 1.0: 634 (0.5%)
+Latest occupancy: 2025-09-30, latest deskcount: 2025-09-01, gap: 29 days
