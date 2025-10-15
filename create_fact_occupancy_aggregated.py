@@ -169,12 +169,13 @@ def create_fact_occupancy_aggregated():
     occupancy_data['date_key'] = occupancy_data['logon_date'].dt.strftime('%Y%m%d').astype(int)
     
     print("\nStep 1: Creating complete date × location matrix...")
-    
+
     # Create complete cartesian product with dimension keys included (no LOB)
-    date_loc = dim_date[['date_key', 'date']].merge(
+    # Include year and month for filtering by deskcount availability
+    date_loc = dim_date[['date_key', 'date', 'year', 'month']].merge(
         dim_location[['location_key', 'office_location']], how='cross'
     )
-    
+
     print(f"Created complete matrix with {len(date_loc)} combinations")
     
     print("\nStep 2: Counting actual attendance by date/location (aggregated across all LOBs)...")
@@ -217,11 +218,16 @@ def create_fact_occupancy_aggregated():
 
     # Create lookup of valid (office_location, year, month) combinations from deskcount
     # This ensures we only include months where the office was actually operational
-    deskcount_data['year'] = deskcount_data['date'].dt.year
-    deskcount_data['month'] = deskcount_data['date'].dt.month
-    valid_office_months = deskcount_data[['office_location', 'year', 'month']].drop_duplicates()
+    # Extract year/month from deskcount dates
+    deskcount_months = deskcount_data.copy()
+    deskcount_months['year'] = deskcount_months['date'].dt.year
+    deskcount_months['month'] = deskcount_months['date'].dt.month
+    valid_office_months = deskcount_months[['office_location', 'year', 'month']].drop_duplicates()
 
     print(f"Valid office/month combinations: {len(valid_office_months):,}")
+
+    # Show which months are being excluded for transparency
+    before_filter = len(fact_table)
 
     # Filter fact_table to only include rows with valid office/month combos
     fact_table = fact_table.merge(
@@ -230,6 +236,8 @@ def create_fact_occupancy_aggregated():
         how='inner'  # Only keep rows that have deskcount for this office/month
     )
 
+    excluded_rows = before_filter - len(fact_table)
+    print(f"Filtered out {excluded_rows:,} rows without deskcount data")
     print(f"After filtering by deskcount availability: {len(fact_table):,} rows")
 
     # Now add the actual deskcount values using merge_asof
