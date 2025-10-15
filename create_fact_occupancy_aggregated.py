@@ -2,8 +2,11 @@
 """
 Create FactOccupancyAggregated Table
 Build a comprehensive fact table showing attendance by office_location and date.
-Aggregates attendance across all lines of business, includes 0s for days with no attendance, 
+Aggregates attendance across all lines of business, includes 0s for days with no attendance,
 calculates occupancy rates, and flags hybrid days.
+
+This script generates CSV output only. To publish to Databricks Delta tables, use:
+    python publish_to_delta.py --table dev.jb_off_occ.fact_occupancy_aggregated --mode overwrite
 """
 
 import os

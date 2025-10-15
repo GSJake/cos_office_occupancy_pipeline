@@ -3,6 +3,9 @@
 Create FactOccupancy Table
 Build a comprehensive fact table showing attendance by office_location, line_of_business, and date.
 Includes 0s for days with no attendance, calculates occupancy rates, and flags hybrid days.
+
+This script generates CSV output only. To publish to Databricks Delta tables, use:
+    python publish_to_delta.py (for aggregated table)
 """
 
 import os
