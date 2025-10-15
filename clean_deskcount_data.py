@@ -8,24 +8,42 @@ import pandas as pd
 import re
 from pathlib import Path
 
-def clean_deskcount_data():
-    """Clean deskcount data according to the specified requirements."""
-    
+def clean_deskcount_data(skip_include_filter=False):
+    """Clean deskcount data according to the specified requirements.
+
+    Args:
+        skip_include_filter: If True, skip filtering by 'Include in Occupancy Calculation' flag.
+                           Use this when the flag excludes locations that have occupancy data.
+    """
+
     print("Loading deskcount data...")
     df = pd.read_csv('combined_data/Deskcount.csv')
     print(f"Original data shape: {df.shape}")
     print(f"Original columns: {df.columns.tolist()}")
-    
+
     # Optional filter: respect "Include in Occupancy Calculation" flag if present
     include_col = None
     for c in df.columns:
         if c.strip().lower() == 'include in occupancy calculation':
             include_col = c
             break
-    if include_col is not None:
+
+    if include_col is not None and not skip_include_filter:
         before = len(df)
         df = df[df[include_col].astype(str).str.strip().str.lower() == 'yes']
-        print(f"Filtered by include flag '{include_col}': {before} -> {len(df)} rows")
+        excluded = before - len(df)
+        print(f"\nStep 4a: Filtering by '{include_col}' flag...")
+        print(f"  Before: {before} rows")
+        print(f"  After: {len(df)} rows")
+        print(f"  Excluded: {excluded} rows marked as 'No'")
+
+        if excluded > 50:
+            print(f"\n⚠️  WARNING: {excluded} rows excluded - this may cause deskcount=0 issues")
+            print(f"⚠️  If most deskcounts are 0, re-run with skip_include_filter=True")
+    elif include_col is not None and skip_include_filter:
+        print(f"\nℹ️  Skipping '{include_col}' filter (keeping all locations)")
+    else:
+        print(f"\nℹ️  No 'Include in Occupancy Calculation' column found")
     
     # Step 4a: Keep only the specified columns: office_location, deskcount, date
     required_columns = [
@@ -93,6 +111,15 @@ def clean_deskcount_data():
     return df_clean
 
 if __name__ == "__main__":
-    print("Step 4: Cleaning Deskcount Data...")
-    clean_data = clean_deskcount_data()
+    import sys
+
+    # Check for --skip-filter argument
+    skip_filter = '--skip-filter' in sys.argv or '--skip-include-filter' in sys.argv
+
+    if skip_filter:
+        print("Step 4: Cleaning Deskcount Data (SKIPPING include filter)...")
+    else:
+        print("Step 4: Cleaning Deskcount Data...")
+
+    clean_data = clean_deskcount_data(skip_include_filter=skip_filter)
     print("\nStep 4 complete!") 

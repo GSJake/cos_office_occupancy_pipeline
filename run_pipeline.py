@@ -105,7 +105,7 @@ def define_stages() -> List[Tuple[int, str, Callable[[], None]]]:
         (1, "convert_xlsx_to_csv", convert_xlsx_to_csv),
         (2, "combine_csv_files", combine_csv_files),
         (3, "clean_occupancy_data", clean_occupancy_data),
-        (4, "clean_deskcount_data", clean_deskcount_data),
+        (4, "clean_deskcount_data", lambda: clean_deskcount_data(skip_include_filter=True)),  # Skip filter by default
         (5, "create_dim_date", create_dim_date),
         (6, "create_dim_location", create_dim_location),
         (7, "create_dim_line_of_business", create_dim_line_of_business),
