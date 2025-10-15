@@ -120,3 +120,79 @@ run_pipeline.py          → Orchestrate pipeline stages
 3. **Test locally first** before deploying to Databricks
 4. **Version control** all pipeline changes
 5. **Document schema changes** in commit messages
+
+---
+
+## Using main.py (Recommended Entrypoint)
+
+### Quick Start
+
+```python
+# Run everything: pipeline + validation + publish
+python main.py
+
+# Or explicitly
+python main.py all
+```
+
+### Subcommands
+
+**1. Run Pipeline Only (+ Auto-Publish)**
+```python
+python main.py run
+python main.py run --from 6  # Start from stage 6
+python main.py run --no-publish  # Skip Delta publish
+```
+
+**2. Validation Only**
+```python
+python main.py validate
+python main.py validate --out my_reports
+```
+
+**3. Publish Only**
+```python
+python main.py publish
+python main.py publish --table dev.jb_off_occ.custom_table --mode append
+```
+
+**4. Full Workflow (Default)**
+```python
+python main.py all
+# Equivalent to:
+# 1. python run_pipeline.py
+# 2. python validation_report.py
+# 3. python publish_to_delta.py
+```
+
+### Key Benefits
+
+1. **Single Command**: No need to manually chain scripts
+2. **Auto-Publish**: Automatically publishes to Delta after pipeline succeeds
+3. **Validation**: Generates data quality reports automatically
+4. **Spark Session**: Handles Spark initialization for Databricks
+
+### Comparison
+
+| Feature | main.py | run_pipeline.py + manual steps |
+|---------|---------|-------------------------------|
+| Pipeline execution | ✅ | ✅ |
+| Validation report | ✅ Auto | ❌ Manual |
+| Delta publish | ✅ Auto | ❌ Manual |
+| Spark setup | ✅ Auto | ❌ Manual |
+| Commands needed | 1 | 3 |
+
+### When to Use Each
+
+**Use `main.py`** (recommended):
+- Production workflows
+- Databricks scheduled jobs
+- Complete end-to-end runs
+- When you want validation + publish automatically
+
+**Use `run_pipeline.py`**:
+- Local development/testing
+- When you only need CSVs
+- Custom workflows with manual control
+- Debugging specific stages
+
