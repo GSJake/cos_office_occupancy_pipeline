@@ -43,6 +43,11 @@ def create_dim_location():
     df_occupancy['office_location'] = df_occupancy['office_location'].map(_normalize_location)
     df_deskcount_cleaned['office_location'] = df_deskcount_cleaned['office_location'].map(_normalize_location)
 
+    # Get region mapping from occupancy data (use most common region per location)
+    region_mapping = df_occupancy.groupby('office_location')['region'].agg(
+        lambda x: x.mode().iloc[0] if len(x.mode()) > 0 else None
+    ).to_dict()
+
     # Combine unique locations from both sources
     occupancy_locations = set(df_occupancy['office_location'].dropna().unique())
     deskcount_locations = set(df_deskcount_cleaned['office_location'].dropna().unique())
@@ -72,28 +77,31 @@ def create_dim_location():
     print(f"Found RSF data for {len(rsf_data)} locations")
     
     # Step 6c: Create location_key for each unique office_location
-    print(f"\nStep 6c: Creating location_key and combining with RSF data...")
-    
+    print(f"\nStep 6c: Creating location_key and combining with RSF and region data...")
+
     # Create the dimension table with unique locations
     dim_location = pd.DataFrame({
         'office_location': unique_locations
     })
-    
+
     # Add location_key (sequential integer starting from 1)
     dim_location['location_key'] = range(1, len(dim_location) + 1)
-    
+
+    # Add region from mapping
+    dim_location['region'] = dim_location['office_location'].map(region_mapping)
+
     # Merge with RSF data
     dim_location = dim_location.merge(
-        rsf_data[['office_location', 'RSF']], 
-        on='office_location', 
+        rsf_data[['office_location', 'RSF']],
+        on='office_location',
         how='left'
     )
-    
+
     # Fill missing RSF with 0 if any locations don't have RSF data
     dim_location['RSF'] = dim_location['RSF'].fillna(0).astype(int)
-    
+
     # Reorder columns
-    dim_location = dim_location[['location_key', 'office_location', 'RSF']]
+    dim_location = dim_location[['location_key', 'office_location', 'region', 'RSF']]
     
     # Display the complete dimension table
     print(f"\nComplete DimLocation table with RSF:")

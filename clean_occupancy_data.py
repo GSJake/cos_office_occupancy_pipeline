@@ -19,12 +19,13 @@ def clean_occupancy_data():
     # Step 3a: Keep only the specified columns
     required_columns = [
         'Username',           # username
-        'OfficeLocation',     # office_location  
+        'OfficeLocation',     # office_location
         'LineOfBusiness',     # line_of_business
         'OfficeLocationCityState',  # city_state_country_region (closest match)
         'LogonDate',          # logon_date
         'DayofWeek',          # day_of_week
-        'JobFamily'           # job_family
+        'JobFamily',          # job_family
+        'Region'              # region
     ]
     
     print(f"\nStep 3a: Keeping only required columns...")
@@ -38,7 +39,8 @@ def clean_occupancy_data():
         'OfficeLocationCityState': 'city_state_country_region',
         'LogonDate': 'logon_date',
         'DayofWeek': 'day_of_week',
-        'JobFamily': 'job_family'
+        'JobFamily': 'job_family',
+        'Region': 'region'
     })
     
     # Normalize office_location text (trim, collapse whitespace, strip trailing punctuation)

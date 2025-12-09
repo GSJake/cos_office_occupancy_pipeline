@@ -200,4 +200,7 @@ def main(argv=None):
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    rc = main()
+    # Avoid SystemExit in Databricks/IPython notebook context
+    if rc != 0:
+        raise SystemExit(rc)
