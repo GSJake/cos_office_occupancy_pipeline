@@ -43,10 +43,17 @@ def create_dim_location():
     df_occupancy['office_location'] = df_occupancy['office_location'].map(_normalize_location)
     df_deskcount_cleaned['office_location'] = df_deskcount_cleaned['office_location'].map(_normalize_location)
 
-    # Get region mapping from occupancy data (use most common region per location)
-    region_mapping = df_occupancy.groupby('office_location')['region'].agg(
-        lambda x: x.mode().iloc[0] if len(x.mode()) > 0 else None
-    ).to_dict()
+    # Get location attribute mappings from occupancy data (use most common value per location)
+    def _most_common(series):
+        mode = series.mode()
+        return mode.iloc[0] if len(mode) > 0 else None
+
+    location_attrs = df_occupancy.groupby('office_location').agg({
+        'city': _most_common,
+        'state': _most_common,
+        'country': _most_common,
+        'region': _most_common
+    }).to_dict()
 
     # Combine unique locations from both sources
     occupancy_locations = set(df_occupancy['office_location'].dropna().unique())
@@ -65,15 +72,15 @@ def create_dim_location():
     # Step 6b: Get RSF data for each location (use most recent RSF value)
     print(f"\nStep 6b: Getting RSF data for each location...")
     
-    # Get the most recent RSF for each office location
+    # Get the most recent RSF and Date for each office location
     rsf_data = df_deskcount_original.groupby('OfficeLocation').agg({
         'RSF': 'last',  # Take the last (most recent) RSF value
-        'Date': 'max'   # Show which date the RSF is from
+        'Date': 'max'   # Most recent date for this location
     }).reset_index()
-    
-    rsf_data.rename(columns={'OfficeLocation': 'office_location'}, inplace=True)
+
+    rsf_data.rename(columns={'OfficeLocation': 'office_location', 'Date': 'date'}, inplace=True)
     rsf_data['office_location'] = rsf_data['office_location'].map(_normalize_location)
-    
+
     print(f"Found RSF data for {len(rsf_data)} locations")
     
     # Step 6c: Create location_key for each unique office_location
@@ -87,12 +94,15 @@ def create_dim_location():
     # Add location_key (sequential integer starting from 1)
     dim_location['location_key'] = range(1, len(dim_location) + 1)
 
-    # Add region from mapping
-    dim_location['region'] = dim_location['office_location'].map(region_mapping)
+    # Add city, state, country, region from mappings
+    dim_location['city'] = dim_location['office_location'].map(location_attrs['city'])
+    dim_location['state'] = dim_location['office_location'].map(location_attrs['state'])
+    dim_location['country'] = dim_location['office_location'].map(location_attrs['country'])
+    dim_location['region'] = dim_location['office_location'].map(location_attrs['region'])
 
-    # Merge with RSF data
+    # Merge with RSF and date data
     dim_location = dim_location.merge(
-        rsf_data[['office_location', 'RSF']],
+        rsf_data[['office_location', 'RSF', 'date']],
         on='office_location',
         how='left'
     )
@@ -101,7 +111,7 @@ def create_dim_location():
     dim_location['RSF'] = dim_location['RSF'].fillna(0).astype(int)
 
     # Reorder columns
-    dim_location = dim_location[['location_key', 'office_location', 'region', 'RSF']]
+    dim_location = dim_location[['location_key', 'office_location', 'city', 'state', 'country', 'region', 'RSF', 'date']]
     
     # Display the complete dimension table
     print(f"\nComplete DimLocation table with RSF:")

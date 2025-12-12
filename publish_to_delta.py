@@ -2,11 +2,12 @@
 """
 Publish pipeline CSV outputs to Delta tables in Databricks.
 
-Default target:
+Default targets:
 - dev.jb_off_occ.fact_occupancy_aggregated
+- dev.jb_off_occ.dim_location
 
 Usage examples (Databricks):
-- python publish_to_delta.py                                  # publish aggregated to default table
+- python publish_to_delta.py                                  # publish all tables
 - python publish_to_delta.py --table dev.jb_off_occ.fact_occupancy_aggregated --mode overwrite
 - python publish_to_delta.py --mode append
 """
@@ -38,6 +39,22 @@ FACT_SCHEMA = T.StructType([
 ])
 
 CANONICAL_COLUMNS = [f.name for f in FACT_SCHEMA]
+
+# -----------------------------------------------------------------------------
+# Canonical schema for dev.jb_off_occ.dim_location
+# -----------------------------------------------------------------------------
+DIM_LOCATION_SCHEMA = T.StructType([
+    T.StructField("location_key", T.IntegerType(), False),
+    T.StructField("office_location", T.StringType(), True),
+    T.StructField("city", T.StringType(), True),
+    T.StructField("state", T.StringType(), True),
+    T.StructField("country", T.StringType(), True),
+    T.StructField("region", T.StringType(), True),
+    T.StructField("RSF", T.IntegerType(), True),
+    T.StructField("date", T.DateType(), True),
+])
+
+DIM_LOCATION_COLUMNS = [f.name for f in DIM_LOCATION_SCHEMA]
 
 
 # -----------------------------------------------------------------------------
@@ -153,6 +170,37 @@ def _align_to_existing_table_schema(df: DataFrame, target_table: str, spark: Spa
     return df.select(*select_expr)
 
 
+def _align_to_dim_location_schema(df: DataFrame) -> DataFrame:
+    """Cast/select columns for DimLocation table."""
+    cols = df.columns
+    tmp = df
+
+    # Integers
+    for c in ["location_key", "RSF"]:
+        if c in cols:
+            tmp = tmp.withColumn(c, F.col(c).cast("int"))
+        else:
+            tmp = tmp.withColumn(c, F.lit(None).cast("int"))
+
+    # Strings
+    for c in ["office_location", "city", "state", "country", "region"]:
+        if c in cols:
+            tmp = tmp.withColumn(c, F.col(c).cast("string"))
+        else:
+            tmp = tmp.withColumn(c, F.lit(None).cast("string"))
+
+    # Date
+    if "date" in cols:
+        iso = F.to_date(F.col("date"))
+        alt1 = F.to_date(F.col("date"), "yyyy-MM-dd")
+        alt2 = F.to_date(F.col("date"), "MM/dd/yyyy")
+        tmp = tmp.withColumn("date", F.coalesce(iso, alt1, alt2))
+    else:
+        tmp = tmp.withColumn("date", F.lit(None).cast("date"))
+
+    return tmp.select(DIM_LOCATION_COLUMNS)
+
+
 # -----------------------------------------------------------------------------
 # Publisher
 # -----------------------------------------------------------------------------
@@ -195,6 +243,52 @@ def publish_fact_occupancy_aggregated(table: str, mode: str = "overwrite") -> No
             df.write.mode("append").format("delta").saveAsTable(table)
         else:
             # First write creates the table
+            (df.write
+               .mode("overwrite")
+               .option("overwriteSchema", "true")
+               .format("delta")
+               .saveAsTable(table))
+
+    spark.sql(f"REFRESH TABLE {table}")
+
+    rows = df.count()
+    print(f"Published {rows:,} rows to {table} (mode={mode})")
+
+
+def publish_dim_location(table: str = "dev.jb_off_occ.dim_location", mode: str = "overwrite") -> None:
+    """Publish DimLocation.csv to a Delta table."""
+    spark = SparkSession.getActiveSession() or SparkSession.builder.enableHiveSupport().getOrCreate()
+
+    # Ensure database (catalog.schema) exists
+    if "." in table:
+        db = table.rsplit(".", 1)[0]
+        spark.sql(f"CREATE DATABASE IF NOT EXISTS {db}")
+
+    base = _get_base_dir()
+    csv_path = base / "dimensions" / "DimLocation.csv"
+    if not csv_path.exists():
+        raise FileNotFoundError(f"CSV not found: {csv_path}. Run the pipeline first (stages 1-6).")
+
+    raw = (
+        spark.read
+             .option("header", True)
+             .option("inferSchema", False)
+             .csv(_abs_file_uri(csv_path))
+    )
+
+    df = _align_to_dim_location_schema(raw)
+
+    if mode == "overwrite":
+        (df.write
+           .mode("overwrite")
+           .option("overwriteSchema", "true")
+           .format("delta")
+           .saveAsTable(table))
+    else:  # append
+        if _table_exists(spark, table):
+            df = _align_to_existing_table_schema(df, table, spark)
+            df.write.mode("append").format("delta").saveAsTable(table)
+        else:
             (df.write
                .mode("overwrite")
                .option("overwriteSchema", "true")

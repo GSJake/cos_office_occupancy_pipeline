@@ -139,6 +139,7 @@ def main(argv=None):
         # Validate then publish by default
         validation_report.validate(Path('reports'))
         try:
+            publish_to_delta.publish_dim_location('dev.jb_off_occ.dim_location', 'overwrite')
             publish_to_delta.publish_fact_occupancy_aggregated('dev.jb_off_occ.fact_occupancy_aggregated', 'overwrite')
         except Exception as e:
             print(f"[publish] Skipped or failed: {e}")
@@ -162,6 +163,7 @@ def main(argv=None):
         # Publish if not a dry-run and user didn't opt out
         if not args.dry_run and not args.no_publish:
             try:
+                publish_to_delta.publish_dim_location('dev.jb_off_occ.dim_location', args.mode)
                 publish_to_delta.publish_fact_occupancy_aggregated(args.table, args.mode)
             except Exception as e:
                 print(f"[publish] Skipped or failed: {e}")
@@ -172,6 +174,7 @@ def main(argv=None):
         return validation_report.validate(Path(args.out))
 
     if cmd == 'publish':
+        publish_to_delta.publish_dim_location('dev.jb_off_occ.dim_location', args.mode)
         publish_to_delta.publish_fact_occupancy_aggregated(args.table, args.mode)
         return 0
 
@@ -191,6 +194,7 @@ def main(argv=None):
         # After validation, publish unless disabled
         if not args.dry_run and not getattr(args, 'no_publish', False):
             try:
+                publish_to_delta.publish_dim_location('dev.jb_off_occ.dim_location', args.mode)
                 publish_to_delta.publish_fact_occupancy_aggregated(args.table, args.mode)
             except Exception as e:
                 print(f"[publish] Skipped or failed: {e}")

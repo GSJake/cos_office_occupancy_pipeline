@@ -25,6 +25,9 @@ def clean_occupancy_data():
         'LogonDate',          # logon_date
         'DayofWeek',          # day_of_week
         'JobFamily',          # job_family
+        'City',               # city
+        'State',              # state
+        'Country',            # country
         'Region'              # region
     ]
     
@@ -40,6 +43,9 @@ def clean_occupancy_data():
         'LogonDate': 'logon_date',
         'DayofWeek': 'day_of_week',
         'JobFamily': 'job_family',
+        'City': 'city',
+        'State': 'state',
+        'Country': 'country',
         'Region': 'region'
     })
     
