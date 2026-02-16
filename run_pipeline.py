@@ -13,11 +13,6 @@ Runs the end-to-end pipeline in ordered stages:
 8) Create FactOccupancy (by LOB)
 9) Create FactOccupancyAggregated (all LOBs)
 
-Usage examples:
-  python run_pipeline.py                 # run all stages
-  python run_pipeline.py --from 3 --to 7 # run a subset of stages
-  python run_pipeline.py --only 5 6      # run specific stages
-  python run_pipeline.py --dry-run       # print what would run
 """
 
 from __future__ import annotations

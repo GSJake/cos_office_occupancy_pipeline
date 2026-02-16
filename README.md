@@ -1,5 +1,7 @@
 COS Office Occupancy Pipeline
 
+SP Link: https://greystar365.sharepoint.com/sites/CorporateOfficeStrategy/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FCorporateOfficeStrategy%2FShared%20Documents%2FGeneral%2FOccupancy%20Data%2FDashboard%2FInputs&viewid=4e59d49e%2Ddb8e%2D4efe%2D905d%2De1d52f2702ca&FolderCTID=0x0120006DA6C298DDD3814BA348924264A470BC
+
 Project to process office occupancy and deskcount data into clean dimensions and fact tables for analysis and reporting.
 
 Inputs
