@@ -3,6 +3,7 @@
 Pipeline Orchestrator for COS Office Occupancy
 
 Runs the end-to-end pipeline in ordered stages:
+0) Fetch Excel files from SharePoint
 1) Convert XLSX -> CSV
 2) Combine CSVs by dataset
 3) Clean Occupancy
@@ -25,6 +26,7 @@ from typing import Callable, Dict, List, Tuple
 
 
 # Import stage functions from existing scripts
+from fetch_sharepoint_files import fetch_sharepoint_files
 from convert_xlsx_to_csv import convert_xlsx_to_csv
 from combine_csv_files import combine_csv_files
 from clean_occupancy_data import clean_occupancy_data
@@ -67,6 +69,7 @@ def _has_csvs(path: Path) -> bool:
 
 def stage_checks() -> Dict[int, Callable[[], Tuple[bool, str]]]:
     return {
+        0: lambda: (True, ""),
         1: lambda: ensure_inputs(),
         2: lambda: (
             _has_csvs(Path("converted_data/Deskcount")) and _has_csvs(Path("converted_data/Occupancy")),
@@ -97,6 +100,7 @@ def stage_checks() -> Dict[int, Callable[[], Tuple[bool, str]]]:
 
 def define_stages() -> List[Tuple[int, str, Callable[[], None]]]:
     return [
+        (0, "fetch_sharepoint_files", fetch_sharepoint_files),
         (1, "convert_xlsx_to_csv", convert_xlsx_to_csv),
         (2, "combine_csv_files", combine_csv_files),
         (3, "clean_occupancy_data", clean_occupancy_data),
@@ -111,7 +115,7 @@ def define_stages() -> List[Tuple[int, str, Callable[[], None]]]:
 
 def parse_args(argv: List[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run office occupancy pipeline")
-    parser.add_argument("--from", dest="from_stage", type=int, default=1, help="First stage number to run (default: 1)")
+    parser.add_argument("--from", dest="from_stage", type=int, default=0, help="First stage number to run (default: 0)")
     parser.add_argument("--to", dest="to_stage", type=int, default=9, help="Last stage number to run (default: 9)")
     parser.add_argument(
         "--only", dest="only", type=int, nargs="+", help="Run only these stage numbers (space-separated)")

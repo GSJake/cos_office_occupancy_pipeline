@@ -5,12 +5,12 @@ SP Link: https://greystar365.sharepoint.com/sites/CorporateOfficeStrategy/Shared
 Project to process office occupancy and deskcount data into clean dimensions and fact tables for analysis and reporting.
 
 Inputs
-- New convention (recommended):
-  - Deskcount: place files under `Inputs/Deskcount/` named like `YYYY_MM_deskcount.xlsx` (e.g., `2025_01_deskcount.xlsx`).
-  - Occupancy: place files under `Inputs/Occupancy/` named like `YYYY_MM_occupancy.xlsx`.
+- **Automatic (recommended):** Stage 0 fetches Excel files from SharePoint automatically. See "SharePoint setup" below.
+- Manual: place files under `Inputs/Deskcount/` named like `YYYY_MM_deskcount.xlsx` and `Inputs/Occupancy/YYYY_MM_occupancy.xlsx`.
 - Legacy support: Files under `Inputs/<Type>/<Year>/*.xlsx` still work; the converter infers year-month from filenames or sheet dates.
 
 Pipeline stages
+- 0 Fetch: Download .xlsx files from SharePoint into `Inputs/Deskcount/` and `Inputs/Occupancy/`. Skip with `--skip-fetch`.
 - 1 Convert: Read Excel files from `Inputs/<Type>/` (and legacy `Inputs/<Type>/<Year>/`) and write CSVs under `converted_data/`.
   - Deskcount CSVs are written as `YYYY-MM_Deskcount.csv`; Occupancy as `YYYY-MM_Occupancy.csv`.
   - Combine prefers the new `YYYY-MM_*.csv` files; if both old and new exist, only new are used. Clean `converted_data/` if you want a fresh run.
@@ -32,6 +32,7 @@ Quick start
 
 Run options
 - Full: `python3 main.py all --out reports` (runs pipeline, validation, then publishes to Delta)
+- Skip SharePoint fetch: `python3 main.py run --skip-fetch` (use existing local files)
 - Pipeline only: `python3 main.py run --from 3 --to 7` (publishes by default; disable with `--no-publish`)
 - Validation only: `python3 main.py validate --out reports`
 - Run underlying runner directly: `python3 run_pipeline.py --only 1 2 3`
@@ -51,7 +52,30 @@ Validation report
   - `over_capacity_days.csv`: occupancy_rate>1.0
   - `by_location_summary.csv`: weekday mean rates, merge issues, over-capacity counts
 
+SharePoint setup
+Stage 0 uses the "Office Occupancy Power BI Report" app registration to fetch files via Microsoft Graph API.
+
+Databricks (production): Create a secret scope and store credentials:
+```
+databricks secrets create-scope cos-sharepoint
+databricks secrets put-secret cos-sharepoint client-id --string-value "216fbee8-cb8b-4754-8b2c-4ae797c07e0f"
+databricks secrets put-secret cos-sharepoint client-secret --string-value "<your-secret>"
+databricks secrets put-secret cos-sharepoint tenant-id --string-value "15cb6c53-0a50-4876-a66c-9a753d760a7d"
+```
+
+Local dev: Set environment variables instead:
+```
+export SP_CLIENT_ID="216fbee8-cb8b-4754-8b2c-4ae797c07e0f"
+export SP_CLIENT_SECRET="<your-secret>"
+export SP_TENANT_ID="15cb6c53-0a50-4876-a66c-9a753d760a7d"
+```
+
+Document library name: Defaults to `"Documents"`. If files are in a different library (e.g., `"Shared Documents"`), override with `--library`:
+```
+python fetch_sharepoint_files.py --library "Shared Documents"
+```
+
 Notes
-- Requirements are minimal: `pandas`, `openpyxl`.
+- Requirements: `pandas`, `openpyxl`, `msal`, `requests`.
 - Outputs are overwritten on re‑runs; keep originals in `Inputs/`.
  - In Databricks, install deps with: `%pip install -r requirements.txt`.

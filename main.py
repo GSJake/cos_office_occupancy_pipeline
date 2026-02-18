@@ -3,7 +3,7 @@
 Central entrypoint for COS Office Occupancy project.
 
 Subcommands:
-  run       Run the ETL pipeline (stages 1-9)
+  run       Run the ETL pipeline (stages 0-9)
   validate  Generate validation report from outputs
   all       Run pipeline then validation (default)
   publish   Publish outputs to Delta tables (aggregated by default)
@@ -76,8 +76,8 @@ def parse_args(argv):
     sub = parser.add_subparsers(dest='cmd')
 
     # run subcommand (proxy args to run_pipeline)
-    p_run = sub.add_parser('run', help='Run ETL pipeline (stages 1-9) and publish')
-    p_run.add_argument('--from', dest='from_stage', type=int, default=1)
+    p_run = sub.add_parser('run', help='Run ETL pipeline (stages 0-9) and publish')
+    p_run.add_argument('--from', dest='from_stage', type=int, default=0)
     p_run.add_argument('--to', dest='to_stage', type=int, default=9)
     p_run.add_argument('--only', dest='only', type=int, nargs='+')
     p_run.add_argument('--skip', dest='skip', type=int, nargs='+', default=[])
@@ -85,6 +85,7 @@ def parse_args(argv):
     p_run.add_argument('--table', default='dev.jb_off_occ.fact_occupancy_aggregated')
     p_run.add_argument('--mode', default='overwrite', choices=['overwrite', 'append'])
     p_run.add_argument('--no-publish', action='store_true', help='Do not publish to Delta at the end')
+    p_run.add_argument('--skip-fetch', action='store_true', help='Skip SharePoint fetch (stage 0)')
 
     # validate subcommand
     p_val = sub.add_parser('validate', help='Generate validation report')
@@ -92,7 +93,7 @@ def parse_args(argv):
 
     # all subcommand (default)
     p_all = sub.add_parser('all', help='Run pipeline then validation (and publish)')
-    p_all.add_argument('--from', dest='from_stage', type=int, default=1)
+    p_all.add_argument('--from', dest='from_stage', type=int, default=0)
     p_all.add_argument('--to', dest='to_stage', type=int, default=9)
     p_all.add_argument('--only', dest='only', type=int, nargs='+')
     p_all.add_argument('--skip', dest='skip', type=int, nargs='+', default=[])
@@ -101,6 +102,7 @@ def parse_args(argv):
     p_all.add_argument('--table', default='dev.jb_off_occ.fact_occupancy_aggregated')
     p_all.add_argument('--mode', default='overwrite', choices=['overwrite', 'append'])
     p_all.add_argument('--no-publish', action='store_true', help='Do not publish to Delta at the end')
+    p_all.add_argument('--skip-fetch', action='store_true', help='Skip SharePoint fetch (stage 0)')
 
     # publish subcommand
     p_pub = sub.add_parser('publish', help='Publish to Delta (aggregated)')
@@ -152,11 +154,14 @@ def main(argv=None):
     cmd = args.cmd or 'all'
 
     if cmd == 'run':
+        skip_list = list(args.skip or [])
+        if getattr(args, 'skip_fetch', False) and 0 not in skip_list:
+            skip_list.append(0)
         rc = run_pipeline.main([
             '--from', str(args.from_stage),
             '--to', str(args.to_stage),
             *([] if not args.only else ['--only', *map(str, args.only)]),
-            *([] if not args.skip else ['--skip', *map(str, args.skip)]),
+            *([] if not skip_list else ['--skip', *map(str, skip_list)]),
             *(['--dry-run'] if args.dry_run else []),
         ])
         if rc != 0:
@@ -180,11 +185,14 @@ def main(argv=None):
         return 0
 
     if cmd == 'all':
+        skip_list = list(args.skip or [])
+        if getattr(args, 'skip_fetch', False) and 0 not in skip_list:
+            skip_list.append(0)
         rc = run_pipeline.main([
             '--from', str(args.from_stage),
             '--to', str(args.to_stage),
             *([] if not args.only else ['--only', *map(str, args.only)]),
-            *([] if not args.skip else ['--skip', *map(str, args.skip)]),
+            *([] if not skip_list else ['--skip', *map(str, skip_list)]),
             *(['--dry-run'] if args.dry_run else []),
         ])
         if rc != 0:
