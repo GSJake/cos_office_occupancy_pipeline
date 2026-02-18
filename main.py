@@ -13,6 +13,7 @@ Examples:
   python main.py run --from 3 --to 7
   python main.py validate --out reports
 """
+%pip install -r requirements.txt
 
 from __future__ import annotations
 
