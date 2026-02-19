@@ -32,7 +32,7 @@ GRAPH_BASE = "https://graph.microsoft.com/v1.0"
 SCOPE = ["https://graph.microsoft.com/.default"]
 
 # Databricks secret scope / key names
-_SCOPE_NAME = "cos-sharepoint"
+_SCOPE_NAME = "office-occupancy"
 _KEY_CLIENT_ID = "client-id"
 _KEY_CLIENT_SECRET = "client-secret"
 _KEY_TENANT_ID = "tenant-id"

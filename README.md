@@ -57,10 +57,9 @@ Stage 0 uses the "Office Occupancy Power BI Report" app registration to fetch fi
 
 Databricks (production): Create a secret scope and store credentials:
 ```
-databricks secrets create-scope cos-sharepoint
-databricks secrets put-secret cos-sharepoint client-id --string-value "216fbee8-cb8b-4754-8b2c-4ae797c07e0f"
-databricks secrets put-secret cos-sharepoint client-secret --string-value "<your-secret>"
-databricks secrets put-secret cos-sharepoint tenant-id --string-value "15cb6c53-0a50-4876-a66c-9a753d760a7d"
+databricks secrets put-secret office-occupancy client-id --string-value "216fbee8-cb8b-4754-8b2c-4ae797c07e0f"
+databricks secrets put-secret office-occupancy client-secret --string-value "<your-secret>"
+databricks secrets put-secret office-occupancy tenant-id --string-value "15cb6c53-0a50-4876-a66c-9a753d760a7d"
 ```
 
 Local dev: Set environment variables instead:
