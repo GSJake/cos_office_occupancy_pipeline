@@ -44,7 +44,10 @@ def _get_dbutils():
         from databricks.sdk.runtime import dbutils  # noqa: WPS433
         return dbutils
     except Exception:
-        return None
+        pass
+    # Fallback: dbutils is injected as a notebook global by Databricks
+    import builtins
+    return getattr(builtins, "dbutils", None)
 
 
 @dataclass
