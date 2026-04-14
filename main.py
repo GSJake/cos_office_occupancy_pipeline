@@ -33,6 +33,12 @@ except Exception:
     # Running outside of Databricks; ignore.
     pass
 
+# Expose notebook-injected dbutils to all imported modules (e.g. sharepoint_client)
+try:
+    builtins.dbutils = dbutils  # type: ignore[name-defined]
+except NameError:
+    pass
+
 # -----------------------------------------------------------------------------
 # Spark bootstrap
 # -----------------------------------------------------------------------------
