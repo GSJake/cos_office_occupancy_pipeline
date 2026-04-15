@@ -171,10 +171,11 @@ class SharePointClient:
         """
         drive_id = self._get_drive_id()
         url = f"{GRAPH_BASE}/drives/{drive_id}/root:/{folder_path}:/children"
-        data = self._get_json(url, params={"$filter": "endswith(name,'.xlsx')"})
+        data = self._get_json(url)
         return [
             {"id": item["id"], "name": item["name"], "size": item.get("size", 0)}
             for item in data.get("value", [])
+            if item.get("name", "").lower().endswith(".xlsx")
         ]
 
     def download_file(self, item_id: str, dest: Path) -> None:
