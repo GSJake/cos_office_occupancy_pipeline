@@ -206,6 +206,8 @@ def _align_to_dim_location_schema(df: DataFrame) -> DataFrame:
 # -----------------------------------------------------------------------------
 
 def publish_fact_occupancy_aggregated(table: str, mode: str = "overwrite") -> None:
+    import pandas as pd
+
     spark = SparkSession.getActiveSession() or SparkSession.builder.enableHiveSupport().getOrCreate()
 
     # Ensure database (catalog.schema) exists
@@ -218,15 +220,10 @@ def publish_fact_occupancy_aggregated(table: str, mode: str = "overwrite") -> No
     if not csv_path.exists():
         raise FileNotFoundError(f"CSV not found: {csv_path}. Run the pipeline first (stages 1-9).")
 
-    # Read CSV as strings to normalize/parse ourselves
-    # Use inferSchema to read actual CSV columns by name (not position)
-    # This handles cases where CSV may be missing columns like is_weekend
-    raw = (
-        spark.read
-             .option("header", True)
-             .option("inferSchema", False)  # Keep all as strings for custom parsing
-             .csv(_abs_file_uri(csv_path))
-    )
+    # Read via pandas to avoid workspace filesystem caching issues with Spark's
+    # file: reader, which can see a stale version of recently-written CSVs.
+    pdf = pd.read_csv(str(csv_path), dtype=str)
+    raw = spark.createDataFrame(pdf)
 
     df = _align_to_fact_schema_from_strings(raw)
 
@@ -257,6 +254,8 @@ def publish_fact_occupancy_aggregated(table: str, mode: str = "overwrite") -> No
 
 def publish_dim_location(table: str = "dev.jb_off_occ.dim_location", mode: str = "overwrite") -> None:
     """Publish DimLocation.csv to a Delta table."""
+    import pandas as pd
+
     spark = SparkSession.getActiveSession() or SparkSession.builder.enableHiveSupport().getOrCreate()
 
     # Ensure database (catalog.schema) exists
@@ -269,12 +268,10 @@ def publish_dim_location(table: str = "dev.jb_off_occ.dim_location", mode: str =
     if not csv_path.exists():
         raise FileNotFoundError(f"CSV not found: {csv_path}. Run the pipeline first (stages 1-6).")
 
-    raw = (
-        spark.read
-             .option("header", True)
-             .option("inferSchema", False)
-             .csv(_abs_file_uri(csv_path))
-    )
+    # Read via pandas to avoid workspace filesystem caching issues with Spark's
+    # file: reader, which can see a stale version of recently-written CSVs.
+    pdf = pd.read_csv(str(csv_path), dtype=str)
+    raw = spark.createDataFrame(pdf)
 
     df = _align_to_dim_location_schema(raw)
 
