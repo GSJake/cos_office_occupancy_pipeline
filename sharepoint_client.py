@@ -167,16 +167,27 @@ class SharePointClient:
     def list_folder(self, folder_path: str) -> List[Dict[str, Any]]:
         """List .xlsx files in a SharePoint folder.
 
+        Follows @odata.nextLink pagination to ensure all files are returned
+        regardless of how many exist in the folder.
+
         Returns list of dicts with keys: id, name, size.
         """
         drive_id = self._get_drive_id()
         url = f"{GRAPH_BASE}/drives/{drive_id}/root:/{folder_path}:/children"
-        data = self._get_json(url)
-        return [
-            {"id": item["id"], "name": item["name"], "size": item.get("size", 0)}
-            for item in data.get("value", [])
-            if item.get("name", "").lower().endswith(".xlsx")
-        ]
+
+        items = []
+        while url:
+            data = self._get_json(url)
+            for item in data.get("value", []):
+                if item.get("name", "").lower().endswith(".xlsx"):
+                    items.append({
+                        "id": item["id"],
+                        "name": item["name"],
+                        "size": item.get("size", 0),
+                    })
+            url = data.get("@odata.nextLink")  # None when no more pages
+
+        return items
 
     def download_file(self, item_id: str, dest: Path) -> None:
         """Stream-download a file by its Graph item ID."""
