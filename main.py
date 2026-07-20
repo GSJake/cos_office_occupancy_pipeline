@@ -13,7 +13,10 @@ Examples:
   python main.py run --from 3 --to 7
   python main.py validate --out reports
 """
-%pip install -r requirements.txt
+import subprocess as _subprocess, sys as _sys, pathlib as _pathlib
+_req = (_pathlib.Path(__file__).parent if "__file__" in dir() else _pathlib.Path(".")) / "requirements.txt"
+if _req.exists():
+    _subprocess.run([_sys.executable, "-m", "pip", "install", "-q", "-r", str(_req)], check=False)
 
 from __future__ import annotations
 
